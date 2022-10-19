@@ -32,6 +32,14 @@ public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) {
 
+
+        GameWorld world = new GameWorld();
+
+
+        Position pos = new Position(3, 4);
+
+        System.out.println("Ma position : " + pos);
+
         // set title for the stage
         stage.setTitle("creating canvas");
 
@@ -62,7 +70,7 @@ public class HelloApplication extends Application {
         assert test != null;
         Image img = new Image(test);
 
-        ctx.drawImage(img, 100, 100);
+        ctx.drawImage(img, 100, 100, 100, 100);
 
         // create a Group
         Group group = new Group(canvas);
@@ -74,16 +82,37 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
 
         final int[] x = {100};
+        final int[] y = {100};
+
+        final Player pacman = new Player();
+
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent event) {
+                InputController.handle(event);
+            }
+        });
 
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent event) {
                 System.out.println("key pressed ici : " + event);
-                if (event.getCode() == KeyCode.RIGHT) {
-                    ctx.clearRect(0, 0, 400, 400);
+                ctx.clearRect(0, 0, 400, 400);
+
+                if (event.getCode() == KeyCode.RIGHT)
                     x[0]++;
-                    ctx.drawImage(img, x[0], 100);
-                }
+
+                if (event.getCode() == KeyCode.LEFT)
+                    x[0]--;
+
+                if (event.getCode() == KeyCode.DOWN)
+                    y[0]++;
+
+                if (event.getCode() == KeyCode.UP)
+                    y[0]--;
+
+
+                ctx.drawImage(img, x[0], y[0], 100, 100);
             }
         });
 
