@@ -4,25 +4,39 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 public class InputController {
-    GameWorld world;
+    public GameWorldModel world;
 
-    InputController(GameWorld world) {
+    InputController(GameWorldModel world) {
         this.world = world;
     }
-    static void handle(KeyEvent event) {
-        /*
+    void handle(KeyEvent event) {
+        System.out.println("Handle " + event);
         if (event.getCode() == KeyCode.RIGHT)
-            world.player.gridPosition.x++;
+            this.world.player.direction = Direction.RIGHT;
 
         if (event.getCode() == KeyCode.LEFT)
-            x[0]--;
+            this.world.player.direction = Direction.LEFT;
 
         if (event.getCode() == KeyCode.DOWN)
-            y[0]++;
+            this.world.player.direction = Direction.DOWN;
 
         if (event.getCode() == KeyCode.UP)
-            y[0]--;
-        */
+            this.world.player.direction = Direction.UP;
+
+        /*
+        if (event.getCode() == KeyCode.RIGHT)
+            this.world.player.gridPosition.x++;
+
+        if (event.getCode() == KeyCode.LEFT)
+            this.world.player.gridPosition.x--;
+
+        if (event.getCode() == KeyCode.DOWN)
+            this.world.player.gridPosition.y++;
+
+        if (event.getCode() == KeyCode.UP)
+            this.world.player.gridPosition.y++;
+
+         */
 
     }
 }

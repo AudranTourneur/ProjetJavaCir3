@@ -1,4 +1,4 @@
-module com.example.projetcir3 {
+module com.example.projetcir {
     requires javafx.controls;
     requires javafx.fxml;
 
