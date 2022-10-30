@@ -15,5 +15,14 @@ public class Player extends Entity {
 
         position.x += direction.getX() * velocity;
         position.y += direction.getY() * velocity;
+
+        //On divise par 40 parce que c'est la taille de TILE qu'on a definit
+        gridPosition.x=(int)position.x;
+        gridPosition.y=(int)position.y;
+    }
+    //A partir de coordonnes x,y on definit notre premier lieu d'apparation du joueur
+    public void setSpawn(int x,int y){
+        position.x=x;
+        position.y=y;
     }
 }

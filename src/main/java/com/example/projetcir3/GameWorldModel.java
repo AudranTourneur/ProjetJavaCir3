@@ -57,6 +57,8 @@ public class GameWorldModel {
                     System.out.println(x + " " + y + " " + ch);
 
                     map[x][y] = getTileFromChar(ch);
+                    if(map[x][y]==GridTile.PLAYER_SPAWN)
+                        player.setSpawn(x,y);
                 }
                 y++;
             }
@@ -68,6 +70,7 @@ public class GameWorldModel {
     void update(double deltaMs) {
         for (Entity e : entities) {
             e.move(deltaMs);
+            checkCollision();
         }
     }
 
@@ -86,5 +89,14 @@ public class GameWorldModel {
                 return GridTile.VOID;
         }
         //throw new Exception("pas encore fait");
+    }
+    //Regarde si l'entite mis en parametre touche un mur ou pas
+    void checkCollision(){
+        //System.out.println("Current grid position"+ player.gridPosition);
+        //System.out.println("Current position"+ player.position);
+        System.out.println(map[(int)player.gridPosition.y][(int)player.gridPosition.x]);
+        if(map[(int) player.gridPosition.y][(int)player.gridPosition.x]==GridTile.WALL){
+            player.direction=null;
+        }
     }
 }
