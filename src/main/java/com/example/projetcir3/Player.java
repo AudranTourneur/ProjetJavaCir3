@@ -1,6 +1,8 @@
 package com.example.projetcir3;
 
 public class Player extends Entity {
+
+
     Direction currentDirection = null;
     Direction desiredDirection = null;
     public GridTile[][] map;
@@ -12,9 +14,9 @@ public class Player extends Entity {
     //Renvoit ture si le player touche cette entite
     boolean isCollidingWithEntity(Position pos, GridTile tile) {
         return (map[(int) Math.floor(pos.y)][ (int) Math.floor(pos.x)] == tile
-                || map[(int) Math.floor(pos.y+0.99)][ (int)Math.floor(pos.x)] == tile
-                || map[(int) Math.floor(pos.y)][ (int)Math.floor(pos.x+0.99)] == tile
-                || map[(int) Math.floor(pos.y+0.99)][ (int)Math.floor(pos.x+0.99)] == tile
+                || map[(int) Math.floor(pos.y+0.98)][ (int)Math.floor(pos.x)] == tile
+                || map[(int) Math.floor(pos.y)][ (int)Math.floor(pos.x+0.98)] == tile
+                || map[(int) Math.floor(pos.y+0.98)][ (int)Math.floor(pos.x+0.98)] == tile
         );
     }
 
@@ -30,7 +32,7 @@ public class Player extends Entity {
             currentDirection=desiredDirection;
             position.x = (float) desiredPosX;
             position.y = (float) desiredPosY;
-        }else {
+        }else if (currentDirection != null) {
             double nextPosX = position.x + currentDirection.getX() * velocity;
             double nextPosY = position.y + currentDirection.getY() * velocity;
             Position nextPos = new Position(nextPosX, nextPosY);

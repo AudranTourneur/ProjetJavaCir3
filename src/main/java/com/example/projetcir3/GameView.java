@@ -8,18 +8,14 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
-import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.StringReader;
 import java.util.HashMap;
-import java.util.Scanner;
 
 public class GameView {
     Stage stage;
     GraphicsContext ctx;
     GameWorldModel world;
-    int TILE_SIZE = 40;
+    int TILE_SIZE = 80;
     HashMap<String, Image> spriteMap = new HashMap<>();
 
     public GameView(Stage stage, GameWorldModel world) {
@@ -30,8 +26,8 @@ public class GameView {
         Canvas canvas = new Canvas();
 
         // set height and width
-        canvas.setHeight(400);
-        canvas.setWidth(400);
+        canvas.setHeight(Constants.windowHeight);
+        canvas.setWidth(Constants.windowWidth);
 
         GraphicsContext ctx =
                 canvas.getGraphicsContext2D();
@@ -42,7 +38,7 @@ public class GameView {
         Group group = new Group(canvas);
 
         // create a scene
-        Scene scene = new Scene(group, 400, 400);
+        Scene scene = new Scene(group, Constants.windowWidth, Constants.windowHeight);
 
         stage.show();
         load();
@@ -82,7 +78,8 @@ public class GameView {
 
      void drawWall(int x, int y) {
          // set fill for rectangle
-         ctx.setFill(Color.RED);
+         float gray = 0.2f;
+         ctx.setFill(new Color(gray, gray, gray, 1));
          ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
 
      }
