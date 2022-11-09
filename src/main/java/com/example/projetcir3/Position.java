@@ -8,6 +8,12 @@ public class Position {
         this.y = y;
     }
 
+    Position(double x, double y) {
+        this.x = (float) x;
+        this.y = (float) y;
+    }
+
+
     @Override
     public String toString() {
         return "Position [" + x + ";" + y + "]";

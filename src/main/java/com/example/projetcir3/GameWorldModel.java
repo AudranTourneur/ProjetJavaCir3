@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Scanner;
 
 public class GameWorldModel {
-    public Player player = new Player();
+    public Player player;
 
     public List<Entity> entities = new ArrayList<>();
 
@@ -28,7 +28,7 @@ public class GameWorldModel {
     }
 
     void init() {
-        entities.add(player);
+
 
 
         // ajouter ghosts
@@ -46,7 +46,8 @@ public class GameWorldModel {
         BufferedReader bufReader = new BufferedReader(new StringReader(text));
 
         String line = null;
-
+        int spawnX=0;
+        int spawnY=0;
         int y = 0;
         try {
             while ((line = bufReader.readLine()) != null) {
@@ -57,20 +58,26 @@ public class GameWorldModel {
                     System.out.println(x + " " + y + " " + ch);
 
                     map[x][y] = getTileFromChar(ch);
-                    if(map[x][y]==GridTile.PLAYER_SPAWN)
-                        player.setSpawn(x,y);
+                    if(map[x][y]==GridTile.PLAYER_SPAWN){
+                        spawnX=x;
+                        spawnY=y;
+                    }
+
                 }
                 y++;
             }
         } catch (IOException exception) {
             System.out.println("Fatal error");
         }
+        this.player=new Player(map);
+        player.setSpawn(spawnX,spawnY);
+        entities.add(player);
     }
 
     void update(double deltaMs) {
         for (Entity e : entities) {
             e.move(deltaMs);
-            checkCollision();
+            //checkCollision();
         }
     }
 
@@ -90,13 +97,15 @@ public class GameWorldModel {
         }
         //throw new Exception("pas encore fait");
     }
+
+    /*
     //Regarde si l'entite mis en parametre touche un mur ou pas
     void checkCollision(){
-        //System.out.println("Current grid position"+ player.gridPosition);
-        //System.out.println("Current position"+ player.position);
+        System.out.println("Current grid position"+ player.gridPosition);
+        System.out.println("Current position"+ player.position);
         System.out.println(map[(int)player.gridPosition.y][(int)player.gridPosition.x]);
         if(map[(int) player.gridPosition.y][(int)player.gridPosition.x]==GridTile.WALL){
             player.direction=null;
         }
-    }
+    }*/
 }

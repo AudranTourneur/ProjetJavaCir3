@@ -10,18 +10,18 @@ public class InputController {
         this.world = world;
     }
     void handle(KeyEvent event) {
-        System.out.println("Handle " + event);
+        //System.out.println("Handle " + event);
         if (event.getCode() == KeyCode.RIGHT)
-            this.world.player.direction = Direction.RIGHT;
+            this.world.player.desiredDirection = Direction.RIGHT;
 
         if (event.getCode() == KeyCode.LEFT)
-            this.world.player.direction = Direction.LEFT;
+            this.world.player.desiredDirection = Direction.LEFT;
 
         if (event.getCode() == KeyCode.DOWN)
-            this.world.player.direction = Direction.DOWN;
+            this.world.player.desiredDirection = Direction.DOWN;
 
         if (event.getCode() == KeyCode.UP)
-            this.world.player.direction = Direction.UP;
+            this.world.player.desiredDirection = Direction.UP;
 
         /*
         if (event.getCode() == KeyCode.RIGHT)

@@ -70,10 +70,10 @@ public class GameView {
     void drawMap(){
         for (int i = 0; i < world.map.length; i++) {
             for (int j = 0; j < world.map.length; j++) {
-                if (world.map[j][i] == GridTile.WALL) {
+                if (world.map[i][j] == GridTile.WALL) {
                     drawWall(j, i);
                 }
-                if(world.map[j][i] == GridTile.VOID){
+                if(world.map[i][j] == GridTile.VOID){
                     drawVoid(j,i);
                 }
             }
