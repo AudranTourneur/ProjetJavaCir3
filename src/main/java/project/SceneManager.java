@@ -1,7 +1,7 @@
-package com.example.projetcir3;
+package project;
 
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import project.game.controller.GameLoop;
 
 public class SceneManager {
 
@@ -11,7 +11,7 @@ public class SceneManager {
         this.main = main;
     }
 
-    protected void switchToGame(String name){
+    public void switchToGame(String name){
         System.out.println("Manager appelé avec name = " + name);
         GameLoop.start(main);
         //main.setScene(screenMap.get(name));

@@ -1,4 +1,4 @@
-package com.example.projetcir3;
+package project.menu;
 
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;

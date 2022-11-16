@@ -1,14 +1,14 @@
-package com.example.projetcir3;
+package project.game.model;
 
 public class Position {
     public float x;
     public float y;
-    Position(float x, float y) {
+    public Position(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    Position(double x, double y) {
+    public Position(double x, double y) {
         this.x = (float) x;
         this.y = (float) y;
     }

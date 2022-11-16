@@ -1,4 +1,4 @@
-package com.example.projetcir3;
+package project.game.model;
 
 public enum GridTile {
     VOID,

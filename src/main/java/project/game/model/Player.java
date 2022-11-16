@@ -1,27 +1,38 @@
-package com.example.projetcir3;
+package project.game.model;
 
 public class Player extends Entity {
 
 
     Direction currentDirection = null;
-    Direction desiredDirection = null;
-    public GridTile[][] map;
+    public Direction desiredDirection = null;
 
-    public Player(GridTile[][] map) {
-        this.map = map;
+    public GridMap world;
+
+    public Player(GridMap map) {
+        this.world = map;
     }
 
-    //Renvoit ture si le player touche cette entite
+    //Renvoit true si le player touche cette entité
     boolean isCollidingWithEntity(Position pos, GridTile tile) {
+        var map = world.map;
+        try {
         return (map[(int) Math.floor(pos.y)][ (int) Math.floor(pos.x)] == tile
                 || map[(int) Math.floor(pos.y+0.98)][ (int)Math.floor(pos.x)] == tile
                 || map[(int) Math.floor(pos.y)][ (int)Math.floor(pos.x+0.98)] == tile
                 || map[(int) Math.floor(pos.y+0.98)][ (int)Math.floor(pos.x+0.98)] == tile
         );
+        } catch(ArrayIndexOutOfBoundsException e) {
+            System.out.println("Warning: ArrayIndexOutOfBoundsException isCollidingWithEntity " + pos);
+            return false;
+        }
     }
+    
+    //boolean isDirectionLegal(Direction dir) {
+//
+    //}
 
     @Override
-    void move(double delta) {
+    public void move(double delta) {
         if (desiredDirection == null) return;
         double velocity = 1 * delta / 1000;
 
@@ -51,5 +62,9 @@ public class Player extends Entity {
 
         //gridPosition.x=x;
         //gridPosition.y=y;
+    }
+
+    public String toString() {
+        return this.position + " " + this.currentDirection + " " + this.desiredDirection;
     }
 }

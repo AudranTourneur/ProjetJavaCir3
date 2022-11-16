@@ -1,6 +1,9 @@
-package com.example.projetcir3;
+package project.game.controller;
 
 import javafx.stage.Stage;
+import project.Main;
+import project.game.model.GameWorldModel;
+import project.game.view.GameView;
 
 public class GameLoop {
     public static void start(Stage stage) {
@@ -8,10 +11,14 @@ public class GameLoop {
         stage.setTitle("creating canvas");
 
 
-        GameWorldModel world = new GameWorldModel();
-        InputController controller = new InputController(world);
+        
+        GameWorldModel model = new GameWorldModel();
+        GameView view = new GameView(stage, model);
 
-        GameView view = new GameView(stage, world);
+        GameStateContainer state = new GameStateContainer(model, view);
+
+        InputController controller = new InputController(state);
+
         view.display();
 
         stage.getScene().setOnKeyPressed(controller::handle);
@@ -23,16 +30,14 @@ public class GameLoop {
             public void run(){
                 System.out.println("Thread Running");
 
-                long last_time = System.nanoTime();
+                long lastTime = System.nanoTime();
 
-                boolean running = true;
-
-                while (running) {
+                while (Main.alive) {
                     long time = System.nanoTime();
-                    int delta_time = (int) ((time - last_time) / 1000000);
-                    last_time = time;
+                    int delta_time = (int) ((time - lastTime) / 1000000);
+                    lastTime = time;
                     //System.out.println(delta_time);
-                    world.update(delta_time);
+                    model.update(delta_time);
                     view.display();
                     try {
                         Thread.sleep(1000 / 60);
@@ -41,6 +46,8 @@ public class GameLoop {
                     }
 
                 }
+
+                System.out.println("Game thread finished");
             }
         };
 
