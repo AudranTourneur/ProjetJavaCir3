@@ -7,7 +7,7 @@ public class GridMap {
 	// public à déprécié
 	public GridTile[][] map = new GridTile[SIZE][SIZE];
 
-	public boolean[][] validPositions = new boolean[SIZE * 2 * STEP][SIZE * 2 * STEP]; 
+	public boolean[][] validPositions = new boolean[SIZE * 2 * STEP][SIZE * 2 * STEP];
 
 	// validPositions[15][35]
 
@@ -41,7 +41,15 @@ public class GridMap {
 
 	boolean isPositionAccessible(Position pos) {
 		boolean ok = getAt(pos) != null && getAt(pos) != GridTile.WALL;
-		//if (!ok) System.out.println("Failing " + pos);
+		// if (!ok) System.out.println("Failing " + pos);
 		return ok;
+	}
+
+	boolean isAbstractPositionAllowed(int x, int y) {
+		if (x < 0 || y < 0 || x >= validPositions.length || y >= validPositions.length)
+			return false;
+
+		return validPositions[x][y];
+
 	}
 }

@@ -1,6 +1,5 @@
 package project;
 
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import project.game.controller.GameLoop;
 

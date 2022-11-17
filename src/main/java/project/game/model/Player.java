@@ -7,6 +7,19 @@ public class Player extends Entity {
 
     public GridMap world;
 
+    int gridPositionX;
+    int gridPositionY;
+
+    // Position gridPosition;
+
+    public int getGridPositionX() {
+        return gridPositionX;
+    }
+
+    public int getGridPositionY() {
+        return gridPositionY;
+    }
+
     public Player(GridMap map) {
         this.world = map;
     }
@@ -77,7 +90,6 @@ public class Player extends Entity {
          * if (dir == Direction.LEFT)
          * return world.isPositionAccessible(left);
          */
-
         // Position target = new Position(center.x + dir.getX(), center.y + dir.getY());
 
         return false;
@@ -87,54 +99,75 @@ public class Player extends Entity {
     public void move(double delta) {
         if (desiredDirection == null)
             return;
-        double velocity = 1 * delta / 1000;
 
-        double desiredPosX = position.x + desiredDirection.getX() * velocity;
-        double desiredPosY = position.y + desiredDirection.getY() * velocity;
-        Position desiredPos = new Position(desiredPosX, desiredPosY);
-
-        if (isDirectionLegal(desiredDirection, desiredPos)) {
-            currentDirection = desiredDirection;
-        }
-
-        if (!isDirectionLegal(currentDirection, desiredPos)) {
-
-            if (currentDirection != null) {
-                System.out.println("arrêt du mouvement");
-
-                if (currentDirection == Direction.UP || currentDirection == Direction.DOWN) 
-                    this.position.x = Math.round(desiredPosX);
-
-                if (currentDirection == Direction.LEFT || currentDirection == Direction.RIGHT) 
-                    this.position.y = Math.round(desiredPosY);
-            }
-
-            currentDirection = null;
+        if (world.isAbstractPositionAllowed(gridPositionX + desiredDirection.getX(),
+                gridPositionY + desiredDirection.getY())) {
+            this.currentDirection = desiredDirection;
         }
 
         if (currentDirection != null) {
-            position.x = (float) desiredPosX;
-            position.y = (float) desiredPosY;
+            if (world.isAbstractPositionAllowed(gridPositionX + currentDirection.getX(),
+                    gridPositionY + currentDirection.getY())) {
+                this.gridPositionX += currentDirection.getX();
+                this.gridPositionY += currentDirection.getY();
+            }
         }
-
-        /*
-         * 
-         * if (!isCollidingWithEntity(desiredPos, GridTile.WALL)) {
-         * currentDirection = desiredDirection;
-         * position.x = (float) desiredPosX;
-         * position.y = (float) desiredPosY;
-         * } else if (currentDirection != null) {
-         * double nextPosX = position.x + currentDirection.getX() * velocity;
-         * double nextPosY = position.y + currentDirection.getY() * velocity;
-         * Position nextPos = new Position(nextPosX, nextPosY);
-         * 
-         * if (!isCollidingWithEntity(nextPos, GridTile.WALL)) {
-         * position.x = (float) nextPosX;
-         * position.y = (float) nextPosY;
-         * }
-         * }
-         */
     }
+
+    /*
+     * @Override
+     * public void move(double delta) {
+     * if (desiredDirection == null)
+     * return;
+     * double velocity = 1 * delta / 1000;
+     * 
+     * double desiredPosX = position.x + desiredDirection.getX() * velocity;
+     * double desiredPosY = position.y + desiredDirection.getY() * velocity;
+     * Position desiredPos = new Position(desiredPosX, desiredPosY);
+     * 
+     * if (isDirectionLegal(desiredDirection, desiredPos)) {
+     * currentDirection = desiredDirection;
+     * }
+     * 
+     * if (!isDirectionLegal(currentDirection, desiredPos)) {
+     * 
+     * if (currentDirection != null) {
+     * System.out.println("arrêt du mouvement");
+     * 
+     * if (currentDirection == Direction.UP || currentDirection == Direction.DOWN)
+     * this.position.x = Math.round(desiredPosX);
+     * 
+     * if (currentDirection == Direction.LEFT || currentDirection ==
+     * Direction.RIGHT)
+     * this.position.y = Math.round(desiredPosY);
+     * }
+     * 
+     * currentDirection = null;
+     * }
+     * 
+     * if (currentDirection != null) {
+     * position.x = (float) desiredPosX;
+     * position.y = (float) desiredPosY;
+     * }
+     * 
+     * /*
+     * 
+     * if (!isCollidingWithEntity(desiredPos, GridTile.WALL)) {
+     * currentDirection = desiredDirection;
+     * position.x = (float) desiredPosX;
+     * position.y = (float) desiredPosY;
+     * } else if (currentDirection != null) {
+     * double nextPosX = position.x + currentDirection.getX() * velocity;
+     * double nextPosY = position.y + currentDirection.getY() * velocity;
+     * Position nextPos = new Position(nextPosX, nextPosY);
+     * 
+     * if (!isCollidingWithEntity(nextPos, GridTile.WALL)) {
+     * position.x = (float) nextPosX;
+     * position.y = (float) nextPosY;
+     * }
+     * }
+     * }
+     */
 
     // A partir de coordonnes x,y on definit notre premier lieu d'apparation du
     // joueur
@@ -142,8 +175,8 @@ public class Player extends Entity {
         position.x = x;
         position.y = y;
 
-        // gridPosition.x=x;
-        // gridPosition.y=y;
+        gridPositionX = GridMap.STEP + x * 2 * GridMap.STEP;
+        gridPositionY = GridMap.STEP + y * 2 * GridMap.STEP;
     }
 
     public String toString() {

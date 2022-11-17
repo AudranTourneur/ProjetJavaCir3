@@ -1,20 +1,14 @@
 package project.game.view;
 
-import javafx.animation.Animation;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 import project.Main;
 import project.game.model.GameWorldModel;
-import project.game.model.GridMap;
 import project.game.model.GridTile;
 import project.menu.MenuConstants;
 
@@ -25,7 +19,7 @@ public class GameView {
     Stage stage;
     GraphicsContext ctx;
     GameWorldModel world;
-    int TILE_SIZE = 80; 
+    int TILE_SIZE = 80;
 
     int FULL_SIZE = TILE_SIZE * 10;
 
@@ -59,16 +53,9 @@ public class GameView {
     }
 
     public void display(boolean log) {
-        if (log) System.out.println("display is called");
-        /*
-         * ctx.setFill(Color.PINK);
-         * ctx.fillRect(40, 40, 100, 100);
-         * 
-         * 
-         * // set fill for oval
-         * ctx.setFill(Color.BLUE);
-         * ctx.fillOval(30, 30, 70, 70);
-         */
+        if (log)
+            System.out.println("display is called");
+
         ctx.clearRect(0, 0, FULL_SIZE, FULL_SIZE);
         drawMap();
         drawPlayer();
@@ -104,11 +91,25 @@ public class GameView {
 
     void drawPlayer() {
         Image img = spriteMap.get("player");
-        if (img != null)
-            ctx.drawImage(img, world.player.position.x * TILE_SIZE, world.player.position.y * TILE_SIZE, TILE_SIZE,
-                    TILE_SIZE);
+        if (img == null)
+            return;
 
-        // System.out.println("We have drawn player");
+        double arraySize = world.map.validPositions.length;
+
+        ctx.setFill(Color.RED);
+        double x = (world.player.getGridPositionX()) / arraySize * FULL_SIZE;
+        double y = (world.player.getGridPositionY()) / arraySize * FULL_SIZE;
+
+        //ctx.drawImage(img, x + TILE_SIZE/2, y + TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        //ctx.drawImage(img, x, y, TILE_SIZE, TILE_SIZE);
+        ctx.drawImage(img, x - TILE_SIZE/2, y - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+
+        System.out.println("draw + " + x + " " + y);
+
+        // if (img != null)
+        // ctx.drawImage(img, world.player.position.x * TILE_SIZE,
+        // world.player.position.y * TILE_SIZE, TILE_SIZE,
+        // TILE_SIZE);
     }
 
     void drawValidPositions() {

@@ -76,8 +76,8 @@ public class GameWorldModel {
                         final int bigTargetY = y + dir.getY();
 
                         if (map.isPositionAccessible(new Position(bigTargetX, bigTargetY))) {
-                            for (int i = 0; i < step; i++) {
-                                for (int j = 0; j < step; j++) {
+                            for (int i = 0; i < step+1; i++) {
+                                for (int j = 0; j < step+1; j++) {
                                     final int tx = cx + dir.getX() * i;
                                     final int ty = cy + dir.getY() * j;
                                     map.validPositions[tx][ty] = true;
