@@ -38,5 +38,9 @@ public class InputController {
             state.view.displayDebugInfo();
             System.out.println("Debug info: " + state.model.player);
         }
+
+        if (event.getCode() == KeyCode.SPACE) {
+            state.model.speedX2 = !state.model.speedX2;
+        }
     }
 }

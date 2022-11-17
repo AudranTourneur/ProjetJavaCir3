@@ -22,7 +22,7 @@ public class GameLoop {
 
         stage.show();
 
-        final int FPS_TARGET = 30;
+        final int FPS_TARGET = 60;
 
         Thread thread = new Thread() {
             public void run() {

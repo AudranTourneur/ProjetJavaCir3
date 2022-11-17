@@ -5,7 +5,8 @@ public class Player extends Entity {
     Direction currentDirection = null;
     public Direction desiredDirection = null;
 
-    public GridMap world;
+    public GameWorldModel world;
+    public GridMap map;
 
     int gridPositionX;
     int gridPositionY;
@@ -20,79 +21,9 @@ public class Player extends Entity {
         return gridPositionY;
     }
 
-    public Player(GridMap map) {
-        this.world = map;
-    }
-
-    // Renvoit true si le player touche cette entité
-    boolean isCollidingWithEntity(Position pos, GridTile tile) {
-        var map = world.map;
-        try {
-            return (map[(int) Math.floor(pos.y)][(int) Math.floor(pos.x)] == tile
-                    || map[(int) Math.floor(pos.y + 0.98)][(int) Math.floor(pos.x)] == tile
-                    || map[(int) Math.floor(pos.y)][(int) Math.floor(pos.x + 0.98)] == tile
-                    || map[(int) Math.floor(pos.y + 0.98)][(int) Math.floor(pos.x + 0.98)] == tile);
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println("Warning: ArrayIndexOutOfBoundsException isCollidingWithEntity " + pos);
-            return false;
-        }
-    }
-
-    // static final float epsilonOutside = .02f; // offset de la bordure vers
-    // l'extérieur
-    // static final float epsilonInside = 0.01f; // rentre vers la figure
-
-    static final float epsilonOutside = 0.025f; // offset de la bordure vers l'extérieur
-    static final float epsilonInside = 0.025f; // rentre vers la figure
-
-    boolean isDirectionLegal(Direction dir, Position pos) {
-        if (dir == null)
-            return false;
-
-        final float x = pos.x;
-        final float y = pos.y;
-
-        // Couple de points de controle pour la collision
-        Position upLeftUp = new Position(x + epsilonInside, y - epsilonOutside);
-        Position upLeftLeft = new Position(x - epsilonOutside, y + epsilonInside);
-
-        Position upRightUp = new Position(x - epsilonInside + 1, y - epsilonOutside);
-        Position upRightRight = new Position(x + epsilonOutside + 1, y + epsilonInside);
-
-        Position downLeftLeft = new Position(x - epsilonOutside, y + 1 - epsilonInside);
-        Position downLeftDown = new Position(x + epsilonInside, y + 1 + epsilonOutside);
-
-        Position downRightDown = new Position(x + 1 - epsilonInside, y + 1 + epsilonOutside);
-        Position downRightRight = new Position(x + 1 + epsilonOutside, y + 1 - epsilonInside);
-
-        if (dir == Direction.UP) {
-
-            return world.isPositionAccessible(upLeftUp) && world.isPositionAccessible(upRightUp);
-        }
-        if (dir == Direction.DOWN) {
-            System.out.println("Current chat position = " + this.position);
-            System.out.println("Future chat position = " + pos);
-            System.out.println("Down Left Down : " + world.isPositionAccessible(downLeftDown) + " " + downLeftDown);
-            return world.isPositionAccessible(downLeftDown) && world.isPositionAccessible(downRightDown);
-        }
-        if (dir == Direction.LEFT)
-            return world.isPositionAccessible(upLeftLeft) && world.isPositionAccessible(downLeftLeft);
-        if (dir == Direction.RIGHT)
-            return world.isPositionAccessible(upRightRight) && world.isPositionAccessible(downRightRight);
-
-        /*
-         * if (dir == Direction.UP)
-         * return world.isPositionAccessible(up);
-         * if (dir == Direction.DOWN)
-         * return world.isPositionAccessible(down);
-         * if (dir == Direction.RIGHT)
-         * return world.isPositionAccessible(right);
-         * if (dir == Direction.LEFT)
-         * return world.isPositionAccessible(left);
-         */
-        // Position target = new Position(center.x + dir.getX(), center.y + dir.getY());
-
-        return false;
+    public Player(GameWorldModel world) {
+        this.world = world;
+        this.map = world.map;
     }
 
     @Override
@@ -100,16 +31,24 @@ public class Player extends Entity {
         if (desiredDirection == null)
             return;
 
-        if (world.isAbstractPositionAllowed(gridPositionX + desiredDirection.getX(),
-                gridPositionY + desiredDirection.getY())) {
+        int speed = 1;
+        if (world.speedX2)
+            if (gridPositionX % 2 == 0 && gridPositionY % 2 == 0)
+                speed = 2;
+
+        int dtx = gridPositionX + desiredDirection.getX() * speed;
+        int dty = gridPositionY + desiredDirection.getY() * speed;
+        if (map.isAbstractPositionAllowed(dtx, dty)) {
             this.currentDirection = desiredDirection;
         }
 
         if (currentDirection != null) {
-            if (world.isAbstractPositionAllowed(gridPositionX + currentDirection.getX(),
-                    gridPositionY + currentDirection.getY())) {
-                this.gridPositionX += currentDirection.getX();
-                this.gridPositionY += currentDirection.getY();
+
+            int ctx = gridPositionX + currentDirection.getX() * speed;
+            int cty = gridPositionY + currentDirection.getY() * speed;
+            if (map.isAbstractPositionAllowed(ctx, cty)) {
+                this.gridPositionX += currentDirection.getX() * speed;
+                this.gridPositionY += currentDirection.getY() * speed;
             }
         }
     }

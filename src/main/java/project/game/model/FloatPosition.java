@@ -1,14 +1,14 @@
 package project.game.model;
 
-public class Position {
+public class FloatPosition {
     public float x;
     public float y;
-    public Position(float x, float y) {
+    public FloatPosition(float x, float y) {
         this.x = x;
         this.y = y;
     }
 
-    public Position(double x, double y) {
+    public FloatPosition(double x, double y) {
         this.x = (float) x;
         this.y = (float) y;
     }

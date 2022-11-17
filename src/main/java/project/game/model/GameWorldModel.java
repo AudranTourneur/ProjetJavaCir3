@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
@@ -16,9 +17,12 @@ public class GameWorldModel {
 
     public GridMap map = new GridMap();
 
+    HashSet<IntPosition> foods = new HashSet<>();
+
+    public boolean speedX2 = false;
+
     public GameWorldModel() {
         init();
-
     }
 
     void init() {
@@ -63,8 +67,8 @@ public class GameWorldModel {
             System.out.println("Fatal error");
         }
 
-        for (int x = 0; x < GridMap.SIZE; x++) {
-            for (int y = 0; y < GridMap.SIZE; y++) {
+        for (int x = 0; x < GridMap.NUMBER_OF_TILES; x++) {
+            for (int y = 0; y < GridMap.NUMBER_OF_TILES; y++) {
                 if (map.getAt(x, y) != GridTile.WALL) {
                     final int step = GridMap.STEP;
                     final int cx = x * 2 * step + step;
@@ -75,13 +79,13 @@ public class GameWorldModel {
                         final int bigTargetX = x + dir.getX();
                         final int bigTargetY = y + dir.getY();
 
-                        if (map.isPositionAccessible(new Position(bigTargetX, bigTargetY))) {
+                        if (map.isPositionAccessible(new FloatPosition(bigTargetX, bigTargetY))) {
                             for (int i = 0; i < step+1; i++) {
                                 for (int j = 0; j < step+1; j++) {
                                     final int tx = cx + dir.getX() * i;
                                     final int ty = cy + dir.getY() * j;
                                     map.validPositions[tx][ty] = true;
-                                    System.out.println("Set " + tx + " " + ty + " = TRUE");
+                                    //System.out.println("Set " + tx + " " + ty + " = TRUE");
                                 }
                             }
                         }
@@ -90,7 +94,7 @@ public class GameWorldModel {
             }
         }
 
-        this.player = new Player(map);
+        this.player = new Player(this);
         player.setSpawn(spawnX, spawnY);
         entities.add(player);
     }

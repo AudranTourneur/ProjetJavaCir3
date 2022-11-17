@@ -1,5 +1,6 @@
 package project.game.view;
 
+import javafx.beans.value.ChangeListener;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -9,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.Main;
 import project.game.model.GameWorldModel;
+import project.game.model.GridMap;
 import project.game.model.GridTile;
 import project.menu.MenuConstants;
 
@@ -19,9 +21,11 @@ public class GameView {
     Stage stage;
     GraphicsContext ctx;
     GameWorldModel world;
-    int TILE_SIZE = 80;
 
-    int FULL_SIZE = TILE_SIZE * 10;
+    final int defaultTileSize = 80;
+
+    double tileSizeX = defaultTileSize;
+    double tileSizeY = defaultTileSize;
 
     HashMap<String, Image> spriteMap = new HashMap<>();
 
@@ -35,6 +39,9 @@ public class GameView {
         // set height and width
         canvas.setHeight(MenuConstants.windowHeight);
         canvas.setWidth(MenuConstants.windowWidth);
+
+        tileSizeX = Math.round(canvas.getWidth() / GridMap.NUMBER_OF_TILES);
+        tileSizeY = Math.round(canvas.getHeight() / GridMap.NUMBER_OF_TILES);
 
         GraphicsContext ctx = canvas.getGraphicsContext2D();
 
@@ -50,17 +57,30 @@ public class GameView {
         load();
         // set the scene
         stage.setScene(scene);
+
+        ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
+            System.out
+                    .println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
+            canvas.setHeight(stage.getHeight());
+            canvas.setWidth(stage.getWidth());
+
+            tileSizeX = Math.round(canvas.getWidth() / GridMap.NUMBER_OF_TILES);
+            tileSizeY = Math.round(canvas.getHeight() / GridMap.NUMBER_OF_TILES);
+        };
+
+        stage.widthProperty().addListener(stageSizeListener);
+        stage.heightProperty().addListener(stageSizeListener);
     }
 
     public void display(boolean log) {
         if (log)
             System.out.println("display is called");
 
-        ctx.clearRect(0, 0, FULL_SIZE, FULL_SIZE);
+        ctx.clearRect(0, 0, tileSizeX * GridMap.NUMBER_OF_TILES, tileSizeY * GridMap.NUMBER_OF_TILES);
         drawMap();
         drawPlayer();
-        drawValidPositions();
-
+        drawFood(2, 4);
+        // drawValidPositions();
     }
 
     void drawMap() {
@@ -80,13 +100,22 @@ public class GameView {
         // set fill for rectangle
         float gray = 0.2f;
         ctx.setFill(new Color(gray, gray, gray, 1));
-        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        ctx.fillRect(x * tileSizeX, y * tileSizeY, tileSizeX, tileSizeY);
 
     }
 
     void drawVoid(int x, int y) {
         ctx.setFill(Color.WHITE);
-        ctx.fillRect(x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE);
+        ctx.fillRect(x * tileSizeX, y * tileSizeY, tileSizeX, tileSizeY);
+    }
+
+    void drawFood(int x, int y) {
+        ctx.setFill(Color.BLUE);
+        final double scale = 0.2;
+        double radiusX = tileSizeX * scale; 
+        double radiusY = tileSizeY * scale; 
+        ctx.fillOval(x * tileSizeX - radiusX + tileSizeX/2, y * tileSizeY - radiusY + tileSizeY/2, 2 * radiusX, 2* radiusY);
+
     }
 
     void drawPlayer() {
@@ -97,14 +126,12 @@ public class GameView {
         double arraySize = world.map.validPositions.length;
 
         ctx.setFill(Color.RED);
-        double x = (world.player.getGridPositionX()) / arraySize * FULL_SIZE;
-        double y = (world.player.getGridPositionY()) / arraySize * FULL_SIZE;
+        double x = (world.player.getGridPositionX()) / arraySize * (tileSizeX * GridMap.NUMBER_OF_TILES);
+        double y = (world.player.getGridPositionY()) / arraySize * (tileSizeY * GridMap.NUMBER_OF_TILES);
 
-        //ctx.drawImage(img, x + TILE_SIZE/2, y + TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
-        //ctx.drawImage(img, x, y, TILE_SIZE, TILE_SIZE);
-        ctx.drawImage(img, x - TILE_SIZE/2, y - TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
-
-        System.out.println("draw + " + x + " " + y);
+        // ctx.drawImage(img, x + TILE_SIZE/2, y + TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
+        // ctx.drawImage(img, x, y, TILE_SIZE, TILE_SIZE);
+        ctx.drawImage(img, x - tileSizeX / 2, y - tileSizeY / 2, tileSizeX, tileSizeY);
 
         // if (img != null)
         // ctx.drawImage(img, world.player.position.x * TILE_SIZE,
@@ -113,7 +140,8 @@ public class GameView {
     }
 
     void drawValidPositions() {
-        final double fullSize = TILE_SIZE * 10;
+        final double fullSizeX = tileSizeX * GridMap.NUMBER_OF_TILES;
+        final double fullSizeY = tileSizeY * GridMap.NUMBER_OF_TILES;
         for (int i = 0; i < world.map.validPositions.length; i++) {
             for (int j = 0; j < world.map.validPositions.length; j++) {
                 if (world.map.validPositions[i][j]) {
@@ -124,7 +152,7 @@ public class GameView {
                     final double radius = 10;
 
                     ctx.setFill(Color.RED);
-                    ctx.fillOval((i) / arraySize * fullSize, (j) / (arraySize) * fullSize, radius, radius);
+                    ctx.fillOval((i) / arraySize * fullSizeX, (j) / (arraySize) * fullSizeY, radius, radius);
 
                 }
             }
