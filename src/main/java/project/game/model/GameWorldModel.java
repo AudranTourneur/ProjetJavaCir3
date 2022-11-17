@@ -14,7 +14,6 @@ public class GameWorldModel {
 
     public List<Entity> entities = new ArrayList<>();
 
-    //public GridTile[][] map = new GridTile[10][10];
     public GridMap map = new GridMap();
 
     public GameWorldModel() {
@@ -23,7 +22,6 @@ public class GameWorldModel {
     }
 
     void init() {
-
         // ajouter ghosts
 
         // --- MAP ---
@@ -42,14 +40,14 @@ public class GameWorldModel {
         String line = null;
         int spawnX = 0;
         int spawnY = 0;
-        int y = 0;
         try {
+            int y = 0;
             while ((line = bufReader.readLine()) != null) {
 
                 for (int x = 0; x < line.length(); x++) {
                     char ch = line.charAt(x);
 
-                    //System.out.println(x + " " + y + " " + ch);
+                    // System.out.println(x + " " + y + " " + ch);
 
                     map.setAt(x, y, getTileFromChar(ch));
                     if (map.getAt(x, y) == GridTile.PLAYER_SPAWN) {
@@ -57,12 +55,41 @@ public class GameWorldModel {
                         spawnY = y;
                     }
 
+                    // map.validPositions[x][] (GridMap.STEP);
                 }
                 y++;
             }
         } catch (IOException exception) {
             System.out.println("Fatal error");
         }
+
+        for (int x = 0; x < GridMap.SIZE; x++) {
+            for (int y = 0; y < GridMap.SIZE; y++) {
+                if (map.getAt(x, y) != GridTile.WALL) {
+                    final int step = GridMap.STEP;
+                    final int cx = x * 2 * step + step;
+                    final int cy = y * 2 * step + step;
+                    map.validPositions[cx][cy] = true;
+
+                    for (Direction dir : Direction.values()) {
+                        final int bigTargetX = x + dir.getX();
+                        final int bigTargetY = y + dir.getY();
+
+                        if (map.isPositionAccessible(new Position(bigTargetX, bigTargetY))) {
+                            for (int i = 0; i < step; i++) {
+                                for (int j = 0; j < step; j++) {
+                                    final int tx = cx + dir.getX() * i;
+                                    final int ty = cy + dir.getY() * j;
+                                    map.validPositions[tx][ty] = true;
+                                    System.out.println("Set " + tx + " " + ty + " = TRUE");
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         this.player = new Player(map);
         player.setSpawn(spawnX, spawnY);
         entities.add(player);
@@ -90,18 +117,4 @@ public class GameWorldModel {
         }
         // throw new Exception("pas encore fait");
     }
-
-    /*
-     * //Regarde si l'entite mis en parametre touche un mur ou pas
-     * void checkCollision(){
-     * System.out.println("Current grid position"+ player.gridPosition);
-     * System.out.println("Current position"+ player.position);
-     * System.out.println(map[(int)player.gridPosition.y][(int)player.gridPosition.x
-     * ]);
-     * if(map[(int)
-     * player.gridPosition.y][(int)player.gridPosition.x]==GridTile.WALL){
-     * player.direction=null;
-     * }
-     * }
-     */
 }

@@ -1,5 +1,6 @@
 package project.game.controller;
 
+import javafx.application.Platform;
 import javafx.stage.Stage;
 import project.Main;
 import project.game.model.GameWorldModel;
@@ -10,8 +11,6 @@ public class GameLoop {
         // set title for the stage
         stage.setTitle("creating canvas");
 
-
-        
         GameWorldModel model = new GameWorldModel();
         GameView view = new GameView(stage, model);
 
@@ -19,28 +18,35 @@ public class GameLoop {
 
         InputController controller = new InputController(state);
 
-        view.display();
-
         stage.getScene().setOnKeyPressed(controller::handle);
 
         stage.show();
 
+        final int FPS_TARGET = 60;
 
-        Thread thread = new Thread(){
-            public void run(){
+        Thread thread = new Thread() {
+            public void run() {
+                int counter = 0;
                 System.out.println("Thread Running");
 
                 long lastTime = System.nanoTime();
 
                 while (Main.alive) {
+                    if (counter % 100 == 0)
+                        System.out.println("thread heartbeat");
+                    counter++;
                     long time = System.nanoTime();
                     int delta_time = (int) ((time - lastTime) / 1000000);
                     lastTime = time;
-                    //System.out.println(delta_time);
+                    // System.out.println(delta_time);
                     model.update(delta_time);
-                    view.display();
+
+                    Platform.runLater(() -> {
+                        view.display(false);
+                    });
+
                     try {
-                        Thread.sleep(1000 / 60);
+                        Thread.sleep(1000 / FPS_TARGET);
                     } catch (InterruptedException exception) {
                         System.out.println(exception);
                     }

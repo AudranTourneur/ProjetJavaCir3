@@ -1,5 +1,6 @@
 package project;
 
+import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import project.game.controller.GameLoop;
 
@@ -11,9 +12,7 @@ public class SceneManager {
         this.main = main;
     }
 
-    public void switchToGame(String name){
-        System.out.println("Manager appelé avec name = " + name);
+    public void switchToGame(){
         GameLoop.start(main);
-        //main.setScene(screenMap.get(name));
     }
 }

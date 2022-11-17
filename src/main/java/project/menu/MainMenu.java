@@ -4,6 +4,7 @@ import javafx.animation.FadeTransition;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -66,7 +67,7 @@ public class MainMenu {
             ft.setOnFinished(evt -> gamemenu.setVisible(false));
             ft.play();
 
-            manager.switchToGame("game");
+            manager.switchToGame();
         });
 
         play.setTranslateX(MenuConstants.windowWidth / 2 - StartButton.buttonWidth / 2);
@@ -77,6 +78,13 @@ public class MainMenu {
         root.getChildren().add(menu);
 
         // getChildren().addAll(root);
+
+        root.getScene().setOnKeyPressed(e -> {
+            if (e.getCode() == KeyCode.ENTER) {
+                manager.switchToGame();
+            }
+        });
+
 
         return scene;
 
