@@ -13,6 +13,9 @@ import project.Main;
 public class WorldModel {
     public Player player;
 
+    public int score;
+    private int compteur;   //compteur des update
+
     public List<Entity> entities = new ArrayList<>();
 
     public GridMap map = new GridMap();
@@ -25,6 +28,9 @@ public class WorldModel {
         init();
     }
 
+    
+
+    
     void init() {
         // ajouter ghosts
 
@@ -98,14 +104,16 @@ public class WorldModel {
         player.setSpawn(spawnX, spawnY);
         entities.add(player);
 
-        FoodGenerator.generateFood(this, 20);
+        FoodHandler.generateFood(this, 20);
     }
 
     public void update(double deltaMs) {
+        compteur++;
         for (Entity e : entities) {
             e.move(deltaMs);
             // checkCollision();
         }
+        FoodHandler.eatFood(this,(compteur%100==0));
     }
 
     GridTile getTileFromChar(char ch) {

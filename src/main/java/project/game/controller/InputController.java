@@ -16,7 +16,7 @@ public class InputController {
 
     public void handle(KeyEvent event) {
         WorldModel world = state.model;
-        System.out.println("Handle " + event);
+        //System.out.println("Handle " + event);
         if (event.getCode() == KeyCode.RIGHT)
             world.player.desiredDirection = Direction.RIGHT;
 
