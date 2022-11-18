@@ -13,6 +13,9 @@ import project.game.model.WorldModel;
 import project.game.model.GridMap;
 import project.game.model.GridTile;
 import project.game.model.IntPosition;
+import project.game.model.Entity;
+import project.game.model.Projectile;
+import project.game.model.ProjectileHandler;
 import project.menu.MenuConstants;
 
 import java.io.InputStream;
@@ -75,12 +78,13 @@ public class GameView {
 
     public void display(boolean log) {
         if (log)
-            System.out.println("display is called");
+            System.out.println("display is  called");
 
-        ctx.clearRect(0, 0, tileSizeX * GridMap.NUMBER_OF_TILES, tileSizeY * GridMap.NUMBER_OF_TILES);
+        ctx.clearRect(0, 0, Math.ceil(tileSizeX * (GridMap.NUMBER_OF_TILES+1)), Math.ceil(tileSizeY * (GridMap.NUMBER_OF_TILES+1)));
         drawMap();
         drawPlayer();
         drawFoods();
+        drawProjectiles();
         // drawValidPositions();
     }
 
@@ -113,9 +117,10 @@ public class GameView {
     void drawFood(int x, int y) {
         ctx.setFill(Color.BLUE);
         final double scale = 0.15;
-        double radiusX = tileSizeX * scale; 
-        double radiusY = tileSizeY * scale; 
-        ctx.fillOval(x * tileSizeX - radiusX + tileSizeX/2, y * tileSizeY - radiusY + tileSizeY/2, 2 * radiusX, 2* radiusY);
+        double radiusX = tileSizeX * scale;
+        double radiusY = tileSizeY * scale;
+        ctx.fillOval(x * tileSizeX - radiusX + tileSizeX / 2, y * tileSizeY - radiusY + tileSizeY / 2, 2 * radiusX,
+                2 * radiusY);
     }
 
     void drawFoods() {
@@ -164,6 +169,27 @@ public class GameView {
             }
         }
 
+    }
+
+    void drawProjectile(float x, float y) {
+        final double scale = 0.2;
+        double fullSizeX = tileSizeX * GridMap.NUMBER_OF_TILES;
+        double fullSizeY = tileSizeY * GridMap.NUMBER_OF_TILES;
+        double radiusX = tileSizeX * ProjectileHandler.RADIUS_SIZE;
+        double radiusY = tileSizeY * ProjectileHandler.RADIUS_SIZE;
+
+        ctx.setFill(Color.RED);
+        ctx.fillOval(x / GridMap.NUMBER_OF_TILES * fullSizeX, y / GridMap.NUMBER_OF_TILES * fullSizeX, radiusX, radiusY);
+
+        // System.out.println("show projectile " + x + " " + y);
+    }
+
+    void drawProjectiles() {
+        for (Entity entity : world.entities) {
+            if (entity instanceof Projectile) {
+                drawProjectile(entity.position.x, entity.position.y);
+            }
+        }
     }
 
     // Fonction va charger tout nos sprite dans le futur

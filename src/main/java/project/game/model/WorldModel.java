@@ -107,13 +107,31 @@ public class WorldModel {
         FoodHandler.generateFood(this, 20);
     }
 
+
+    ProjectileHandler projectileHandler = new ProjectileHandler(this);
+
     public void update(double deltaMs) {
         compteur++;
+
+        ArrayList<Entity> toDelete = new ArrayList<>();
+
         for (Entity e : entities) {
             e.move(deltaMs);
-            // checkCollision();
+
+            if (e.markedForDeletion) {
+                toDelete.add(e);
+            }
         }
         FoodHandler.eatFood(this,(compteur%100==0));
+
+        for (Entity e : toDelete) {
+            entities.remove(e);
+        }
+
+
+        projectileHandler.manageProjectileSpawn();
+        projectileHandler.manageProjectileCollisions();
+        
     }
 
     GridTile getTileFromChar(char ch) {
