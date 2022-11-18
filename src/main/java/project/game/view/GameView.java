@@ -172,14 +172,13 @@ public class GameView {
     }
 
     void drawProjectile(float x, float y) {
-        final double scale = 0.2;
         double fullSizeX = tileSizeX * GridMap.NUMBER_OF_TILES;
         double fullSizeY = tileSizeY * GridMap.NUMBER_OF_TILES;
         double radiusX = tileSizeX * ProjectileHandler.RADIUS_SIZE;
         double radiusY = tileSizeY * ProjectileHandler.RADIUS_SIZE;
 
         ctx.setFill(Color.RED);
-        ctx.fillOval(x / GridMap.NUMBER_OF_TILES * fullSizeX, y / GridMap.NUMBER_OF_TILES * fullSizeX, radiusX, radiusY);
+        ctx.fillOval(x / GridMap.NUMBER_OF_TILES * fullSizeY, y / GridMap.NUMBER_OF_TILES * fullSizeX, radiusX, radiusY);
 
         // System.out.println("show projectile " + x + " " + y);
     }
