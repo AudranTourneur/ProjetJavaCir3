@@ -10,18 +10,18 @@ import java.util.Scanner;
 
 import project.Main;
 
-public class GameWorldModel {
+public class WorldModel {
     public Player player;
 
     public List<Entity> entities = new ArrayList<>();
 
     public GridMap map = new GridMap();
 
-    HashSet<IntPosition> foods = new HashSet<>();
+    public HashSet<IntPosition> foods = new HashSet<>();
 
     public boolean speedX2 = false;
 
-    public GameWorldModel() {
+    public WorldModel() {
         init();
     }
 
@@ -97,6 +97,8 @@ public class GameWorldModel {
         this.player = new Player(this);
         player.setSpawn(spawnX, spawnY);
         entities.add(player);
+
+        FoodGenerator.generateFood(this, 20);
     }
 
     public void update(double deltaMs) {

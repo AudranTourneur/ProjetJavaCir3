@@ -1,13 +1,13 @@
 package project.game.controller;
 
-import project.game.model.GameWorldModel;
+import project.game.model.WorldModel;
 import project.game.view.GameView;
 
 public class GameStateContainer {
-	public GameWorldModel model;
+	public WorldModel model;
 	public GameView view;
 
-	public GameStateContainer(GameWorldModel model, GameView view) {
+	public GameStateContainer(WorldModel model, GameView view) {
 		this.model = model;
 		this.view = view;
 	}

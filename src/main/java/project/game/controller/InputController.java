@@ -5,7 +5,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import project.Main;
 import project.game.model.Direction;
-import project.game.model.GameWorldModel;
+import project.game.model.WorldModel;
 
 public class InputController {
     public GameStateContainer state;
@@ -15,7 +15,7 @@ public class InputController {
     }
 
     public void handle(KeyEvent event) {
-        GameWorldModel world = state.model;
+        WorldModel world = state.model;
         System.out.println("Handle " + event);
         if (event.getCode() == KeyCode.RIGHT)
             world.player.desiredDirection = Direction.RIGHT;

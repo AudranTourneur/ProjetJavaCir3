@@ -3,7 +3,7 @@ package project.game.controller;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import project.Main;
-import project.game.model.GameWorldModel;
+import project.game.model.WorldModel;
 import project.game.view.GameView;
 
 public class GameLoop {
@@ -11,7 +11,7 @@ public class GameLoop {
         // set title for the stage
         stage.setTitle("creating canvas");
 
-        GameWorldModel model = new GameWorldModel();
+        WorldModel model = new WorldModel();
         GameView view = new GameView(stage, model);
 
         GameStateContainer state = new GameStateContainer(model, view);

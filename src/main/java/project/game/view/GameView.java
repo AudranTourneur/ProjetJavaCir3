@@ -9,9 +9,10 @@ import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.Main;
-import project.game.model.GameWorldModel;
+import project.game.model.WorldModel;
 import project.game.model.GridMap;
 import project.game.model.GridTile;
+import project.game.model.IntPosition;
 import project.menu.MenuConstants;
 
 import java.io.InputStream;
@@ -20,7 +21,7 @@ import java.util.HashMap;
 public class GameView {
     Stage stage;
     GraphicsContext ctx;
-    GameWorldModel world;
+    WorldModel world;
 
     final int defaultTileSize = 80;
 
@@ -29,7 +30,7 @@ public class GameView {
 
     HashMap<String, Image> spriteMap = new HashMap<>();
 
-    public GameView(Stage stage, GameWorldModel world) {
+    public GameView(Stage stage, WorldModel world) {
         this.stage = stage;
         this.world = world;
 
@@ -79,7 +80,7 @@ public class GameView {
         ctx.clearRect(0, 0, tileSizeX * GridMap.NUMBER_OF_TILES, tileSizeY * GridMap.NUMBER_OF_TILES);
         drawMap();
         drawPlayer();
-        drawFood(2, 4);
+        drawFoods();
         // drawValidPositions();
     }
 
@@ -111,11 +112,16 @@ public class GameView {
 
     void drawFood(int x, int y) {
         ctx.setFill(Color.BLUE);
-        final double scale = 0.2;
+        final double scale = 0.15;
         double radiusX = tileSizeX * scale; 
         double radiusY = tileSizeY * scale; 
         ctx.fillOval(x * tileSizeX - radiusX + tileSizeX/2, y * tileSizeY - radiusY + tileSizeY/2, 2 * radiusX, 2* radiusY);
+    }
 
+    void drawFoods() {
+        for (IntPosition food : world.foods) {
+            drawFood(food.x, food.y);
+        }
     }
 
     void drawPlayer() {

@@ -1,5 +1,7 @@
 package project.game.model;
 
+import java.util.HashSet;
+
 public class GridMap {
 	public static final int STEP = 10;
 	public static final int NUMBER_OF_TILES = 15;
@@ -50,6 +52,15 @@ public class GridMap {
 			return false;
 
 		return validPositions[x][y];
+	}
 
+	HashSet<IntPosition> getEmptyPositions() {
+		HashSet<IntPosition> emptyPositions = new HashSet<IntPosition>();
+		for (int x = 0; x < NUMBER_OF_TILES; x++)
+			for (int y = 0; y < NUMBER_OF_TILES; y++)
+				if (map[x][y] != GridTile.WALL)
+					emptyPositions.add(new IntPosition(x, y));
+
+		return emptyPositions;
 	}
 }
