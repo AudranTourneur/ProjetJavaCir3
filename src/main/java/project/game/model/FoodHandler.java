@@ -21,10 +21,10 @@ public class FoodHandler {
     static void eatFood(WorldModel world,boolean log){
         int step=world.map.STEP;
         IntPosition pos=new IntPosition(world.player.gridPositionX/2*step,world.player.gridPositionY/2*step);
-        if(log)System.out.println(pos);
-        if(log)System.out.println(world.foods);
+        
+        
         if(world.foods.contains(pos)){
-            System.out.println("Found the food");
+            
             world.foods.remove(pos);
             world.score+=100;
         }

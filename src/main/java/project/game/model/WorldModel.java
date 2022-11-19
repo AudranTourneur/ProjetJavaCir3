@@ -33,7 +33,7 @@ public class WorldModel {
     
     void init() {
         // ajouter ghosts
-
+        
         // --- MAP ---
 
         Scanner in = new Scanner(
@@ -48,8 +48,10 @@ public class WorldModel {
         BufferedReader bufReader = new BufferedReader(new StringReader(text));
 
         String line = null;
-        int spawnX = 0;
-        int spawnY = 0;
+        int PlayerSpawnX = 0;
+        int PlayerSpawnY = 0;
+        int GhostSpawnX=0;
+        int GhostSpawnY=0;
         try {
             int y = 0;
             while ((line = bufReader.readLine()) != null) {
@@ -57,15 +59,17 @@ public class WorldModel {
                 for (int x = 0; x < line.length(); x++) {
                     char ch = line.charAt(x);
 
-                    // System.out.println(x + " " + y + " " + ch);
-
                     map.setAt(x, y, getTileFromChar(ch));
                     if (map.getAt(x, y) == GridTile.PLAYER_SPAWN) {
-                        spawnX = x;
-                        spawnY = y;
+                        PlayerSpawnX = x;
+                        PlayerSpawnY = y;
+                    }
+                    else if(map.getAt(x,y)==GridTile.GHOST_SPAWN){
+                        GhostSpawnX=x;
+                        GhostSpawnY=y;
                     }
 
-                    // map.validPositions[x][] (GridMap.STEP);
+                    
                 }
                 y++;
             }
@@ -101,9 +105,11 @@ public class WorldModel {
         }
 
         this.player = new Player(this);
-        player.setSpawn(spawnX, spawnY);
+        player.setSpawn(PlayerSpawnX, PlayerSpawnY);
         entities.add(player);
-
+        Ghost g1=new Ghost(this);
+        g1.setSpawn(GhostSpawnX, GhostSpawnY);
+        entities.add(g1);
         FoodHandler.generateFood(this, 20);
     }
 

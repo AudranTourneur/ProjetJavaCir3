@@ -10,6 +10,8 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import project.Main;
 import project.game.model.WorldModel;
+import project.game.model.Entity;
+import project.game.model.Ghost;
 import project.game.model.GridMap;
 import project.game.model.GridTile;
 import project.game.model.IntPosition;
@@ -81,6 +83,7 @@ public class GameView {
         drawMap();
         drawPlayer();
         drawFoods();
+        drawGhosts();
         // drawValidPositions();
     }
 
@@ -110,6 +113,27 @@ public class GameView {
         ctx.fillRect(x * tileSizeX, y * tileSizeY, tileSizeX, tileSizeY);
     }
 
+    void drawGhost(int x,int y){
+        Image img=spriteMap.get("ghost1");
+        if(img ==  null)return;
+
+        double arraySize = world.map.validPositions.length;
+
+        ctx.setFill(Color.RED);
+        double dx = x / arraySize * (tileSizeX * GridMap.NUMBER_OF_TILES);
+        double dy = y / arraySize * (tileSizeY * GridMap.NUMBER_OF_TILES);
+
+        ctx.drawImage(img, dx - tileSizeX / 2, dy - tileSizeY / 2, tileSizeX, tileSizeY);
+    }
+
+    void drawGhosts(){
+        for(Entity e : world.entities){
+            if(e instanceof Ghost){
+                Ghost tmp=(Ghost)e;
+                drawGhost(tmp.getGridPositionX(), tmp.getGridPositionY());
+            }
+        }
+    }
     void drawFood(int x, int y) {
         ctx.setFill(Color.BLUE);
         final double scale = 0.15;
@@ -135,10 +159,10 @@ public class GameView {
         double x = (world.player.getGridPositionX()) / arraySize * (tileSizeX * GridMap.NUMBER_OF_TILES);
         double y = (world.player.getGridPositionY()) / arraySize * (tileSizeY * GridMap.NUMBER_OF_TILES);
 
+        ctx.drawImage(img, x - tileSizeX / 2, y - tileSizeY / 2, tileSizeX, tileSizeY);
+        
         // ctx.drawImage(img, x + TILE_SIZE/2, y + TILE_SIZE/2, TILE_SIZE, TILE_SIZE);
         // ctx.drawImage(img, x, y, TILE_SIZE, TILE_SIZE);
-        ctx.drawImage(img, x - tileSizeX / 2, y - tileSizeY / 2, tileSizeX, tileSizeY);
-
         // if (img != null)
         // ctx.drawImage(img, world.player.position.x * TILE_SIZE,
         // world.player.position.y * TILE_SIZE, TILE_SIZE,
@@ -169,13 +193,16 @@ public class GameView {
     // Fonction va charger tout nos sprite dans le futur
     void load() {
         InputStream pacchat = new Main().getClass().getResourceAsStream("images/cat_image.png");
+        InputStream ghost=  new Main().getClass().getResourceAsStream("images/ghost.png");
         // Test de la classe spirte animation
         // InputStream spriteSheet = new
         // Main().getClass().getResourceAsStream("images/spritesheet.png");
         assert pacchat != null;
+        assert ghost != null;
         // assert spriteSheet != null;
 
         Image img = new Image(pacchat);
+        Image img2 = new Image(ghost);
         /*
          * int COLUMNS = 4;
          * int COUNT = 10;
@@ -199,6 +226,7 @@ public class GameView {
          */
 
         spriteMap.put("player", img);
+        spriteMap.put("ghost1",img2);
     }
 
     public void displayDebugInfo() {
