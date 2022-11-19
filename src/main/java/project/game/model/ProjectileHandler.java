@@ -8,7 +8,7 @@ public class ProjectileHandler {
     }
 
     void spawnProjectile(FloatPosition initialPos, FloatPosition trajectory) {
-        //model.entities.add(new Projectile(initialPos, trajectory));
+        model.entities.add(new Projectile(initialPos, trajectory));
     }
 
     void manageProjectileSpawn() {

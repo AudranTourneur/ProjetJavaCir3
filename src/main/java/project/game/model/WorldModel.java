@@ -34,7 +34,7 @@ public class WorldModel {
         // --- MAP ---
 
         Scanner in = new Scanner(
-                new Main().getClass().getResourceAsStream("game/smallmap.txt"), "UTF-8").useDelimiter("\\A");
+                new Main().getClass().getResourceAsStream("game/map.txt"), "UTF-8").useDelimiter("\\A");
 
         String text = in.next();
 

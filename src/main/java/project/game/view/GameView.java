@@ -1,6 +1,5 @@
 package project.game.view;
 
-import javafx.animation.FillTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
@@ -18,7 +17,6 @@ import project.game.model.Ghost;
 import project.game.model.GridMap;
 import project.game.model.GridTile;
 import project.game.model.IntPosition;
-import project.game.model.Entity;
 import project.game.model.FloatPosition;
 import project.game.model.Projectile;
 import project.menu.MenuConstants;
