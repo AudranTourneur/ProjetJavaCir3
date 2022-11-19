@@ -14,7 +14,7 @@ public class WorldModel {
     public Player player;
 
     public int score;
-    private int compteur;   //compteur des update
+    public int compteur; // compteur des update
 
     public List<Entity> entities = new ArrayList<>();
 
@@ -28,16 +28,13 @@ public class WorldModel {
         init();
     }
 
-    
-
-    
     void init() {
         // ajouter ghosts
         
         // --- MAP ---
 
         Scanner in = new Scanner(
-                new Main().getClass().getResourceAsStream("game/map.txt"), "UTF-8").useDelimiter("\\A");
+                new Main().getClass().getResourceAsStream("game/smallmap.txt"), "UTF-8").useDelimiter("\\A");
 
         String text = in.next();
 
@@ -77,8 +74,8 @@ public class WorldModel {
             System.out.println("Fatal error");
         }
 
-        for (int x = 0; x < GridMap.NUMBER_OF_TILES; x++) {
-            for (int y = 0; y < GridMap.NUMBER_OF_TILES; y++) {
+        for (int x = 0; x < GridMap.TILES_WIDTH; x++) {
+            for (int y = 0; y < GridMap.TILES_HEIGHT; y++) {
                 if (map.getAt(x, y) != GridTile.WALL) {
                     final int step = GridMap.STEP;
                     final int cx = x * 2 * step + step;
@@ -90,12 +87,12 @@ public class WorldModel {
                         final int bigTargetY = y + dir.getY();
 
                         if (map.isPositionAccessible(new FloatPosition(bigTargetX, bigTargetY))) {
-                            for (int i = 0; i < step+1; i++) {
-                                for (int j = 0; j < step+1; j++) {
+                            for (int i = 0; i < step + 1; i++) {
+                                for (int j = 0; j < step + 1; j++) {
                                     final int tx = cx + dir.getX() * i;
                                     final int ty = cy + dir.getY() * j;
                                     map.validPositions[tx][ty] = true;
-                                    //System.out.println("Set " + tx + " " + ty + " = TRUE");
+                                    // System.out.println("Set " + tx + " " + ty + " = TRUE");
                                 }
                             }
                         }
@@ -113,13 +110,29 @@ public class WorldModel {
         FoodHandler.generateFood(this, 20);
     }
 
-    public void update(double deltaMs) {
+    ProjectileHandler projectileHandler = new ProjectileHandler(this);
+
+    synchronized public void update(double deltaMs) {
         compteur++;
+
+        ArrayList<Entity> toDelete = new ArrayList<>();
+
         for (Entity e : entities) {
             e.move(deltaMs);
-            // checkCollision();
+
+            if (e.markedForDeletion) {
+                toDelete.add(e);
+            }
         }
-        FoodHandler.eatFood(this,(compteur%100==0));
+        FoodHandler.manageFoodEating(this, (compteur % 100 == 0));
+
+        for (Entity e : toDelete) {
+            entities.remove(e);
+        }
+
+        projectileHandler.manageProjectileSpawn();
+        projectileHandler.manageProjectileCollisions();
+
     }
 
     GridTile getTileFromChar(char ch) {

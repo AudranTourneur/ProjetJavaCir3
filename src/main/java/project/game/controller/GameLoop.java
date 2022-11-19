@@ -9,7 +9,7 @@ import project.game.view.GameView;
 public class GameLoop {
     public static void start(Stage stage) {
         // set title for the stage
-        stage.setTitle("creating canvas");
+        stage.setTitle("The Adventures of Pac-Cat");
 
         WorldModel model = new WorldModel();
         GameView view = new GameView(stage, model);

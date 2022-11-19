@@ -43,6 +43,12 @@ public class Ghost extends Entity{
         return gridPositionY;
     }
 
+    FloatPosition getNormalizedPosition() {
+        return new FloatPosition(
+                (float) this.gridPositionX / (2 * GridMap.STEP),
+                (float) this.gridPositionY / (2 * GridMap.STEP));
+    }
+
 @Override
 public void move(double delta) {
     //TODO En fonction de l'etat actuel de la game qu'on va lire dans le model on va prendre des trajectoires differentes
@@ -71,6 +77,7 @@ public void move(double delta) {
     oldPosition=currentPosition;
     currentPosition=new IntPosition(gridPositionX, gridPositionY);
     compteur++;
+    this.position=getNormalizedPosition();
     
 }
 
