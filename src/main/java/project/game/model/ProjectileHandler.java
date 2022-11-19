@@ -25,10 +25,10 @@ public class ProjectileHandler {
             if (entity instanceof Projectile) {
                 Projectile projectile = (Projectile) entity;
                 if (checkPlayerProjectileCollision(model.player, projectile)) {
-                    System.out.println("COLLISION!!!");
+                    //System.out.println("COLLISION!!!");
                     model.player.deaths++;
                     projectile.markedForDeletion = true;
-                    System.out.println("Player deaths: " + model.player.deaths);
+                    //System.out.println("Player deaths: " + model.player.deaths);
                 }
 
             }

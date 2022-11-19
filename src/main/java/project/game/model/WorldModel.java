@@ -73,8 +73,8 @@ public class WorldModel {
             System.out.println("Fatal error");
         }
 
-        for (int x = 0; x < GridMap.NUMBER_OF_TILES; x++) {
-            for (int y = 0; y < GridMap.NUMBER_OF_TILES; y++) {
+        for (int x = 0; x < GridMap.TILES_WIDTH; x++) {
+            for (int y = 0; y < GridMap.TILES_HEIGHT; y++) {
                 if (map.getAt(x, y) != GridTile.WALL) {
                     final int step = GridMap.STEP;
                     final int cx = x * 2 * step + step;
@@ -104,13 +104,13 @@ public class WorldModel {
         player.setSpawn(spawnX, spawnY);
         entities.add(player);
 
-        FoodHandler.generateFood(this, 20);
+        FoodHandler.generateFood(this, 30);
     }
 
 
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
 
-    public void update(double deltaMs) {
+    synchronized public void update(double deltaMs) {
         compteur++;
 
         ArrayList<Entity> toDelete = new ArrayList<>();
@@ -122,7 +122,7 @@ public class WorldModel {
                 toDelete.add(e);
             }
         }
-        FoodHandler.eatFood(this,(compteur%100==0));
+        FoodHandler.manageFoodEating(this,(compteur%100==0));
 
         for (Entity e : toDelete) {
             entities.remove(e);

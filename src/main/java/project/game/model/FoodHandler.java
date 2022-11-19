@@ -18,9 +18,12 @@ public class FoodHandler {
 
     }
 
-    static void eatFood(WorldModel world, boolean log) {
+    static void manageFoodEating(WorldModel world, boolean log) {
+        log = false;
         int step = GridMap.STEP;
-        IntPosition pos = new IntPosition(world.player.gridPositionX / 2 * step, world.player.gridPositionY / 2 * step);
+        //IntPosition pos = new IntPosition(world.player.gridPositionX / 2 * step, world.player.gridPositionY / 2 * step);
+        //IntPosition pos = world.player.getTilePosition();
+        IntPosition pos = world.player.getCenteredTilePosition();
         if (log)
             System.out.println(pos);
         if (log)
