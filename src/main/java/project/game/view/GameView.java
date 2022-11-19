@@ -19,6 +19,8 @@ import project.game.model.GridTile;
 import project.game.model.IntPosition;
 import project.game.model.FloatPosition;
 import project.game.model.Projectile;
+import project.game.model.ProjectileSpawner;
+import project.game.model.SpawnPatttern;
 import project.menu.MenuConstants;
 
 import java.io.InputStream;
@@ -51,10 +53,6 @@ public class GameView {
                 .println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
         canvas.setHeight(stage.getHeight());
         canvas.setWidth(stage.getWidth());
-
-        // double availableSize = Math.min(canvas.getWidth(), canvas.getHeight());
-        // tileSizeX = Math.round(availableSize / GridMap.TILES_WIDTH);
-        // tileSizeY = Math.round(availableSize / GridMap.TILES_HEIGHT);
 
         double desiredTileSizeX = getHightestEvenNumber((int) (canvas.getWidth() / (GridMap.TILES_WIDTH + 1)));
         double desiredTileSizeY = getHightestEvenNumber((int) (canvas.getHeight() / (GridMap.TILES_HEIGHT + 1)));
@@ -96,8 +94,8 @@ public class GameView {
         // set height and width
         canvas.setWidth(stage.getWidth());
         canvas.setHeight(stage.getHeight());
-        //canvas.setHeight(MenuConstants.windowHeight);
-        //canvas.setWidth(MenuConstants.windowWidth);
+        // canvas.setHeight(MenuConstants.windowHeight);
+        // canvas.setWidth(MenuConstants.windowWidth);
 
         System.out.println("offsets " + offsetX + " " + offsetY);
 
@@ -138,6 +136,7 @@ public class GameView {
         drawFoods();
         drawGhosts();
         drawProjectiles();
+        drawSpawners();
     }
 
     void drawMap() {
@@ -146,7 +145,7 @@ public class GameView {
                 if (world.map.map[i][j] == GridTile.WALL) {
                     drawWall(i, j);
                 }
-                if (world.map.map[i][j] == GridTile.VOID || world.map.map[i][j] == GridTile.PLAYER_SPAWN) {
+                if (world.map.map[i][j] == GridTile.VOID || world.map.map[i][j] == GridTile.PLAYER_SPAWN || world.map.map[i][j] == GridTile.GHOST_SPAWN) {
                     drawVoid(i, j);
                 }
             }
@@ -154,15 +153,11 @@ public class GameView {
     }
 
     void drawWall(int x, int y) {
-        // set fill for rectangle
         float gray = 0.2f;
         ctx.setFill(new Color(gray, gray, gray, 1));
 
         final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
         ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
-
-        // ctx.fillRect(toDisplayX(x), toDisplayY(y), tileSizeX, tileSizeY);
-
     }
 
     void drawVoid(int x, int y) {
@@ -173,31 +168,24 @@ public class GameView {
         ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
     }
 
-    void drawGhost(float x,float y){
-        Image img=spriteMap.get("ghost1");
-        if(img ==  null)return;
+    void drawGhost(float x, float y) {
+        Image img = spriteMap.get("ghost1");
+        if (img == null)
+            return;
 
-        /*
-        double arraySize = world.map.validPositions.length;
-
-        ctx.setFill(Color.RED);
-        double dx = x / arraySize * (tileSizeX * GridMap.TILES_WIDTH);
-        double dy = y / arraySize * (tileSizeY * GridMap.TILES_HEIGHT);
-        
-        ctx.drawImage(img, dx - tileSizeX / 2, dy - tileSizeY / 2, tileSizeX, tileSizeY);
-        */
-        final DisplayData dispData = new DisplayData(this,x,y , 1);
+        final DisplayData dispData = new DisplayData(this, x, y, 1);
         ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
     }
 
-    void drawGhosts(){
-        for(Entity e : world.entities){
-            if(e instanceof Ghost){
-                Ghost tmp=(Ghost)e;
-                drawGhost(tmp.position.x,tmp.position.y);
+    void drawGhosts() {
+        for (Entity e : world.entities) {
+            if (e instanceof Ghost) {
+                Ghost tmp = (Ghost) e;
+                drawGhost(tmp.position.x, tmp.position.y);
             }
         }
     }
+
     void drawFood(int x, int y) {
         ctx.setFill(Color.BLUE);
         final double radius = 0.35;
@@ -217,36 +205,9 @@ public class GameView {
         if (img == null)
             return;
 
-        ctx.setFill(Color.RED);
-
         final DisplayData dispData = new DisplayData(this, world.player.position, 1);
-
         ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
     }
-
-    /*
-     * void drawValidPositions() {
-     * final double fullSizeX = tileSizeX * GridMap.TILES_WIDTH;
-     * final double fullSizeY = tileSizeY * GridMap.TILES_HEIGHT;
-     * for (int i = 0; i < world.map.validPositions.length; i++) {
-     * for (int j = 0; j < world.map.validPositions.length; j++) {
-     * if (world.map.validPositions[i][j]) {
-     * // ctx.fillRect(world.map.validPositions[i][0] * TILE_SIZE,
-     * // world.map.validPositions[i][1] * TILE_SIZE,
-     * // TILE_SIZE, TILE_SIZE);
-     * double arraySize = world.map.validPositions.length;
-     * final double radius = 10;
-     * 
-     * ctx.setFill(Color.RED);
-     * ctx.fillOval((i) / arraySize * fullSizeX, (j) / (arraySize) * fullSizeY,
-     * radius, radius);
-     * 
-     * }
-     * }
-     * }
-     * 
-     * }
-     */
 
     void drawProjectile(float x, float y) {
         ctx.setFill(Color.RED);
@@ -263,43 +224,38 @@ public class GameView {
         }
     }
 
-    // Fonction va charger tout nos sprite dans le futur
+    void drawSpawner(ProjectileSpawner spawner) {
+        Image img = spriteMap.get("warning");
+        if (img == null)
+            return;
+
+        final DisplayData dispData = new DisplayData(this, spawner.position, 1);
+        if (spawner.getTicksToLive() % 60 < 30)
+            ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
+    }
+
+    void drawSpawners() {
+        for (Entity entity : world.entities)
+            if (entity instanceof ProjectileSpawner)
+                drawSpawner((ProjectileSpawner) entity);
+    }
+
+    // Fonction va charger tout nos sprites dans le futur
     void load() {
         InputStream pacchat = new Main().getClass().getResourceAsStream("images/cat_image.png");
-        InputStream ghost=  new Main().getClass().getResourceAsStream("images/ghost.png");
-        // Test de la classe spirte animation
-        // InputStream spriteSheet = new
-        // Main().getClass().getResourceAsStream("images/spritesheet.png");
+        InputStream ghost = new Main().getClass().getResourceAsStream("images/ghost.png");
+        InputStream warning = new Main().getClass().getResourceAsStream("images/warning.png");
+
         assert pacchat != null;
         assert ghost != null;
-        // assert spriteSheet != null;
 
         Image img = new Image(pacchat);
         Image img2 = new Image(ghost);
-        /*
-         * int COLUMNS = 4;
-         * int COUNT = 10;
-         * int OFFSET_X = 18;
-         * int OFFSET_Y = 25;
-         * int WIDTH = 374;
-         * int HEIGHT = 243;
-         * 
-         * 
-         * Image sprites = new Image(spriteSheet);
-         * 
-         * ImageView spriteView=new ImageView(sprites);
-         * spriteView.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-         * 
-         * Animation animation = new SpriteAnimation(spriteView, Duration.millis(1000),
-         * COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
-         * animation.setCycleCount(Animation.INDEFINITE);
-         * animation.play();
-         * 
-         * stage.setScene(new Scene(new Group(spriteView)));
-         */
+        Image img3 = new Image(warning);
 
         spriteMap.put("player", img);
-        spriteMap.put("ghost1",img2);
+        spriteMap.put("ghost1", img2);
+        spriteMap.put("warning", img3);
     }
 
     public void displayDebugInfo() {

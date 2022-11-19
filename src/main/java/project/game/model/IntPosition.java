@@ -42,4 +42,8 @@ public class IntPosition  {
         else 
             return false;
     }
+
+    public FloatPosition toFloat() {
+        return new FloatPosition(this.x, this.y);
+    }
 }

@@ -13,15 +13,23 @@ public class ProjectileHandler {
 
     void manageProjectileSpawn() {
 
-        if (model.compteur % 100 == 0) {
-            final FloatPosition randomPosition = new FloatPosition(Math.random() *
-                    GridMap.TILES_WIDTH,
-                    Math.random() * GridMap.TILES_HEIGHT);
+        if (model.compteur % 150 == 0) {
+            final IntPosition randomPosition = new IntPosition((int) (Math.random() *
+                    GridMap.TILES_WIDTH),
+                    (int) (Math.random() * GridMap.TILES_HEIGHT));
 
-            spawnWave((int) randomPosition.x, (int) randomPosition.y);
+            // addSpawner(randomPosition);
+            addStarSpawner(randomPosition);
 
-            addSpawner((int) randomPosition.x, (int) randomPosition.y);
+        }
 
+        if (model.compteur % 150 == 74) {
+            final IntPosition randomPosition = new IntPosition((int) (Math.random() *
+                    GridMap.TILES_WIDTH),
+                    (int) (Math.random() * GridMap.TILES_HEIGHT));
+
+            // addSpawner(randomPosition);
+            addTargetSpawner(randomPosition);
         }
     }
 
@@ -49,23 +57,12 @@ public class ProjectileHandler {
         return distance < (Projectile.RADIUS_SIZE + Player.RADIUS_HITBOX_SIZE);
     }
 
-    void spawnWave(int tileX, int tileY) {
-        System.out.println("spawn wave " + tileX + " " + tileY);
-        final FloatPosition pos = new FloatPosition(tileX + 0.5, tileY + 0.5);
-
-        spawnProjectile(pos, new FloatPosition(1, 0));
-        spawnProjectile(pos, new FloatPosition(-1, 0));
-        spawnProjectile(pos, new FloatPosition(0, 1));
-        spawnProjectile(pos, new FloatPosition(0, -1));
-
-        spawnProjectile(pos, new FloatPosition(Math.sqrt(2), Math.sqrt(2)));
-        spawnProjectile(pos, new FloatPosition(-Math.sqrt(2), Math.sqrt(2)));
-        spawnProjectile(pos, new FloatPosition(-Math.sqrt(2), -Math.sqrt(2)));
-        spawnProjectile(pos, new FloatPosition(Math.sqrt(2), -Math.sqrt(2)));
+    void addStarSpawner(IntPosition pos) {
+        model.entities.add(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnStarPattern(model)));
     }
 
-    void addSpawner(int tileX, int tileY) {
-
+    void addTargetSpawner(IntPosition pos) {
+        model.entities.add(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnTargetPattern(model)));
     }
 
 }

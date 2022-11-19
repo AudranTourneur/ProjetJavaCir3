@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -30,11 +31,11 @@ public class WorldModel {
 
     void init() {
         // ajouter ghosts
-        
+
         // --- MAP ---
 
         Scanner in = new Scanner(
-                new Main().getClass().getResourceAsStream("game/map.txt"), "UTF-8").useDelimiter("\\A");
+                new Main().getClass().getResourceAsStream("game/pacmap.txt"), "UTF-8").useDelimiter("\\A");
 
         String text = in.next();
 
@@ -47,8 +48,8 @@ public class WorldModel {
         String line = null;
         int PlayerSpawnX = 0;
         int PlayerSpawnY = 0;
-        int GhostSpawnX=0;
-        int GhostSpawnY=0;
+        int GhostSpawnX = 0;
+        int GhostSpawnY = 0;
         try {
             int y = 0;
             while ((line = bufReader.readLine()) != null) {
@@ -60,13 +61,11 @@ public class WorldModel {
                     if (map.getAt(x, y) == GridTile.PLAYER_SPAWN) {
                         PlayerSpawnX = x;
                         PlayerSpawnY = y;
-                    }
-                    else if(map.getAt(x,y)==GridTile.GHOST_SPAWN){
-                        GhostSpawnX=x;
-                        GhostSpawnY=y;
+                    } else if (map.getAt(x, y) == GridTile.GHOST_SPAWN) {
+                        GhostSpawnX = x;
+                        GhostSpawnY = y;
                     }
 
-                    
                 }
                 y++;
             }
@@ -104,7 +103,7 @@ public class WorldModel {
         this.player = new Player(this);
         player.setSpawn(PlayerSpawnX, PlayerSpawnY);
         entities.add(player);
-        Ghost g1=new Ghost(this);
+        Ghost g1 = new Ghost(this);
         g1.setSpawn(GhostSpawnX, GhostSpawnY);
         entities.add(g1);
         FoodHandler.generateFood(this, 20);
@@ -112,23 +111,41 @@ public class WorldModel {
 
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
 
-    public void update(double deltaMs) {
+    // Obligé d'utiliser un buffer pour les ajouts d'entités en cours d'itération à
+    // cause des java.lang.ConcurrentModificationException
+    private ArrayList<Entity> entityBuffer = new ArrayList<>();
+
+    void addEntity(Entity e) {
+        entityBuffer.add(e);
+    }
+
+    synchronized public void update(double deltaMs) {
         compteur++;
 
         ArrayList<Entity> toDelete = new ArrayList<>();
 
-        for (Entity e : entities) {
-            e.move(deltaMs);
+        //
+        try {
+            // for (Entity e : entities) {
+            for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext();) {
+                var e = iterator.next();
+                e.move(deltaMs);
 
-            if (e.markedForDeletion) {
-                toDelete.add(e);
+                if (e.markedForDeletion) {
+                    toDelete.add(e);
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         FoodHandler.manageFoodEating(this, (compteur % 100 == 0));
 
         for (Entity e : toDelete) {
             entities.remove(e);
         }
+
+        entities.addAll(entityBuffer); 
+        entityBuffer.clear();
 
         projectileHandler.manageProjectileSpawn();
         projectileHandler.manageProjectileCollisions();
@@ -149,5 +166,9 @@ public class WorldModel {
                 return GridTile.VOID;
         }
         // throw new Exception("pas encore fait");
+    }
+
+    public int getCurrentTick() {
+        return compteur;
     }
 }

@@ -2,7 +2,7 @@ package project.game.model;
 
 public class Player extends Entity {
 
-    public static final float RADIUS_HITBOX_SIZE = 0.4f;
+    public static final float RADIUS_HITBOX_SIZE = 0.2f;
     Direction currentDirection = null;
     public Direction desiredDirection = null;
 

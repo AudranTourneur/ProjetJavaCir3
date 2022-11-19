@@ -12,7 +12,7 @@ public class Projectile extends Entity {
 
     @Override
     public void move(double delta) {
-        final double speed = 0.035;
+        final double speed = 0.025;
 
         final double dx = speed * (double) trajectory.x;
         final double dy = speed * (double) trajectory.y;
@@ -22,9 +22,14 @@ public class Projectile extends Entity {
 
         if (this.position.x < 0 || this.position.x >= GridMap.TILES_WIDTH || this.position.y < 0
                 || this.position.y >= GridMap.TILES_HEIGHT) {
-            //System.out.println("projectile deletion");
+            // System.out.println("projectile deletion");
             this.markedForDeletion = true;
         }
+    }
+
+    static void spawnProjectile(WorldModel model, FloatPosition initialPos, FloatPosition trajectory) {
+        //model.entities.add(new Projectile(initialPos, trajectory));
+        model.addEntity(new Projectile(initialPos, trajectory));
     }
 
 }

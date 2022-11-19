@@ -30,4 +30,12 @@ public class FloatPosition {
     public FloatPosition copy() {
         return new FloatPosition(this.x, this.y);
     }
+
+    public FloatPosition translate(float offset) {
+        return new FloatPosition(this.x + offset, this.y + offset);
+    }
+
+    public FloatPosition minus(FloatPosition other) {
+        return new FloatPosition(this.x - other.x, this.y - other.y);
+    }
 }

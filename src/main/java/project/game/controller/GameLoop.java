@@ -1,11 +1,8 @@
 package project.game.controller;
 
-import java.util.Date;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import project.Main;
@@ -70,11 +67,6 @@ public class GameLoop {
         initGameLoop(view);
     }
 
-    static void runGraphicsOperations(GameView view) {
-        final var loop = new GameLoopTimer(view);
-        loop.start();
-    }
-
     static long lastCall = System.nanoTime();
     static double sumMs = 0.0;
     static int frames = 1;
@@ -88,7 +80,7 @@ public class GameLoop {
             frames++;
             sumMs += diffMs;
             final double avgMs = sumMs / (double) frames;
-            System.out.println("FPS = " + (1000 / avgMs) + "| avg delta ms " + avgMs);
+            //System.out.println("FPS = " + (1000 / avgMs) + "| avg delta ms " + avgMs);
             lastCall = now;
 
             view.display(false);
