@@ -8,26 +8,19 @@ public class ProjectileHandler {
     }
 
     void spawnProjectile(FloatPosition initialPos, FloatPosition trajectory) {
-        model.entities.add(new Projectile(initialPos, trajectory));
+        //model.entities.add(new Projectile(initialPos, trajectory));
     }
 
     void manageProjectileSpawn() {
 
-        // if (model.compteur == 100) {
         if (model.compteur % 100 == 0) {
-            final FloatPosition randomPosition = new FloatPosition(Math.random() * GridMap.TILES_WIDTH,
+            final FloatPosition randomPosition = new FloatPosition(Math.random() *
+                    GridMap.TILES_WIDTH,
                     Math.random() * GridMap.TILES_HEIGHT);
 
             spawnWave((int) randomPosition.x, (int) randomPosition.y);
 
             addSpawner((int) randomPosition.x, (int) randomPosition.y);
-
-
-
-            // spawnProjectile(
-            // new FloatPosition(Math.random() * GridMap.TILES_WIDTH, Math.random() *
-            // GridMap.TILES_HEIGHT),
-            // new FloatPosition(2 * Math.random() - 1, 2 * Math.random() - 1).normalize());
 
         }
     }

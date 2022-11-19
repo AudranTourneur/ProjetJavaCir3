@@ -42,9 +42,9 @@ public class GameLoop {
                     // System.out.println(delta_time);
                     model.update(delta_time);
 
-                    Platform.runLater(() -> {
-                        view.display(false);
-                    });
+                    //Platform.runLater(() -> {
+                    //    view.display(false);
+                    //});
 
                     try {
                         Thread.sleep(1000 / FPS_TARGET);
@@ -59,5 +59,12 @@ public class GameLoop {
         };
 
         thread.start();
+
+        runGraphicsOperations(view);
+    }
+
+    static void runGraphicsOperations(GameView view) {
+        final var loop = new GameLoopTimer(view);
+        loop.start();
     }
 }

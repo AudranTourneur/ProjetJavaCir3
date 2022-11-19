@@ -112,7 +112,7 @@ public class WorldModel {
 
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
 
-    synchronized public void update(double deltaMs) {
+    public void update(double deltaMs) {
         compteur++;
 
         ArrayList<Entity> toDelete = new ArrayList<>();

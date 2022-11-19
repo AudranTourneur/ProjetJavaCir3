@@ -129,7 +129,7 @@ public class GameView {
 
     }
 
-    synchronized public void display(boolean log) {
+    public void display(boolean log) {
         if (log)
             System.out.println("display is  called");
 
@@ -140,7 +140,6 @@ public class GameView {
         drawFoods();
         drawGhosts();
         drawProjectiles();
-        // drawValidPositions();
     }
 
     void drawMap() {

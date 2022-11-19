@@ -22,7 +22,7 @@ public class Projectile extends Entity {
 
         if (this.position.x < 0 || this.position.x >= GridMap.TILES_WIDTH || this.position.y < 0
                 || this.position.y >= GridMap.TILES_HEIGHT) {
-            System.out.println("projectile deletion");
+            //System.out.println("projectile deletion");
             this.markedForDeletion = true;
         }
     }
