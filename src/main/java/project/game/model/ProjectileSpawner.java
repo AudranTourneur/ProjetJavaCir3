@@ -2,6 +2,8 @@ package project.game.model;
 
 public class ProjectileSpawner extends Entity {
 
+	SpawnPatttern pattern;
+
 	int ticksToLive = 5 * 60;
 
 	@Override

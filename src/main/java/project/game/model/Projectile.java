@@ -17,13 +17,8 @@ public class Projectile extends Entity {
         final double dx = speed * (double) trajectory.x;
         final double dy = speed * (double) trajectory.y;
 
-        //this.position.x += dx;
-        //this.position.y += dy;
-
         this.position.x += dx;
         this.position.y += dy;
-
-        System.out.println("DX " + dx + " | DY " + dy);
 
         if (this.position.x < 0 || this.position.x >= GridMap.TILES_WIDTH || this.position.y < 0
                 || this.position.y >= GridMap.TILES_HEIGHT) {

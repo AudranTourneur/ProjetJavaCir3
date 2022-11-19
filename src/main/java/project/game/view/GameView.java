@@ -1,12 +1,14 @@
 package project.game.view;
 
 import javafx.beans.value.ChangeListener;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import project.Main;
 import project.game.model.WorldModel;
@@ -86,9 +88,15 @@ public class GameView {
         // create a canvas
         Canvas canvas = new Canvas();
 
+        Rectangle2D bounds = Screen.getPrimary().getBounds();
+        stage.setWidth(bounds.getWidth());
+        stage.setHeight(bounds.getHeight());
+
         // set height and width
-        canvas.setHeight(MenuConstants.windowHeight);
-        canvas.setWidth(MenuConstants.windowWidth);
+        canvas.setWidth(stage.getWidth());
+        canvas.setHeight(stage.getHeight());
+        //canvas.setHeight(MenuConstants.windowHeight);
+        //canvas.setWidth(MenuConstants.windowWidth);
 
         System.out.println("offsets " + offsetX + " " + offsetY);
 

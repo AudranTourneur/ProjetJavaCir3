@@ -20,6 +20,10 @@ public class ProjectileHandler {
 
             spawnWave((int) randomPosition.x, (int) randomPosition.y);
 
+            addSpawner((int) randomPosition.x, (int) randomPosition.y);
+
+
+
             // spawnProjectile(
             // new FloatPosition(Math.random() * GridMap.TILES_WIDTH, Math.random() *
             // GridMap.TILES_HEIGHT),
@@ -65,6 +69,10 @@ public class ProjectileHandler {
         spawnProjectile(pos, new FloatPosition(-Math.sqrt(2), Math.sqrt(2)));
         spawnProjectile(pos, new FloatPosition(-Math.sqrt(2), -Math.sqrt(2)));
         spawnProjectile(pos, new FloatPosition(Math.sqrt(2), -Math.sqrt(2)));
+    }
+
+    void addSpawner(int tileX, int tileY) {
+
     }
 
 }
