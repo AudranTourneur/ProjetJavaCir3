@@ -12,7 +12,6 @@ public class GameLoopTimer extends AnimationTimer {
     }
 
     long lastCall = System.nanoTime();
-
     double sumMs = 0.0;
     int frames = 1;
 
