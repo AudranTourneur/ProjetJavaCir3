@@ -16,7 +16,6 @@ import project.game.model.IntPosition;
 import project.game.model.Entity;
 import project.game.model.FloatPosition;
 import project.game.model.Projectile;
-import project.game.model.ProjectileHandler;
 import project.menu.MenuConstants;
 
 import java.io.InputStream;
@@ -138,7 +137,7 @@ public class GameView {
                 if (world.map.map[i][j] == GridTile.WALL) {
                     drawWall(i, j);
                 }
-                if (world.map.map[i][j] == GridTile.VOID) {
+                if (world.map.map[i][j] == GridTile.VOID || world.map.map[i][j] == GridTile.PLAYER_SPAWN) {
                     drawVoid(i, j);
                 }
             }
@@ -218,7 +217,7 @@ public class GameView {
     void drawProjectile(float x, float y) {
         ctx.setFill(Color.RED);
 
-        final DisplayData dispData = new DisplayData(this, x, y, ProjectileHandler.RADIUS_SIZE);
+        final DisplayData dispData = new DisplayData(this, x, y, Projectile.RADIUS_SIZE);
         ctx.fillOval(dispData.x, dispData.y, dispData.width, dispData.height);
     }
 

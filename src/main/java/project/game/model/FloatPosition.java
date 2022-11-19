@@ -26,4 +26,8 @@ public class FloatPosition {
     public FloatPosition normalize() {
         return new FloatPosition(x / norm(), y / norm());
     }
+
+    public FloatPosition copy() {
+        return new FloatPosition(this.x, this.y);
+    }
 }

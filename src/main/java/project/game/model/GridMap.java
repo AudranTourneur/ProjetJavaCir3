@@ -6,7 +6,7 @@ public class GridMap {
 	public static final int STEP = 10;
 	// public static final int NUMBER_OF_TILES = 15;
 	public static final int TILES_WIDTH = 30;
-	public static final int TILES_HEIGHT = 24;
+	public static final int TILES_HEIGHT = 20;
 
 	// public à déprécié
 	public GridTile[][] map = new GridTile[TILES_WIDTH][TILES_HEIGHT];

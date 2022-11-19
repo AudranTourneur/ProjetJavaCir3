@@ -14,7 +14,7 @@ public class WorldModel {
     public Player player;
 
     public int score;
-    private int compteur;   //compteur des update
+    public int compteur; // compteur des update
 
     public List<Entity> entities = new ArrayList<>();
 
@@ -28,9 +28,6 @@ public class WorldModel {
         init();
     }
 
-    
-
-    
     void init() {
         // ajouter ghosts
 
@@ -86,12 +83,12 @@ public class WorldModel {
                         final int bigTargetY = y + dir.getY();
 
                         if (map.isPositionAccessible(new FloatPosition(bigTargetX, bigTargetY))) {
-                            for (int i = 0; i < step+1; i++) {
-                                for (int j = 0; j < step+1; j++) {
+                            for (int i = 0; i < step + 1; i++) {
+                                for (int j = 0; j < step + 1; j++) {
                                     final int tx = cx + dir.getX() * i;
                                     final int ty = cy + dir.getY() * j;
                                     map.validPositions[tx][ty] = true;
-                                    //System.out.println("Set " + tx + " " + ty + " = TRUE");
+                                    // System.out.println("Set " + tx + " " + ty + " = TRUE");
                                 }
                             }
                         }
@@ -107,7 +104,6 @@ public class WorldModel {
         FoodHandler.generateFood(this, 30);
     }
 
-
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
 
     synchronized public void update(double deltaMs) {
@@ -122,16 +118,15 @@ public class WorldModel {
                 toDelete.add(e);
             }
         }
-        FoodHandler.manageFoodEating(this,(compteur%100==0));
+        FoodHandler.manageFoodEating(this, (compteur % 100 == 0));
 
         for (Entity e : toDelete) {
             entities.remove(e);
         }
 
-
         projectileHandler.manageProjectileSpawn();
         projectileHandler.manageProjectileCollisions();
-        
+
     }
 
     GridTile getTileFromChar(char ch) {
