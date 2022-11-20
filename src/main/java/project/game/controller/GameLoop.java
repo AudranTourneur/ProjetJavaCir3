@@ -35,16 +35,11 @@ public class GameLoop {
                 int counter = 0;
                 System.out.println("Thread Running");
 
-                long lastTime = System.nanoTime();
-
                 while (Main.alive) {
 
                     if (counter % 100 == 0)
                         counter++;
 
-                    long time = System.nanoTime();
-                    int delta_time = (int) ((time - lastTime) / 1000000);
-                    lastTime = time;
                     //model.update(delta_time);
 
                     try {
