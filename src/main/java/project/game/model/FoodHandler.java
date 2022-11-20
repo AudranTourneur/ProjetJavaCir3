@@ -30,7 +30,7 @@ public class FoodHandler {
         if (world.foods.contains(pos)) {
             System.out.println("Found the food");
             world.foods.remove(pos);
-            world.score += 100;
+            world.player.score += 100;
         }
 
     }

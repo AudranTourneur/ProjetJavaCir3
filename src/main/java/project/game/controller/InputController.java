@@ -40,7 +40,7 @@ public class InputController {
         }
 
         if (event.getCode() == KeyCode.SPACE) {
-            state.model.speedX2 = !state.model.speedX2;
+            state.model.player.speedX2 = !state.model.player.speedX2;
         }
     }
 }

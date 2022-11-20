@@ -9,12 +9,13 @@ public class DisplayData {
     public double width;
     public double height;
 
-    // Renvoie des coordonnées et tailles réelles sur l'écran en partant de coordonnées abstraites du modèle
+    // Renvoie des coordonnées et tailles réelles sur l'écran en partant des
+    // coordonnées abstraites du modèle
     public DisplayData(GameView view, double x, double y, double width, double height) {
         this.width = width * view.tileSizeX;
         this.height = height * view.tileSizeY;
-        this.x = view.offsetX + x * view.tileSizeX - this.width/2;
-        this.y = view.offsetY + y * view.tileSizeY - this.height/2;
+        this.x = view.offsetX + x * view.tileSizeX - this.width / 2;
+        this.y = view.offsetY + y * view.tileSizeY - this.height / 2;
     }
 
     public DisplayData(GameView view, FloatPosition position, double width, double height) {

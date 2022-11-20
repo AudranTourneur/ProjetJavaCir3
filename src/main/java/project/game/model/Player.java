@@ -9,9 +9,15 @@ public class Player extends Entity {
     public WorldModel world;
     public GridMap map;
 
+    public boolean speedX2 = false;
+
     int gridPositionX;
     int gridPositionY;
     public int deaths;
+
+    public final static int MAX_STAMINA = 10 * 60;
+    public int stamina = MAX_STAMINA;
+    public int score;
 
     public int getGridPositionX() {
         return gridPositionX;
@@ -49,9 +55,19 @@ public class Player extends Entity {
     public void move(double delta) {
         if (desiredDirection != null) {
             int speed = 1;
-            if (world.speedX2)
+
+            if (speedX2 && stamina <= 0) {
+                speedX2 = false;
+            }
+
+            if (speedX2) {
                 if (gridPositionX % 2 == 0 && gridPositionY % 2 == 0)
                     speed = 2;
+            }
+
+            stamina += speedX2 ? -1 : 1; 
+            stamina = Math.min(MAX_STAMINA, stamina);
+            stamina = Math.max(0, stamina);
 
             int dtx = gridPositionX + desiredDirection.getX() * speed;
             int dty = gridPositionY + desiredDirection.getY() * speed;
@@ -60,7 +76,6 @@ public class Player extends Entity {
             }
 
             if (currentDirection != null) {
-
                 int ctx = gridPositionX + currentDirection.getX() * speed;
                 int cty = gridPositionY + currentDirection.getY() * speed;
                 if (map.isAbstractPositionAllowed(ctx, cty)) {
@@ -86,4 +101,8 @@ public class Player extends Entity {
     public String toString() {
         return this.position + " " + this.currentDirection + " " + this.desiredDirection;
     }
+
+	public int getScore() {
+		return score;
+	}
 }

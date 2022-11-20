@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import project.Main;
@@ -17,10 +18,10 @@ import project.game.model.Ghost;
 import project.game.model.GridMap;
 import project.game.model.GridTile;
 import project.game.model.IntPosition;
+import project.game.model.Player;
 import project.game.model.FloatPosition;
 import project.game.model.Projectile;
 import project.game.model.ProjectileSpawner;
-import project.game.model.SpawnPatttern;
 import project.menu.MenuConstants;
 
 import java.io.InputStream;
@@ -125,7 +126,10 @@ public class GameView {
 
     }
 
+    public volatile static boolean isDrawing = false;
+
     public void display(boolean log) {
+        isDrawing = true;
         if (log)
             System.out.println("display is  called");
 
@@ -137,6 +141,17 @@ public class GameView {
         drawGhosts();
         drawProjectiles();
         drawSpawners();
+        drawTmpTexts();
+        isDrawing = false;
+    }
+
+    void drawTmpTexts() {
+        ctx.setFont(Font.font("System", 20));
+        ctx.setFill(Color.RED);
+        ctx.fillText("Deaths : " + this.world.player.deaths, 10, 20);
+        ctx.fillText("Stamina : " + (int) ((double) this.world.player.stamina / Player.MAX_STAMINA * 100.0) + "%", 210, 20);
+        ctx.fillText("Progress : " + this.world.getCompletionPercent() + "%", 410, 20);
+        ctx.fillText("Score : " + this.world.player.getScore(), 610, 20);
     }
 
     void drawMap() {
@@ -145,7 +160,8 @@ public class GameView {
                 if (world.map.map[i][j] == GridTile.WALL) {
                     drawWall(i, j);
                 }
-                if (world.map.map[i][j] == GridTile.VOID || world.map.map[i][j] == GridTile.PLAYER_SPAWN || world.map.map[i][j] == GridTile.GHOST_SPAWN) {
+                if (world.map.map[i][j] == GridTile.VOID || world.map.map[i][j] == GridTile.PLAYER_SPAWN
+                        || world.map.map[i][j] == GridTile.GHOST_SPAWN) {
                     drawVoid(i, j);
                 }
             }

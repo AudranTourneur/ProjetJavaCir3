@@ -7,13 +7,9 @@ public class ProjectileHandler {
         this.model = model;
     }
 
-    void spawnProjectile(FloatPosition initialPos, FloatPosition trajectory) {
-        model.entities.add(new Projectile(initialPos, trajectory));
-    }
-
     void manageProjectileSpawn() {
 
-        if (model.compteur % 150 == 0) {
+        if (model.getCurrentTick() % 150 == 0) {
             final IntPosition randomPosition = new IntPosition((int) (Math.random() *
                     GridMap.TILES_WIDTH),
                     (int) (Math.random() * GridMap.TILES_HEIGHT));
@@ -23,7 +19,7 @@ public class ProjectileHandler {
 
         }
 
-        if (model.compteur % 150 == 74) {
+        if (model.getCurrentTick() % 150 == 74) {
             final IntPosition randomPosition = new IntPosition((int) (Math.random() *
                     GridMap.TILES_WIDTH),
                     (int) (Math.random() * GridMap.TILES_HEIGHT));
@@ -58,11 +54,11 @@ public class ProjectileHandler {
     }
 
     void addStarSpawner(IntPosition pos) {
-        model.entities.add(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnStarPattern(model)));
+        model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnStarPattern(model)));
     }
 
     void addTargetSpawner(IntPosition pos) {
-        model.entities.add(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnTargetPattern(model)));
+        model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnTargetPattern(model)));
     }
 
 }

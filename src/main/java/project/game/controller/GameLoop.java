@@ -10,6 +10,9 @@ import project.game.model.WorldModel;
 import project.game.view.GameView;
 
 public class GameLoop {
+
+    static final boolean FPS_COUNTER = false;
+
     public static void start(Stage stage) {
         // set title for the stage
         stage.setTitle("The Adventures of Pac-Cat");
@@ -65,6 +68,8 @@ public class GameLoop {
 
         // runGraphicsOperations(view);
         initGameLoop(view);
+
+        AudioController.play();
     }
 
     static long lastCall = System.nanoTime();
@@ -80,7 +85,8 @@ public class GameLoop {
             frames++;
             sumMs += diffMs;
             final double avgMs = sumMs / (double) frames;
-            //System.out.println("FPS = " + (1000 / avgMs) + "| avg delta ms " + avgMs);
+            if (FPS_COUNTER)
+                System.out.println("FPS = " + (1000 / avgMs) + " | avg delta ms " + avgMs);
             lastCall = now;
 
             view.display(false);
