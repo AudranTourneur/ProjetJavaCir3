@@ -95,14 +95,10 @@ public class GameView {
         // set height and width
         canvas.setWidth(stage.getWidth());
         canvas.setHeight(stage.getHeight());
-        // canvas.setHeight(MenuConstants.windowHeight);
-        // canvas.setWidth(MenuConstants.windowWidth);
 
         System.out.println("offsets " + offsetX + " " + offsetY);
 
-        GraphicsContext ctx = canvas.getGraphicsContext2D();
-
-        this.ctx = ctx;
+        this.ctx = canvas.getGraphicsContext2D();
 
         // create a Group
         Group group = new Group(canvas);
@@ -258,12 +254,13 @@ public class GameView {
 
     // Fonction va charger tout nos sprites dans le futur
     void load() {
-        InputStream pacchat = new Main().getClass().getResourceAsStream("images/cat_image.png");
-        InputStream ghost = new Main().getClass().getResourceAsStream("images/ghost.png");
-        InputStream warning = new Main().getClass().getResourceAsStream("images/warning.png");
+        InputStream pacchat = Main.class.getResourceAsStream("images/cat_image.png");
+        InputStream ghost = Main.class.getResourceAsStream("images/ghost.png");
+        InputStream warning = Main.class.getResourceAsStream("images/warning.png");
 
         assert pacchat != null;
         assert ghost != null;
+        assert warning != null;
 
         Image img = new Image(pacchat);
         Image img2 = new Image(ghost);

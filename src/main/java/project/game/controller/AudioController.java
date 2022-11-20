@@ -1,6 +1,5 @@
 package project.game.controller;
 
-import javafx.beans.property.DoubleProperty;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 
@@ -11,11 +10,9 @@ public class AudioController {
 	static MediaPlayer mediaPlayer;
 
 	static void play() {
-		// final Media audio = new Media(new
-		// Main().getClass().getResourceAsStream("sounds/myAudio.wav"));
 		try {
 			System.out.println("playing audio");
-			String path = new Main().getClass().getResource("audio/music.mp3").toURI().toString();
+			String path = Main.class.getResource("audio/music.mp3").toURI().toString();
 
 			System.out.println("path = " + path);
 			final Media audio = new Media(path);

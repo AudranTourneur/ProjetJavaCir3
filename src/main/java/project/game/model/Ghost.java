@@ -1,6 +1,5 @@
 package project.game.model;
 
-//Les variables position ne sont plus utilisées depuis qu'on utilise des données discrètes pur le déplacement
 public class Ghost extends Entity{
     
     public Direction currentDirection;

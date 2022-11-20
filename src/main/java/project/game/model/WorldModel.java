@@ -112,7 +112,7 @@ public class WorldModel {
 
     // Obligé d'utiliser un buffer pour les ajouts d'entités en cours d'itération à
     // cause des java.lang.ConcurrentModificationException
-    private ArrayList<Entity> entityBuffer = new ArrayList<>();
+    private final ArrayList<Entity> entityBuffer = new ArrayList<>();
 
     void addEntity(Entity e) {
         entityBuffer.add(e);

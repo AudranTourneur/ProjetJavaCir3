@@ -40,22 +40,17 @@ public class GameLoop {
                 while (Main.alive) {
 
                     if (counter % 100 == 0)
-                        // System.out.println("thread heartbeat");
                         counter++;
+
                     long time = System.nanoTime();
                     int delta_time = (int) ((time - lastTime) / 1000000);
                     lastTime = time;
-                    // System.out.println(delta_time);
                     model.update(delta_time);
-
-                    // Platform.runLater(() -> {
-                    // view.display(false);
-                    // });
 
                     try {
                         Thread.sleep(1000 / FPS_TARGET);
                     } catch (InterruptedException exception) {
-                        System.out.println(exception);
+                        exception.printStackTrace();
                     }
 
                 }
