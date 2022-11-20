@@ -148,6 +148,7 @@ public class GameView {
         ctx.fillText("Stamina : " + (int) ((double) this.world.player.stamina / Player.MAX_STAMINA * 100.0) + "%", 210, 20);
         ctx.fillText("Progress : " + this.world.getCompletionPercent() + "%", 410, 20);
         ctx.fillText("Score : " + this.world.player.getScore(), 610, 20);
+        ctx.fillText("Est. time : " + this.world.getCurrentTick()/60 + "s", 810, 20);
     }
 
     void drawMap() {

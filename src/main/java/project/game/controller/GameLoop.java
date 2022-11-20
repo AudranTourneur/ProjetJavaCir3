@@ -11,7 +11,7 @@ import project.game.view.GameView;
 
 public class GameLoop {
 
-    static final boolean FPS_COUNTER = false;
+    static final boolean FPS_COUNTER = true;
 
     public static void start(Stage stage) {
         // set title for the stage
@@ -45,10 +45,11 @@ public class GameLoop {
                     long time = System.nanoTime();
                     int delta_time = (int) ((time - lastTime) / 1000000);
                     lastTime = time;
-                    model.update(delta_time);
+                    //model.update(delta_time);
 
                     try {
                         Thread.sleep(1000 / FPS_TARGET);
+                        //System.out.println("sleep for " + 1000 / FPS_TARGET);
                     } catch (InterruptedException exception) {
                         exception.printStackTrace();
                     }
@@ -62,7 +63,7 @@ public class GameLoop {
         thread.start();
 
         // runGraphicsOperations(view);
-        initGameLoop(view);
+        initGameLoop(model, view);
 
         AudioController.play();
     }
@@ -71,9 +72,11 @@ public class GameLoop {
     static double sumMs = 0.0;
     static int frames = 1;
 
-    static void initGameLoop(GameView view) {
+    static void initGameLoop(WorldModel model, GameView view) {
         final Duration oneFrameAmt = Duration.millis(1000 / 60);
         final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, actionEvent -> {
+            model.update(); 
+
             long now = System.nanoTime();
             double diffMs = (now - lastCall) / 1_000_000.0;
 

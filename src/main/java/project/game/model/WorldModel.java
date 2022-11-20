@@ -110,6 +110,8 @@ public class WorldModel {
 
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
 
+    ProjectileWavesManager waveManager = new ProjectileWavesManager(this);
+
     // Obligé d'utiliser un buffer pour les ajouts d'entités en cours d'itération à
     // cause des java.lang.ConcurrentModificationException
     private final ArrayList<Entity> entityBuffer = new ArrayList<>();
@@ -118,7 +120,7 @@ public class WorldModel {
         entityBuffer.add(e);
     }
 
-    synchronized public void update(double deltaMs) {
+    synchronized public void update() {
         currentTick++;
 
         ArrayList<Entity> toDelete = new ArrayList<>();
@@ -128,7 +130,7 @@ public class WorldModel {
             // for (Entity e : entities) {
             for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext();) {
                 var e = iterator.next();
-                e.move(deltaMs);
+                e.move(0);
 
                 if (e.markedForDeletion) {
                     toDelete.add(e);
@@ -152,7 +154,10 @@ public class WorldModel {
             System.out.println("fail to acquire");
         }
 
-        projectileHandler.manageProjectileSpawn();
+        //projectileHandler.manageProjectileSpawn();
+
+        waveManager.dispatchEvents();
+
         projectileHandler.manageProjectileCollisions();
 
     }

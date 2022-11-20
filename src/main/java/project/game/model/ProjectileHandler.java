@@ -45,8 +45,11 @@ public class ProjectileHandler {
     }
 
     static boolean checkPlayerProjectileCollision(Player player, Projectile projectile) {
-        double xDiff = (player.position.x + 0.5) - (projectile.position.x + Projectile.RADIUS_SIZE);
-        double yDiff = (player.position.y + 0.5) - (projectile.position.y + Projectile.RADIUS_SIZE);
+        //double xDiff = (player.position.x + 0.5) - (projectile.position.x + Projectile.RADIUS_SIZE);
+        //double yDiff = (player.position.y + 0.5) - (projectile.position.y + Projectile.RADIUS_SIZE);
+
+        double xDiff = (player.position.x) - (projectile.position.x);
+        double yDiff = (player.position.y) - (projectile.position.y);
 
         double distance = Math.sqrt((Math.pow(xDiff, 2) + Math.pow(yDiff, 2)));
 
