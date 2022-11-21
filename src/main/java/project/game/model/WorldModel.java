@@ -132,6 +132,12 @@ public class WorldModel {
                 var e = iterator.next();
                 e.move(0);
 
+                if (e instanceof Projectile) {
+                    Projectile projectile = (Projectile) e;
+                    if (getCompletionPercent() >= 100)
+                        e.markedForDeletion = true;
+                }
+
                 if (e.markedForDeletion) {
                     toDelete.add(e);
                 }
@@ -139,23 +145,25 @@ public class WorldModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        FoodHandler.manageFoodGeneration(this);
-        FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
+
+        if (this.getCurrentTick() < 4 * 60 * 60) {
+            FoodHandler.manageFoodGeneration(this);
+            FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
+        }
 
         if (!GameView.isDrawing) {
-            
+
             for (Entity e : toDelete) {
                 entities.remove(e);
             }
 
             entities.addAll(entityBuffer);
             entityBuffer.clear();
-        }
-        else {
+        } else {
             System.out.println("fail to acquire");
         }
 
-        //projectileHandler.manageProjectileSpawn();
+        // projectileHandler.manageProjectileSpawn();
 
         waveManager.dispatchEvents();
 

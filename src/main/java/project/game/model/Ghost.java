@@ -53,6 +53,11 @@ public class Ghost extends Entity {
     public void move(double delta) {
         // TODO En fonction de l'etat actuel de la game qu'on va lire dans le model on
         // va prendre des trajectoires differentes
+
+        if (world.player.gridPositionX == this.gridPositionX && world.player.gridPositionY == this.gridPositionY) {
+            world.player.hit();
+        }
+
         int speed = 1;
         if (isStuck()) {
             getNewDirection();

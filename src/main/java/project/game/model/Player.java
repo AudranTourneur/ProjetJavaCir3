@@ -18,6 +18,7 @@ public class Player extends Entity {
     public final static int MAX_STAMINA = 10 * 60;
     public int stamina = MAX_STAMINA;
     public int score;
+    public int invulnerabilityTicks = 0;
 
     public int getGridPositionX() {
         return gridPositionX;
@@ -53,6 +54,7 @@ public class Player extends Entity {
 
     @Override
     public void move(double delta) {
+        this.invulnerabilityTicks = Math.max(0, this.invulnerabilityTicks - 1);
         System.out.println("Desired " + desiredDirection + " | " + " current " + currentDirection);
         if (desiredDirection != null) {
             int speed = 1;
@@ -113,6 +115,13 @@ public class Player extends Entity {
 
     public int getScore() {
         return score;
+    }
+
+    public void hit() {
+        if (invulnerabilityTicks == 0) {
+            deaths++;
+            invulnerabilityTicks += 90;
+        }
     }
 
 }
