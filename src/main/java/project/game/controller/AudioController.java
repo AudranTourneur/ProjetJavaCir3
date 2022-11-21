@@ -2,14 +2,16 @@ package project.game.controller;
 
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-
+import javafx.util.Duration;
 import project.Main;
 
 public class AudioController {
 
-	static MediaPlayer mediaPlayer;
+	// L'intance est mise en static pour éviter que le Garbage Collector de la JVM
+	// élimine l'objet et stoppe la musique en cours
+	static MediaPlayer musicPlayer;
 
-	static void play() {
+	static void playMusic() {
 		try {
 			System.out.println("playing audio");
 			String path = Main.class.getResource("audio/music.mp3").toURI().toString();
@@ -17,15 +19,36 @@ public class AudioController {
 			System.out.println("path = " + path);
 			final Media audio = new Media(path);
 
-			mediaPlayer = new MediaPlayer(audio);
+			musicPlayer = new MediaPlayer(audio);
 
-			mediaPlayer.setVolume(0.5);
+			musicPlayer.setVolume(0.5);
 
-			mediaPlayer.play();
+			musicPlayer.play();
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	static MediaPlayer hitPlayer;
+
+	public static void playHitSound() {
+		try {
+			System.out.println("playing audio");
+			String path = Main.class.getResource("audio/hit.mp3").toURI().toString();
+
+			final Media audio = new Media(path);
+
+			hitPlayer = new MediaPlayer(audio);
+
+			hitPlayer.setVolume(0.75);
+
+			hitPlayer.setStartTime(Duration.millis(700));
+			hitPlayer.play();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 
 }

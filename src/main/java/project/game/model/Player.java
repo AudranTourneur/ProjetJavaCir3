@@ -1,5 +1,7 @@
 package project.game.model;
 
+import project.game.controller.AudioController;
+
 public class Player extends Entity {
 
     public static final float RADIUS_HITBOX_SIZE = 0.07f;
@@ -118,9 +120,11 @@ public class Player extends Entity {
     }
 
     public void hit() {
+        if (this.world.getCompletionPercent() >= 100) return;
         if (invulnerabilityTicks == 0) {
             deaths++;
             invulnerabilityTicks += 90;
+            AudioController.playHitSound();
         }
     }
 

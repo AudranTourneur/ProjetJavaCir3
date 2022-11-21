@@ -59,7 +59,7 @@ public class ProjectileWavesManager {
 		 * }
 		 */
 
-		if (model.getCurrentTick() == (38 * 60)) {
+		if (model.getCurrentTick() == (37 * 60)) {
 			launchUnidirectionEncirclement(5);
 			// launchTargetedEncirclement();
 			for (int i = 0; i < 10; i++)

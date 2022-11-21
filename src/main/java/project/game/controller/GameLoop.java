@@ -60,7 +60,7 @@ public class GameLoop {
         // runGraphicsOperations(view);
         initGameLoop(model, view);
 
-        AudioController.play();
+        AudioController.playMusic();
     }
 
     static long lastCall = System.nanoTime();

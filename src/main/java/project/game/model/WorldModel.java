@@ -34,7 +34,7 @@ public class WorldModel {
         // --- MAP ---
 
         Scanner in = new Scanner(
-                new Main().getClass().getResourceAsStream("game/pacmap.txt"), "UTF-8").useDelimiter("\\A");
+                new Main().getClass().getResourceAsStream("logic/map.txt"), "UTF-8").useDelimiter("\\A");
 
         String text = in.next();
 
@@ -133,7 +133,6 @@ public class WorldModel {
                 e.move(0);
 
                 if (e instanceof Projectile) {
-                    Projectile projectile = (Projectile) e;
                     if (getCompletionPercent() >= 100)
                         e.markedForDeletion = true;
                 }
