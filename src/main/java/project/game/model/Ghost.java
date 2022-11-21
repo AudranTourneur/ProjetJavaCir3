@@ -1,5 +1,6 @@
 package project.game.model;
 
+//Les variables position ne sont plus utilisées depuis qu'on utilise des données discrètes pur le déplacement
 public class Ghost extends Entity{
     
     public Direction currentDirection;
@@ -51,17 +52,17 @@ public class Ghost extends Entity{
 @Override
 public void move(double delta) {
     //TODO En fonction de l'etat actuel de la game qu'on va lire dans le model on va prendre des trajectoires differentes
+    //movement de niveau 1 on va dire
     allRandomMove(delta);
+
+    //movement qui é
     
 }
     private void allRandomMove(double delta){
         int speed = 1;
     if (isStuck()){
         getNewDirection();
-<<<<<<< HEAD
-=======
         //System.out.println(desiredDirection);
->>>>>>> 6a503f59aad383a15fa3e8607f66c108b2b1cfd5
     }else if(compteur % 100 == 0)getNewDirection();
 
     int dtx = gridPositionX + desiredDirection.getX() * speed;
@@ -88,7 +89,7 @@ public void move(double delta) {
 
     private void getNewDirection(){
         int rand=(int)(Math.random()*40%4);
-        //System.out.println(rand);
+        System.out.println(rand);
         switch(rand){
             case 0:desiredDirection=Direction.DOWN;break;
             case 1:desiredDirection=Direction.UP;break;
@@ -98,9 +99,9 @@ public void move(double delta) {
     }
 
     private boolean isStuck(){
-        //if(currentPosition.equals(oldPosition)){
-        //    System.out.println("we are stuck");
-        //}
+        if(currentPosition.equals(oldPosition)){
+            System.out.println("we are stuck");
+        }
         return currentPosition.equals(oldPosition);
     }
     
