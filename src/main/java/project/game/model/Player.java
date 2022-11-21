@@ -43,9 +43,9 @@ public class Player extends Entity {
     }
 
     public IntPosition getTilePosition() {
-        return new IntPosition((gridPositionX - GridMap.STEP) / (2 * GridMap.STEP), (gridPositionY - GridMap.STEP) / (2 * GridMap.STEP));
+        return new IntPosition((gridPositionX - GridMap.STEP) / (2 * GridMap.STEP),
+                (gridPositionY - GridMap.STEP) / (2 * GridMap.STEP));
     }
-
 
     public IntPosition getCenteredTilePosition() {
         return new IntPosition((gridPositionX) / (2 * GridMap.STEP), (gridPositionY) / (2 * GridMap.STEP));
@@ -53,6 +53,7 @@ public class Player extends Entity {
 
     @Override
     public void move(double delta) {
+        System.out.println("Desired " + desiredDirection + " | " + " current " + currentDirection);
         if (desiredDirection != null) {
             int speed = 1;
 
@@ -65,24 +66,32 @@ public class Player extends Entity {
                     speed = 2;
             }
 
-            stamina += speedX2 ? -1 : 1; 
+            stamina += speedX2 ? -1 : 1;
             stamina = Math.min(MAX_STAMINA, stamina);
             stamina = Math.max(0, stamina);
 
             int dtx = gridPositionX + desiredDirection.getX() * speed;
             int dty = gridPositionY + desiredDirection.getY() * speed;
-            if (map.isAbstractPositionAllowed(dtx, dty)) {
+            if (map.isAbstractPositionAllowed(dtx, dty) == SquareValidityResponse.VALID) {
                 this.currentDirection = desiredDirection;
             }
 
             if (currentDirection != null) {
                 int ctx = gridPositionX + currentDirection.getX() * speed;
                 int cty = gridPositionY + currentDirection.getY() * speed;
-                if (map.isAbstractPositionAllowed(ctx, cty)) {
+
+                if (map.isAbstractPositionAllowed(ctx, cty) == SquareValidityResponse.VALID) { // == VALID
                     this.gridPositionX += currentDirection.getX() * speed;
                     this.gridPositionY += currentDirection.getY() * speed;
+                } else if (map.isAbstractPositionAllowed(ctx, cty) == SquareValidityResponse.TELEPORT) {
+                    IntPosition tpPos = world.map.getNextTeleportPosition(this.currentDirection,
+                            new IntPosition(this.gridPositionX, this.gridPositionY), speed);
+
+                    this.gridPositionX = tpPos.x;
+                    this.gridPositionY = tpPos.y;
                 }
             }
+
         }
 
         this.position = getNormalizedPosition();
@@ -102,7 +111,8 @@ public class Player extends Entity {
         return this.position + " " + this.currentDirection + " " + this.desiredDirection;
     }
 
-	public int getScore() {
-		return score;
-	}
+    public int getScore() {
+        return score;
+    }
+
 }

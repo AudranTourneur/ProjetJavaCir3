@@ -105,7 +105,7 @@ public class WorldModel {
         Ghost g1 = new Ghost(this);
         g1.setSpawn(GhostSpawnX, GhostSpawnY);
         entities.add(g1);
-        FoodHandler.generateFood(this, 20);
+        FoodHandler.generateFood(this, 50);
     }
 
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
@@ -139,6 +139,7 @@ public class WorldModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        FoodHandler.manageFoodGeneration(this);
         FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
 
         if (!GameView.isDrawing) {

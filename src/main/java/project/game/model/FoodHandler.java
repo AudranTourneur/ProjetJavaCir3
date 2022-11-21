@@ -5,6 +5,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class FoodHandler {
+
+    static void manageFoodGeneration(WorldModel world) {
+        if (world.getCompletionPercent() >= 99) return;
+
+        if (world.getCurrentTick() % 600 == 0) {
+            generateFood(world, 10);
+        }
+
+        if (world.getCurrentTick() % 3600 == 0) {
+            generateFood(world, 50);
+        }
+    }
+
     static void generateFood(WorldModel world, int number) {
         // world.foods;
 

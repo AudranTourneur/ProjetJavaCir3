@@ -5,17 +5,20 @@ import java.util.HashSet;
 public class GridMap {
 	public static final int STEP = 10;
 	// public static final int NUMBER_OF_TILES = 15;
-	//Small map coords
-	//public static final int TILES_WIDTH = 20;
-	//public static final int TILES_HEIGHT = 15;
-	//Big map 
+	// Small map coords
+	// public static final int TILES_WIDTH = 20;
+	// public static final int TILES_HEIGHT = 15;
+	// Big map
 	public static final int TILES_WIDTH = 30;
 	public static final int TILES_HEIGHT = 21;
 
 	// public à déprécié
 	public GridTile[][] map = new GridTile[TILES_WIDTH][TILES_HEIGHT];
 
-	public boolean[][] validPositions = new boolean[TILES_WIDTH * 2 * STEP][TILES_HEIGHT * 2 * STEP];
+	public static final int MAX_ABSTRACT_WIDTH = TILES_WIDTH * 2 * STEP;
+	public static final int MAX_ABSTRACT_HEIGHT = TILES_HEIGHT * 2 * STEP;
+
+	public boolean[][] validPositions = new boolean[MAX_ABSTRACT_WIDTH][MAX_ABSTRACT_HEIGHT];
 
 	// validPositions[15][35]
 
@@ -52,12 +55,20 @@ public class GridMap {
 		// if (!ok) System.out.println("Failing " + pos);
 		return ok;
 	}
+	// INVALID, OUTSIDE_TELEPORT, VALID
 
-	boolean isAbstractPositionAllowed(int x, int y) {
-		if (x < 0 || y < 0 || x >= validPositions.length || y >= validPositions.length)
-			return false;
+	SquareValidityResponse isAbstractPositionAllowed(int x, int y) {
+		if (x < 0 || y < 0 || x >= MAX_ABSTRACT_WIDTH || y >= MAX_ABSTRACT_HEIGHT) {
+			System.out.println("OOB " + x + " " + y);
+			return SquareValidityResponse.INVALID;
+		}
 
-		return validPositions[x][y];
+		if (x <= STEP || y < STEP || x >= (MAX_ABSTRACT_WIDTH - STEP) || y >= (MAX_ABSTRACT_HEIGHT - STEP)) {
+			System.out.println("teleporting " + x + " " + y);
+			return SquareValidityResponse.TELEPORT;
+		}
+
+		return validPositions[x][y] ? SquareValidityResponse.VALID : SquareValidityResponse.INVALID;
 	}
 
 	HashSet<IntPosition> getEmptyPositions() {
@@ -68,5 +79,27 @@ public class GridMap {
 					emptyPositions.add(new IntPosition(x, y));
 
 		return emptyPositions;
+	}
+
+	// speed 1 or 2
+	IntPosition getNextTeleportPosition(Direction direction, IntPosition objectPosition, int speed) {
+		IntPosition pos = new IntPosition(objectPosition);
+		if (direction == Direction.LEFT) {
+			pos.x = GridMap.MAX_ABSTRACT_WIDTH - GridMap.STEP - speed;
+		}
+
+		if (direction == Direction.RIGHT) {
+			pos.x = -1 + GridMap.STEP + speed;
+		}
+
+		if (direction == Direction.UP) {
+			pos.y = GridMap.MAX_ABSTRACT_HEIGHT - GridMap.STEP - speed;
+		}
+
+		if (direction == Direction.DOWN) {
+			pos.y = -1 + GridMap.STEP + speed;
+		}
+
+		return pos;
 	}
 }

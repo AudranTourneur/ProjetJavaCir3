@@ -19,6 +19,11 @@ public class IntPosition  {
         this.y = y;
     }
 
+    public IntPosition(IntPosition other) {
+        this.x = other.x;
+        this.y = other.y;
+    }
+
     @Override
     public String toString() {
         return "Position [" + x + ";" + y + "]";

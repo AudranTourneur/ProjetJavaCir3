@@ -14,7 +14,8 @@ public class ProjectileWavesManager {
 	}
 
 	void dispatchEvents() {
-		if (model.getCurrentTick() >= 4 * 60 * 60) return;
+		if (model.getCurrentTick() >= 4 * 60 * 60)
+			return;
 
 		if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
 			queuedSpawners.get(0).accept(null);
@@ -39,8 +40,6 @@ public class ProjectileWavesManager {
 				launchRandomTarget();
 		}
 
-
-
 		if (model.getCurrentTick() > 1.5 * 60 * 60 && model.getCurrentTick() % 200 == 0) {
 			launchRandomStar();
 		}
@@ -61,30 +60,29 @@ public class ProjectileWavesManager {
 		 */
 
 		if (model.getCurrentTick() == (38 * 60)) {
-			launchUnidirectionEncirclement();
-			//launchTargetedEncirclement();
+			launchUnidirectionEncirclement(5);
+			// launchTargetedEncirclement();
 			for (int i = 0; i < 10; i++)
 				launchRandomStar();
 		}
 
 		if (model.getCurrentTick() == ((116 - 5) * 60)) {
-			launchTargetedEncirclement();
-			for (int i = 0; i < 20; i++) {
+			launchTargetedEncirclement(3);
+			for (int i = 0; i < 15; i++) {
 				launchRandomStar();
 			}
 		}
 
 		if (model.getCurrentTick() == 170 * 60) {
-			launchUnidirectionEncirclement();
+			launchUnidirectionEncirclement(3);
 		}
 
 		if (model.getCurrentTick() == 190 * 60) {
-			launchUnidirectionEncirclement();
+			launchUnidirectionEncirclement(3);
 		}
 
-
 		if (model.getCurrentTick() == 220 * 60) {
-			launchTargetedEncirclement();
+			launchTargetedEncirclement(2);
 		}
 	}
 
@@ -117,18 +115,18 @@ public class ProjectileWavesManager {
 
 	ArrayList<Consumer<Void>> queuedSpawners = new ArrayList<>();
 
-	void launchUnidirectionEncirclement() {
+	void launchUnidirectionEncirclement(int spacing) {
 		LinkedHashSet<Pair<Direction, IntPosition>> set = new LinkedHashSet<>();
-		for (int i = 0; i < GridMap.TILES_WIDTH; i += 2)
+		for (int i = 0; i < GridMap.TILES_WIDTH; i += spacing)
 			set.add(new Pair<Direction, IntPosition>(Direction.DOWN, new IntPosition(i, 0)));
 
-		for (int i = 0; i < GridMap.TILES_HEIGHT; i+=2)
+		for (int i = 0; i < GridMap.TILES_HEIGHT; i += spacing)
 			set.add(new Pair<Direction, IntPosition>(Direction.LEFT, new IntPosition(GridMap.TILES_WIDTH - 1, i)));
 
-		for (int i = GridMap.TILES_WIDTH - 1; i >= 0; i-=2)
+		for (int i = GridMap.TILES_WIDTH - 1; i >= 0; i -= spacing)
 			set.add(new Pair<Direction, IntPosition>(Direction.UP, new IntPosition(i, GridMap.TILES_HEIGHT - 1)));
 
-		for (int i = GridMap.TILES_HEIGHT - 1; i >= 0; i-=2)
+		for (int i = GridMap.TILES_HEIGHT - 1; i >= 0; i -= spacing)
 			set.add(new Pair<Direction, IntPosition>(Direction.RIGHT, new IntPosition(0, i)));
 
 		for (var dirAndPos : set) {
@@ -138,18 +136,18 @@ public class ProjectileWavesManager {
 		}
 	}
 
-	void launchTargetedEncirclement() {
+	void launchTargetedEncirclement(int spacing) {
 		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
-		for (int i = 0; i < GridMap.TILES_WIDTH; i++)
+		for (int i = 0; i < GridMap.TILES_WIDTH; i += spacing)
 			set.add(new IntPosition(i, 0));
 
-		for (int i = 0; i < GridMap.TILES_HEIGHT; i++)
+		for (int i = 0; i < GridMap.TILES_HEIGHT; i += spacing)
 			set.add(new IntPosition(GridMap.TILES_WIDTH - 1, i));
 
-		for (int i = GridMap.TILES_WIDTH - 1; i >= 0; i--)
+		for (int i = GridMap.TILES_WIDTH - 1; i >= 0; i -= spacing)
 			set.add(new IntPosition(i, GridMap.TILES_HEIGHT - 1));
 
-		for (int i = GridMap.TILES_HEIGHT - 1; i >= 0; i--)
+		for (int i = GridMap.TILES_HEIGHT - 1; i >= 0; i -= spacing)
 			set.add(new IntPosition(0, i));
 
 		for (IntPosition pos : set) {
