@@ -52,10 +52,13 @@ public class Ghost extends Entity{
 @Override
 public void move(double delta) {
     //TODO En fonction de l'etat actuel de la game qu'on va lire dans le model on va prendre des trajectoires differentes
-    int speed = 1;
+    allRandomMove(delta);
+    
+}
+    private void allRandomMove(double delta){
+        int speed = 1;
     if (isStuck()){
         getNewDirection();
-        System.out.println(desiredDirection);
     }else if(compteur % 100 == 0)getNewDirection();
 
     int dtx = gridPositionX + desiredDirection.getX() * speed;
@@ -78,8 +81,7 @@ public void move(double delta) {
     currentPosition=new IntPosition(gridPositionX, gridPositionY);
     compteur++;
     this.position=getNormalizedPosition();
-    
-}
+    }
 
     private void getNewDirection(){
         int rand=(int)(Math.random()*40%4);
