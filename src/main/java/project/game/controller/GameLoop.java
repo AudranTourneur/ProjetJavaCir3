@@ -10,6 +10,9 @@ import project.game.model.WorldModel;
 import project.game.view.GameView;
 
 public class GameLoop {
+
+    static final boolean FPS_COUNTER = true;
+
     public static void start(Stage stage) {
         // set title for the stage
         stage.setTitle("The Adventures of Pac-Cat");
@@ -32,27 +35,18 @@ public class GameLoop {
                 int counter = 0;
                 System.out.println("Thread Running");
 
-                long lastTime = System.nanoTime();
-
                 while (Main.alive) {
 
                     if (counter % 100 == 0)
-                        // System.out.println("thread heartbeat");
                         counter++;
-                    long time = System.nanoTime();
-                    int delta_time = (int) ((time - lastTime) / 1000000);
-                    lastTime = time;
-                    // System.out.println(delta_time);
-                    model.update(delta_time);
 
-                    // Platform.runLater(() -> {
-                    // view.display(false);
-                    // });
+                    //model.update(delta_time);
 
                     try {
                         Thread.sleep(1000 / FPS_TARGET);
+                        //System.out.println("sleep for " + 1000 / FPS_TARGET);
                     } catch (InterruptedException exception) {
-                        System.out.println(exception);
+                        exception.printStackTrace();
                     }
 
                 }
@@ -64,23 +58,28 @@ public class GameLoop {
         thread.start();
 
         // runGraphicsOperations(view);
-        initGameLoop(view);
+        initGameLoop(model, view);
+
+        AudioController.play();
     }
 
     static long lastCall = System.nanoTime();
     static double sumMs = 0.0;
     static int frames = 1;
 
-    static void initGameLoop(GameView view) {
+    static void initGameLoop(WorldModel model, GameView view) {
         final Duration oneFrameAmt = Duration.millis(1000 / 60);
         final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, actionEvent -> {
+            model.update(); 
+
             long now = System.nanoTime();
             double diffMs = (now - lastCall) / 1_000_000.0;
 
             frames++;
             sumMs += diffMs;
             final double avgMs = sumMs / (double) frames;
-            //System.out.println("FPS = " + (1000 / avgMs) + "| avg delta ms " + avgMs);
+            if (FPS_COUNTER)
+                System.out.println("FPS = " + (1000 / avgMs) + " | avg delta ms " + avgMs);
             lastCall = now;
 
             view.display(false);

@@ -8,9 +8,9 @@ public class SpawnTargetPattern extends SpawnPatttern {
 
 	@Override
 	void spawn(ProjectileSpawner spawner) {
-        final FloatPosition pos = spawner.position;
+		final FloatPosition pos = spawner.position;
 
-        Projectile.spawnProjectile(model, pos, model.player.position.minus(spawner.position).normalize());
-	}	
+		Projectile.spawnProjectile(model, pos, model.player.position.minus(spawner.position).normalize());
+	}
 
 }

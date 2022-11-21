@@ -10,7 +10,7 @@ public class GridMap {
 	//public static final int TILES_HEIGHT = 15;
 	//Big map 
 	public static final int TILES_WIDTH = 30;
-	public static final int TILES_HEIGHT = 20;
+	public static final int TILES_HEIGHT = 21;
 
 	// public à déprécié
 	public GridTile[][] map = new GridTile[TILES_WIDTH][TILES_HEIGHT];

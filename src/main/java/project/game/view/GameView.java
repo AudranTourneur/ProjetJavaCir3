@@ -8,6 +8,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import project.Main;
@@ -17,10 +18,10 @@ import project.game.model.Ghost;
 import project.game.model.GridMap;
 import project.game.model.GridTile;
 import project.game.model.IntPosition;
+import project.game.model.Player;
 import project.game.model.FloatPosition;
 import project.game.model.Projectile;
 import project.game.model.ProjectileSpawner;
-import project.game.model.SpawnPatttern;
 import project.menu.MenuConstants;
 
 import java.io.InputStream;
@@ -94,14 +95,10 @@ public class GameView {
         // set height and width
         canvas.setWidth(stage.getWidth());
         canvas.setHeight(stage.getHeight());
-        // canvas.setHeight(MenuConstants.windowHeight);
-        // canvas.setWidth(MenuConstants.windowWidth);
 
         System.out.println("offsets " + offsetX + " " + offsetY);
 
-        GraphicsContext ctx = canvas.getGraphicsContext2D();
-
-        this.ctx = ctx;
+        this.ctx = canvas.getGraphicsContext2D();
 
         // create a Group
         Group group = new Group(canvas);
@@ -125,7 +122,10 @@ public class GameView {
 
     }
 
+    public volatile static boolean isDrawing = false;
+
     public void display(boolean log) {
+        isDrawing = true;
         if (log)
             System.out.println("display is  called");
 
@@ -137,6 +137,18 @@ public class GameView {
         drawGhosts();
         drawProjectiles();
         drawSpawners();
+        drawTmpTexts();
+        isDrawing = false;
+    }
+
+    void drawTmpTexts() {
+        ctx.setFont(Font.font("System", 20));
+        ctx.setFill(Color.RED);
+        ctx.fillText("Deaths : " + this.world.player.deaths, 10, 20);
+        ctx.fillText("Stamina : " + (int) ((double) this.world.player.stamina / Player.MAX_STAMINA * 100.0) + "%", 210, 20);
+        ctx.fillText("Progress : " + this.world.getCompletionPercent() + "%", 410, 20);
+        ctx.fillText("Score : " + this.world.player.getScore(), 610, 20);
+        ctx.fillText("Est. time : " + this.world.getCurrentTick()/60 + "s", 810, 20);
     }
 
     void drawMap() {
@@ -145,7 +157,8 @@ public class GameView {
                 if (world.map.map[i][j] == GridTile.WALL) {
                     drawWall(i, j);
                 }
-                if (world.map.map[i][j] == GridTile.VOID || world.map.map[i][j] == GridTile.PLAYER_SPAWN || world.map.map[i][j] == GridTile.GHOST_SPAWN) {
+                if (world.map.map[i][j] == GridTile.VOID || world.map.map[i][j] == GridTile.PLAYER_SPAWN
+                        || world.map.map[i][j] == GridTile.GHOST_SPAWN) {
                     drawVoid(i, j);
                 }
             }
@@ -242,12 +255,13 @@ public class GameView {
 
     // Fonction va charger tout nos sprites dans le futur
     void load() {
-        InputStream pacchat = new Main().getClass().getResourceAsStream("images/cat_image.png");
-        InputStream ghost = new Main().getClass().getResourceAsStream("images/ghost.png");
-        InputStream warning = new Main().getClass().getResourceAsStream("images/warning.png");
+        InputStream pacchat = Main.class.getResourceAsStream("images/cat_image.png");
+        InputStream ghost = Main.class.getResourceAsStream("images/ghost.png");
+        InputStream warning = Main.class.getResourceAsStream("images/warning.png");
 
         assert pacchat != null;
         assert ghost != null;
+        assert warning != null;
 
         Image img = new Image(pacchat);
         Image img2 = new Image(ghost);

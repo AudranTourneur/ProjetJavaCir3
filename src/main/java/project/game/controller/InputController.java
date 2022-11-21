@@ -16,17 +16,17 @@ public class InputController {
 
     public void handle(KeyEvent event) {
         WorldModel world = state.model;
-        //System.out.println("Handle " + event);
-        if (event.getCode() == KeyCode.RIGHT)
+        // System.out.println("Handle " + event);
+        if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.D)
             world.player.desiredDirection = Direction.RIGHT;
 
-        if (event.getCode() == KeyCode.LEFT)
+        if (event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.Q)
             world.player.desiredDirection = Direction.LEFT;
 
-        if (event.getCode() == KeyCode.DOWN)
+        if (event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.S)
             world.player.desiredDirection = Direction.DOWN;
 
-        if (event.getCode() == KeyCode.UP)
+        if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.Z)
             world.player.desiredDirection = Direction.UP;
 
         if (event.getCode() == KeyCode.ESCAPE) {
@@ -40,7 +40,7 @@ public class InputController {
         }
 
         if (event.getCode() == KeyCode.SPACE) {
-            state.model.speedX2 = !state.model.speedX2;
+            state.model.player.speedX2 = !state.model.player.speedX2;
         }
     }
 }

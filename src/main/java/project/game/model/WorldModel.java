@@ -10,20 +10,19 @@ import java.util.List;
 import java.util.Scanner;
 
 import project.Main;
+import project.game.view.GameView;
 
 public class WorldModel {
     public Player player;
 
     public int score;
-    public int compteur; // compteur des update
+    private int currentTick; // compteur des update
 
     public List<Entity> entities = new ArrayList<>();
 
     public GridMap map = new GridMap();
 
     public HashSet<IntPosition> foods = new HashSet<>();
-
-    public boolean speedX2 = false;
 
     public WorldModel() {
         init();
@@ -111,16 +110,18 @@ public class WorldModel {
 
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
 
+    ProjectileWavesManager waveManager = new ProjectileWavesManager(this);
+
     // Obligé d'utiliser un buffer pour les ajouts d'entités en cours d'itération à
     // cause des java.lang.ConcurrentModificationException
-    private ArrayList<Entity> entityBuffer = new ArrayList<>();
+    private final ArrayList<Entity> entityBuffer = new ArrayList<>();
 
     void addEntity(Entity e) {
         entityBuffer.add(e);
     }
 
-    synchronized public void update(double deltaMs) {
-        compteur++;
+    synchronized public void update() {
+        currentTick++;
 
         ArrayList<Entity> toDelete = new ArrayList<>();
 
@@ -129,7 +130,7 @@ public class WorldModel {
             // for (Entity e : entities) {
             for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext();) {
                 var e = iterator.next();
-                e.move(deltaMs);
+                e.move(0);
 
                 if (e.markedForDeletion) {
                     toDelete.add(e);
@@ -138,16 +139,25 @@ public class WorldModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        FoodHandler.manageFoodEating(this, (compteur % 100 == 0));
+        FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
 
-        for (Entity e : toDelete) {
-            entities.remove(e);
+        if (!GameView.isDrawing) {
+            
+            for (Entity e : toDelete) {
+                entities.remove(e);
+            }
+
+            entities.addAll(entityBuffer);
+            entityBuffer.clear();
+        }
+        else {
+            System.out.println("fail to acquire");
         }
 
-        entities.addAll(entityBuffer); 
-        entityBuffer.clear();
+        //projectileHandler.manageProjectileSpawn();
 
-        projectileHandler.manageProjectileSpawn();
+        waveManager.dispatchEvents();
+
         projectileHandler.manageProjectileCollisions();
 
     }
@@ -169,6 +179,12 @@ public class WorldModel {
     }
 
     public int getCurrentTick() {
-        return compteur;
+        return currentTick;
+    }
+
+    public static final int MAX_TICK = 4 * 60 * 60;
+
+    public int getCompletionPercent() {
+        return (int) (currentTick / (double) MAX_TICK * 100);
     }
 }
