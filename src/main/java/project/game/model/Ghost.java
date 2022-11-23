@@ -1,13 +1,8 @@
 package project.game.model;
 
-<<<<<<< HEAD
 //Les variables position ne sont plus utilisées depuis qu'on utilise des données discrètes pur le déplacement
-public class Ghost extends Entity{
-    
-=======
 public class Ghost extends Entity {
 
->>>>>>> 0e5caa24b468067a9d8c3a25640da6105b0d894c
     public Direction currentDirection;
     public Direction desiredDirection;
 
@@ -55,33 +50,18 @@ public class Ghost extends Entity {
                 (float) this.gridPositionY / (2 * GridMap.STEP));
     }
 
-<<<<<<< HEAD
-@Override
-public void move(double delta) {
-    //TODO En fonction de l'etat actuel de la game qu'on va lire dans le model on va prendre des trajectoires differentes
-    //movement de niveau 1 on va dire
-    allRandomMove(delta);
-
-    //movement qui é
-    
-}
-    private void allRandomMove(double delta){
-        int speed = 1;
-    if (isStuck()){
-        getNewDirection();
-        //System.out.println(desiredDirection);
-    }else if(compteur % 100 == 0)getNewDirection();
-=======
     @Override
     public void move(double delta) {
         // TODO En fonction de l'etat actuel de la game qu'on va lire dans le model on
         // va prendre des trajectoires differentes
->>>>>>> 0e5caa24b468067a9d8c3a25640da6105b0d894c
+        // movement de niveau 1 on va dire
+        allRandomMove(delta);
 
-        if (world.player.gridPositionX == this.gridPositionX && world.player.gridPositionY == this.gridPositionY) {
-            world.player.hit();
-        }
+        // movement qui é
 
+    }
+
+    private void allRandomMove(double delta) {
         int speed = 1;
         if (isStuck()) {
             getNewDirection();
@@ -109,35 +89,11 @@ public void move(double delta) {
         currentPosition = new IntPosition(gridPositionX, gridPositionY);
         compteur++;
         this.position = getNormalizedPosition();
-
     }
-<<<<<<< HEAD
-    oldPosition=currentPosition;
-    currentPosition=new IntPosition(gridPositionX, gridPositionY);
-    compteur++;
-    this.position=getNormalizedPosition();
-    }
-
-    private void getNewDirection(){
-        int rand=(int)(Math.random()*40%4);
-        System.out.println(rand);
-        switch(rand){
-            case 0:desiredDirection=Direction.DOWN;break;
-            case 1:desiredDirection=Direction.UP;break;
-            case 2:desiredDirection=Direction.RIGHT;break;
-            case 3:desiredDirection=Direction.LEFT;break;
-        }
-    }
-
-    private boolean isStuck(){
-        if(currentPosition.equals(oldPosition)){
-            System.out.println("we are stuck");
-        }
-=======
 
     private void getNewDirection() {
         int rand = (int) (Math.random() * 40 % 4);
-        // System.out.println(rand);
+        System.out.println(rand);
         switch (rand) {
             case 0:
                 desiredDirection = Direction.DOWN;
@@ -155,10 +111,9 @@ public void move(double delta) {
     }
 
     private boolean isStuck() {
-        // if(currentPosition.equals(oldPosition)){
-        // System.out.println("we are stuck");
-        // }
->>>>>>> 0e5caa24b468067a9d8c3a25640da6105b0d894c
+        if (currentPosition.equals(oldPosition)) {
+            System.out.println("we are stuck");
+        }
         return currentPosition.equals(oldPosition);
     }
 
