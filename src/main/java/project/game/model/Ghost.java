@@ -90,6 +90,7 @@ public class Ghost extends Entity {
         compteur++;
         this.position = getNormalizedPosition();
     }
+    
 
     private void getNewDirection() {
         int rand = (int) (Math.random() * 40 % 4);

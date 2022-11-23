@@ -19,19 +19,26 @@ public class WorldModel {
     private int currentTick; // compteur des update
 
     public List<Entity> entities = new ArrayList<>();
+    
+    // Obligé d'utiliser un buffer pour les ajouts d'entités en cours d'itération à
+    // cause des java.lang.ConcurrentModificationException
+    private final ArrayList<Entity> entityBuffer = new ArrayList<>();
 
     public GridMap map = new GridMap();
 
     public HashSet<IntPosition> foods = new HashSet<>();
+
+    ProjectileHandler projectileHandler = new ProjectileHandler(this);
+
+    ProjectileWavesManager waveManager = new ProjectileWavesManager(this);
+
+    GhostHandler ghostHandler = new GhostHandler(this);
 
     public WorldModel() {
         init();
     }
 
     void init() {
-        // ajouter ghosts
-
-        // --- MAP ---
 
         Scanner in = new Scanner(
                 new Main().getClass().getResourceAsStream("logic/map.txt"), "UTF-8").useDelimiter("\\A");
@@ -44,11 +51,12 @@ public class WorldModel {
 
         BufferedReader bufReader = new BufferedReader(new StringReader(text));
 
+        
+
         String line = null;
         int PlayerSpawnX = 0;
         int PlayerSpawnY = 0;
-        int GhostSpawnX = 0;
-        int GhostSpawnY = 0;
+        
         try {
             int y = 0;
             while ((line = bufReader.readLine()) != null) {
@@ -61,8 +69,8 @@ public class WorldModel {
                         PlayerSpawnX = x;
                         PlayerSpawnY = y;
                     } else if (map.getAt(x, y) == GridTile.GHOST_SPAWN) {
-                        GhostSpawnX = x;
-                        GhostSpawnY = y;
+                        ghostHandler.addSpawnPoint(x, y);    
+                    
                     }
 
                 }
@@ -102,22 +110,18 @@ public class WorldModel {
         this.player = new Player(this);
         player.setSpawn(PlayerSpawnX, PlayerSpawnY);
         entities.add(player);
-        Ghost g1 = new Ghost(this);
-        g1.setSpawn(GhostSpawnX, GhostSpawnY);
-        entities.add(g1);
         FoodHandler.generateFood(this, 50);
     }
 
-    ProjectileHandler projectileHandler = new ProjectileHandler(this);
+    
 
-    ProjectileWavesManager waveManager = new ProjectileWavesManager(this);
-
-    // Obligé d'utiliser un buffer pour les ajouts d'entités en cours d'itération à
-    // cause des java.lang.ConcurrentModificationException
-    private final ArrayList<Entity> entityBuffer = new ArrayList<>();
 
     void addEntity(Entity e) {
         entityBuffer.add(e);
+    }
+
+    void removeEntity(Entity e){
+        entities.remove(e);
     }
 
     synchronized public void update() {
@@ -148,6 +152,12 @@ public class WorldModel {
         if (this.getCurrentTick() < 4 * 60 * 60) {
             FoodHandler.manageFoodGeneration(this);
             FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
+            
+        }
+        System.out.println(this.getCurrentTick()%(10*60));
+        if(this.getCurrentTick()%(10*60)==0){
+            ghostHandler.addGhost();
+            System.out.println("We should be adding a ghost");
         }
 
         if (!GameView.isDrawing) {
