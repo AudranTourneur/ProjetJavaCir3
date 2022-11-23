@@ -35,7 +35,7 @@ public class ProjectileHandler {
                 Projectile projectile = (Projectile) entity;
                 if (checkPlayerProjectileCollision(model.player, projectile)) {
                     // System.out.println("COLLISION!!!");
-                    model.player.deaths++;
+                    model.player.hit();
                     projectile.markedForDeletion = true;
                     // System.out.println("Player deaths: " + model.player.deaths);
                 }
@@ -45,9 +45,6 @@ public class ProjectileHandler {
     }
 
     static boolean checkPlayerProjectileCollision(Player player, Projectile projectile) {
-        //double xDiff = (player.position.x + 0.5) - (projectile.position.x + Projectile.RADIUS_SIZE);
-        //double yDiff = (player.position.y + 0.5) - (projectile.position.y + Projectile.RADIUS_SIZE);
-
         double xDiff = (player.position.x) - (projectile.position.x);
         double yDiff = (player.position.y) - (projectile.position.y);
 

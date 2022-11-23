@@ -122,6 +122,15 @@ public class GameView {
 
     }
 
+    void drawEndScreenIfNeeded() {
+        if (world.getCompletionPercent() < 100)
+            return;
+        ctx.setFill(Color.RED);
+        ctx.setFont(new Font("System", 70));
+        ctx.fillText("Final score : " + (this.world.player.score / (this.world.player.deaths + 1)), tileSizeX * 14,
+                tileSizeY * 10);
+    }
+
     public volatile static boolean isDrawing = false;
 
     public void display(boolean log) {
@@ -138,6 +147,8 @@ public class GameView {
         drawProjectiles();
         drawSpawners();
         drawTmpTexts();
+        drawEndScreenIfNeeded();
+
         isDrawing = false;
     }
 
@@ -145,10 +156,11 @@ public class GameView {
         ctx.setFont(Font.font("System", 20));
         ctx.setFill(Color.RED);
         ctx.fillText("Deaths : " + this.world.player.deaths, 10, 20);
-        ctx.fillText("Stamina : " + (int) ((double) this.world.player.stamina / Player.MAX_STAMINA * 100.0) + "%", 210, 20);
+        ctx.fillText("Stamina : " + (int) ((double) this.world.player.stamina / Player.MAX_STAMINA * 100.0) + "%", 210,
+                20);
         ctx.fillText("Progress : " + this.world.getCompletionPercent() + "%", 410, 20);
         ctx.fillText("Score : " + this.world.player.getScore(), 610, 20);
-        ctx.fillText("Est. time : " + this.world.getCurrentTick()/60 + "s", 810, 20);
+        ctx.fillText("Est. time : " + this.world.getCurrentTick() / 60 + "s", 810, 20);
     }
 
     void drawMap() {
@@ -219,7 +231,9 @@ public class GameView {
             return;
 
         final DisplayData dispData = new DisplayData(this, world.player.position, 1);
-        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
+
+        if (this.world.player.invulnerabilityTicks == 0 || this.world.getCurrentTick() % 2 == 0)
+            ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
     }
 
     void drawProjectile(float x, float y) {

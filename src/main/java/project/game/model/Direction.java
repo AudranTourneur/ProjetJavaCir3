@@ -22,4 +22,10 @@ public enum Direction {
     public int getX() {
         return x;
     }
+
+
+    @Override
+    public String toString() {
+        return this.name();
+    }
 }

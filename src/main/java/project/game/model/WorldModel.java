@@ -34,7 +34,7 @@ public class WorldModel {
         // --- MAP ---
 
         Scanner in = new Scanner(
-                new Main().getClass().getResourceAsStream("game/pacmap.txt"), "UTF-8").useDelimiter("\\A");
+                new Main().getClass().getResourceAsStream("logic/map.txt"), "UTF-8").useDelimiter("\\A");
 
         String text = in.next();
 
@@ -105,7 +105,7 @@ public class WorldModel {
         Ghost g1 = new Ghost(this);
         g1.setSpawn(GhostSpawnX, GhostSpawnY);
         entities.add(g1);
-        FoodHandler.generateFood(this, 20);
+        FoodHandler.generateFood(this, 50);
     }
 
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
@@ -132,6 +132,11 @@ public class WorldModel {
                 var e = iterator.next();
                 e.move(0);
 
+                if (e instanceof Projectile) {
+                    if (getCompletionPercent() >= 100)
+                        e.markedForDeletion = true;
+                }
+
                 if (e.markedForDeletion) {
                     toDelete.add(e);
                 }
@@ -139,22 +144,25 @@ public class WorldModel {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
+
+        if (this.getCurrentTick() < 4 * 60 * 60) {
+            FoodHandler.manageFoodGeneration(this);
+            FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
+        }
 
         if (!GameView.isDrawing) {
-            
+
             for (Entity e : toDelete) {
                 entities.remove(e);
             }
 
             entities.addAll(entityBuffer);
             entityBuffer.clear();
-        }
-        else {
+        } else {
             System.out.println("fail to acquire");
         }
 
-        //projectileHandler.manageProjectileSpawn();
+        // projectileHandler.manageProjectileSpawn();
 
         waveManager.dispatchEvents();
 

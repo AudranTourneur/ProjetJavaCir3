@@ -11,7 +11,7 @@ import project.game.view.GameView;
 
 public class GameLoop {
 
-    static final boolean FPS_COUNTER = true;
+    static final boolean FPS_COUNTER = false;
 
     public static void start(Stage stage) {
         // set title for the stage
@@ -60,7 +60,7 @@ public class GameLoop {
         // runGraphicsOperations(view);
         initGameLoop(model, view);
 
-        AudioController.play();
+        AudioController.playMusic();
     }
 
     static long lastCall = System.nanoTime();
