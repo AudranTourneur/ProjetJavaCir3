@@ -33,6 +33,7 @@ public class WorldModel {
     ProjectileWavesManager waveManager = new ProjectileWavesManager(this);
 
     GhostHandler ghostHandler = new GhostHandler(this);
+    public LevelProgressionManager levelProgressionManager = new LevelProgressionManager(this);
 
     public WorldModel() {
         init();
