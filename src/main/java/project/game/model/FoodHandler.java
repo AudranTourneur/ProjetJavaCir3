@@ -44,6 +44,7 @@ public class FoodHandler {
             System.out.println("Found the food");
             world.foods.remove(pos);
             world.player.score += 100;
+            world.player.foodRecovered += 1;
         }
 
     }

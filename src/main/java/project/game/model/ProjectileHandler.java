@@ -7,37 +7,13 @@ public class ProjectileHandler {
         this.model = model;
     }
 
-    void manageProjectileSpawn() {
-
-        if (model.getCurrentTick() % 150 == 0) {
-            final IntPosition randomPosition = new IntPosition((int) (Math.random() *
-                    GridMap.TILES_WIDTH),
-                    (int) (Math.random() * GridMap.TILES_HEIGHT));
-
-            // addSpawner(randomPosition);
-            addStarSpawner(randomPosition);
-
-        }
-
-        if (model.getCurrentTick() % 150 == 74) {
-            final IntPosition randomPosition = new IntPosition((int) (Math.random() *
-                    GridMap.TILES_WIDTH),
-                    (int) (Math.random() * GridMap.TILES_HEIGHT));
-
-            // addSpawner(randomPosition);
-            addTargetSpawner(randomPosition);
-        }
-    }
-
     void manageProjectileCollisions() {
         for (Entity entity : model.entities) {
             if (entity instanceof Projectile) {
                 Projectile projectile = (Projectile) entity;
                 if (checkPlayerProjectileCollision(model.player, projectile)) {
-                    // System.out.println("COLLISION!!!");
                     model.player.hit();
                     projectile.markedForDeletion = true;
-                    // System.out.println("Player deaths: " + model.player.deaths);
                 }
 
             }

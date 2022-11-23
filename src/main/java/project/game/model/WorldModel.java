@@ -24,6 +24,8 @@ public class WorldModel {
 
     public HashSet<IntPosition> foods = new HashSet<>();
 
+    public LevelProgressionManager levelProgressionManager = new LevelProgressionManager(this);
+
     public WorldModel() {
         init();
     }

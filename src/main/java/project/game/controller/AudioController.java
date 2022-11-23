@@ -21,7 +21,7 @@ public class AudioController {
 
 			musicPlayer = new MediaPlayer(audio);
 
-			musicPlayer.setVolume(0.5);
+			musicPlayer.setVolume(0.9);
 
 			musicPlayer.play();
 
@@ -41,7 +41,7 @@ public class AudioController {
 
 			hitPlayer = new MediaPlayer(audio);
 
-			hitPlayer.setVolume(0.75);
+			hitPlayer.setVolume(1);
 
 			hitPlayer.setStartTime(Duration.millis(700));
 			hitPlayer.play();
