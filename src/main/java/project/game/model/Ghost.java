@@ -55,12 +55,23 @@ public class Ghost extends Entity {
         // TODO En fonction de l'etat actuel de la game qu'on va lire dans le model on
         // va prendre des trajectoires differentes
         // movement de niveau 1 on va dire
+        checkCollision();
         allRandomMove(delta);
 
         // movement qui é
 
     }
+    private void checkCollision(){
+        //On a deux conditions parce que si notre joueuer va a vitesse 2 fois plus vite alors i ly a des chances qu'on e check pas
+        //la bonne position du joueur
+        if( getGridPositionX()==world.player.getGridPositionX() && getGridPositionY()==world.player.getGridPositionY() ||
+            (getGridPositionX()+1==world.player.getGridPositionX() && getGridPositionY()+1==world.player.getGridPositionY()) ||
+            (getGridPositionX()-1==world.player.getGridPositionX() && getGridPositionY()-1==world.player.getGridPositionY())
+        ){
+            world.player.hit();
+        }
 
+    }
     private void allRandomMove(double delta) {
         int speed = 1;
         if (isStuck()) {
@@ -90,7 +101,7 @@ public class Ghost extends Entity {
         compteur++;
         this.position = getNormalizedPosition();
     }
-    
+
 
     private void getNewDirection() {
         int rand = (int) (Math.random() * 40 % 4);

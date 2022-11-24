@@ -178,18 +178,27 @@ public class GameView {
     }
 
     void drawWall(int x, int y) {
-        float gray = 0.2f;
+        
+        Image img = spriteMap.get("wall");
+        if (img == null)
+            return;
+
+        final DisplayData dispData = new DisplayData(this, x+0.5, y+0.5, 1);
+        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
+        /*
+        float gray = 0.35f;
         ctx.setFill(new Color(gray, gray, gray, 1));
 
-        final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
+        final DisplayData dispData = new DisplayData(this, x+0.5 , y+0.5 , 1);
         ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
+        */
     }
 
     void drawVoid(int x, int y) {
         float gray = 0.75f;
         ctx.setFill(new Color(gray, gray, gray, 1));
 
-        final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
+        final DisplayData dispData = new DisplayData(this, x+0.5 , y+0.5 , 1);
         ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
     }
 
@@ -272,6 +281,7 @@ public class GameView {
         InputStream pacchat = Main.class.getResourceAsStream("images/cat_image.png");
         InputStream ghost = Main.class.getResourceAsStream("images/ghost.png");
         InputStream warning = Main.class.getResourceAsStream("images/warning.png");
+        InputStream wall = Main.class.getResourceAsStream("images/wall.jpg");
 
         assert pacchat != null;
         assert ghost != null;
@@ -280,10 +290,12 @@ public class GameView {
         Image img = new Image(pacchat);
         Image img2 = new Image(ghost);
         Image img3 = new Image(warning);
+        Image img4 = new Image(wall);
 
         spriteMap.put("player", img);
         spriteMap.put("ghost1", img2);
         spriteMap.put("warning", img3);
+        spriteMap.put("wall",img4);
     }
 
     public void displayDebugInfo() {
