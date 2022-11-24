@@ -111,7 +111,8 @@ public class WorldModel {
         this.player = new Player(this);
         player.setSpawn(PlayerSpawnX, PlayerSpawnY);
         entities.add(player);
-        FoodHandler.generateFood(this, 50);
+        levelProgressionManager.firstSpawn();
+        //FoodHandler.generateFood(this, 50);
     }
 
     
@@ -150,11 +151,13 @@ public class WorldModel {
             e.printStackTrace();
         }
 
-        if (this.getCurrentTick() < 4 * 60 * 60) {
-            FoodHandler.manageFoodGeneration(this);
+        //if (this.getCurrentTick() < 4 * 60 * 60) {
+           // FoodHandler.manageFoodGeneration(this);
             FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
+            levelProgressionManager.manage();
+
             
-        }
+        //}
         System.out.println(this.getCurrentTick()%(10*60));
         if(this.getCurrentTick()%(10*60)==0){
             ghostHandler.addGhost();

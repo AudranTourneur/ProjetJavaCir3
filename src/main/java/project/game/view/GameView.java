@@ -4,9 +4,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -161,6 +163,8 @@ public class GameView {
         ctx.fillText("Progress : " + this.world.getCompletionPercent() + "%", 410, 20);
         ctx.fillText("Score : " + this.world.player.getScore(), 610, 20);
         ctx.fillText("Est. time : " + this.world.getCurrentTick() / 60 + "s", 810, 20);
+        ctx.fillText("Food remaining : " + this.world.levelProgressionManager.getFoodRemaining(), 1010, 20);
+        ctx.fillText("Level : " + this.world.levelProgressionManager.currentLevel, 1210, 20);
     }
 
     void drawMap() {
@@ -208,6 +212,7 @@ public class GameView {
             return;
 
         final DisplayData dispData = new DisplayData(this, x, y, 1);
+
         ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
     }
 
@@ -241,8 +246,16 @@ public class GameView {
 
         final DisplayData dispData = new DisplayData(this, world.player.position, 1);
 
-        if (this.world.player.invulnerabilityTicks == 0 || this.world.getCurrentTick() % 2 == 0)
-            ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
+        if (this.world.player.invulnerabilityTicks == 0 || this.world.getCurrentTick() % 2 == 0) {
+            ImageView iv = new ImageView(img);
+            if (this.world.player.currentDirection != null) {
+                iv.setRotate(this.world.player.currentDirection.toDeg());
+            }
+            SnapshotParameters params = new SnapshotParameters();
+            params.setFill(Color.TRANSPARENT);
+            Image rotatedImage = iv.snapshot(params, null);
+            ctx.drawImage(rotatedImage, dispData.x, dispData.y, dispData.width, dispData.height);
+        }
     }
 
     void drawProjectile(float x, float y) {

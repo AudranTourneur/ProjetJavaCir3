@@ -12,6 +12,7 @@ public class AudioController {
 	static MediaPlayer musicPlayer;
 
 	static void playMusic() {
+		if (!Configuration.AUDIO_ENABLED) return;
 		try {
 			System.out.println("playing audio");
 			String path = Main.class.getResource("audio/music.mp3").toURI().toString();
