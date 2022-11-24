@@ -1,5 +1,6 @@
 package project.game.controller;
 
 public class Configuration {
-    static boolean AUDIO_ENABLED = false;
+    static final boolean AUDIO_ENABLED = false;
+    static final boolean FPS_COUNTER = false;
 }

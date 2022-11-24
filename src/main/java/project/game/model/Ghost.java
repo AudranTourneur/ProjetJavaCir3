@@ -57,21 +57,22 @@ public class Ghost extends Entity {
         // movement de niveau 1 on va dire
         checkCollision();
         allRandomMove(delta);
-
-        // movement qui é
-
     }
-    private void checkCollision(){
-        //On a deux conditions parce que si notre joueuer va a vitesse 2 fois plus vite alors i ly a des chances qu'on e check pas
-        //la bonne position du joueur
-        if( getGridPositionX()==world.player.getGridPositionX() && getGridPositionY()==world.player.getGridPositionY() ||
-            (getGridPositionX()+1==world.player.getGridPositionX() && getGridPositionY()+1==world.player.getGridPositionY()) ||
-            (getGridPositionX()-1==world.player.getGridPositionX() && getGridPositionY()-1==world.player.getGridPositionY())
-        ){
-            world.player.hit();
+
+    private void checkCollision() {
+        IntPosition[] dirs = { Direction.DOWN.getBaseVector(), Direction.UP.getBaseVector(),
+                Direction.LEFT.getBaseVector(), Direction.RIGHT.getBaseVector(), new IntPosition(0, 0) };
+
+        for (IntPosition dir : dirs) {
+            if (getGridPositionX() + dir.x == world.player.getGridPositionX()
+                    && getGridPositionY() + dir.y == world.player.getGridPositionY()) {
+                world.player.hit();
+                break;
+            }
         }
 
     }
+
     private void allRandomMove(double delta) {
         int speed = 1;
         if (isStuck()) {
@@ -87,21 +88,19 @@ public class Ghost extends Entity {
         }
 
         if (currentDirection != null) {
-
             int ctx = gridPositionX + currentDirection.getX() * speed;
             int cty = gridPositionY + currentDirection.getY() * speed;
             if (map.isAbstractPositionAllowed(ctx, cty) == SquareValidityResponse.VALID) {
                 this.gridPositionX += currentDirection.getX() * speed;
                 this.gridPositionY += currentDirection.getY() * speed;
-
             }
         }
+
         oldPosition = currentPosition;
         currentPosition = new IntPosition(gridPositionX, gridPositionY);
         compteur++;
         this.position = getNormalizedPosition();
     }
-
 
     private void getNewDirection() {
         int rand = (int) (Math.random() * 40 % 4);

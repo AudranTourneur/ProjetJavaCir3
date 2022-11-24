@@ -41,4 +41,8 @@ public enum Direction {
         }
         return 0;
     }
+
+    public IntPosition getBaseVector() {
+        return new IntPosition(x, y);
+    }
 }

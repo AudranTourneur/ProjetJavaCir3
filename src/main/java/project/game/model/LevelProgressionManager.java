@@ -2,14 +2,14 @@ package project.game.model;
 
 public class LevelProgressionManager {
 
-    WorldModel model;
+    private WorldModel model;
 
-    LevelProgressionManager(WorldModel model) {
+    public LevelProgressionManager(WorldModel model) {
         this.model = model;
     }
 
-    public static final int NUMBER_OF_LEVELS = 3;
-    int[] levelToFoodRequired = { 1, 2, 3 };
+    private static final int[] levelToFoodRequired = { 10, 20, 30, 40, 50 };
+    private static final int NUMBER_OF_LEVELS = levelToFoodRequired.length;
 
     public int currentLevel = 0;
     private int foodRemaining = levelToFoodRequired[0];
@@ -42,7 +42,7 @@ public class LevelProgressionManager {
 
     // int[] levelToFoodRequire = {10, 20, 30, 40, 50};
 
-    void incrementCurrentLevel() {
+    public void incrementCurrentLevel() {
         if (currentLevel < NUMBER_OF_LEVELS - 1) {
             currentLevel++;
             this.foodRemaining = levelToFoodRequired[currentLevel];
@@ -69,13 +69,13 @@ public class LevelProgressionManager {
             manageLevelTwo();
     }
 
-    void manageLevelZero() {
+    private void manageLevelZero() {
     }
 
-    void manageLevelOne() {
+    private void manageLevelOne() {
     }
 
-    void manageLevelTwo() {
+    private void manageLevelTwo() {
     }
 
     public int getCurrentLevel() {
