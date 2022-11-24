@@ -21,75 +21,71 @@ public class ProjectileWavesManager {
 			manageLevelOne();
 		}
 
-		/*
-		 * if (model.getCurrentTick() >= 4 * 60 * 60)
-		 * return;
-		 * 
-		 * if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
-		 * queuedSpawners.get(0).accept(null);
-		 * queuedSpawners.remove(0);
-		 * }
-		 * 
-		 * if (model.getCurrentTick() == 15 * 60) {
-		 * for (int i = 0; i < 5; i++)
-		 * launchRandomTarget();
-		 * }
-		 * 
-		 * if (model.getCurrentTick() % 300 == 150) {
-		 * launchRandomTarget();
-		 * }
-		 * 
-		 * if (model.getCurrentTick() > 40 * 60 && model.getCurrentTick() % 300 == 0) {
-		 * launchRandomStar();
-		 * }
-		 * 
-		 * if (model.getCurrentTick() == 100 * 60) {
-		 * for (int i = 0; i < 10; i++)
-		 * launchRandomTarget();
-		 * }
-		 * 
-		 * if (model.getCurrentTick() > 1.5 * 60 * 60 && model.getCurrentTick() % 200 ==
-		 * 0) {
-		 * launchRandomStar();
-		 * }
-		 * 
-		 * if (model.getCurrentTick() > 2 * 60 * 60 && model.getCurrentTick() % 500 ==
-		 * 0) {
-		 * launchRandomStar();
-		 * }
-		 * 
-		 * if (model.getCurrentTick() > 3 * 60 * 60 && model.getCurrentTick() % 350 ==
-		 * 0) {
-		 * launchRandomTarget();
-		 * launchRandomStar();
-		 * }
-		 * 
-		 * if (model.getCurrentTick() == (37 * 60)) {
-		 * launchUnidirectionEncirclement(5);
-		 * // launchTargetedEncirclement();
-		 * for (int i = 0; i < 10; i++)
-		 * launchRandomStar();
-		 * }
-		 * 
-		 * if (model.getCurrentTick() == ((116 - 5) * 60)) {
-		 * launchTargetedEncirclement(3);
-		 * for (int i = 0; i < 15; i++) {
-		 * launchRandomStar();
-		 * }
-		 * }
-		 * 
-		 * if (model.getCurrentTick() == 170 * 60) {
-		 * launchUnidirectionEncirclement(3);
-		 * }
-		 * 
-		 * if (model.getCurrentTick() == 190 * 60) {
-		 * launchUnidirectionEncirclement(3);
-		 * }
-		 * 
-		 * if (model.getCurrentTick() == 220 * 60) {
-		 * launchTargetedEncirclement(2);
-		 * }
-		 */
+		if (model.getCurrentTick() >= 4 * 60 * 60)
+			return;
+
+		if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
+			queuedSpawners.get(0).accept(null);
+			queuedSpawners.remove(0);
+		}
+
+		if (model.getCurrentTick() == 15 * 60) {
+			for (int i = 0; i < 5; i++)
+				launchRandomTarget();
+		}
+
+		if (model.getCurrentTick() % 300 == 150) {
+			launchRandomTarget();
+		}
+
+		if (model.getCurrentTick() > 40 * 60 && model.getCurrentTick() % 300 == 0) {
+			launchRandomStar();
+		}
+
+		if (model.getCurrentTick() == 100 * 60) {
+			for (int i = 0; i < 10; i++)
+				launchRandomTarget();
+		}
+
+		if (model.getCurrentTick() > 1.5 * 60 * 60 && model.getCurrentTick() % 200 == 0) {
+			launchRandomStar();
+		}
+
+		if (model.getCurrentTick() > 2 * 60 * 60 && model.getCurrentTick() % 500 == 0) {
+			launchRandomStar();
+		}
+
+		if (model.getCurrentTick() > 3 * 60 * 60 && model.getCurrentTick() % 350 == 0) {
+			launchRandomTarget();
+			launchRandomStar();
+		}
+
+		if (model.getCurrentTick() == (37 * 60)) {
+			launchUnidirectionEncirclement(5);
+			// launchTargetedEncirclement();
+			for (int i = 0; i < 10; i++)
+				launchRandomStar();
+		}
+
+		if (model.getCurrentTick() == ((116 - 5) * 60)) {
+			launchTargetedEncirclement(3);
+			for (int i = 0; i < 15; i++) {
+				launchRandomStar();
+			}
+		}
+
+		if (model.getCurrentTick() == 170 * 60) {
+			launchUnidirectionEncirclement(3);
+		}
+
+		if (model.getCurrentTick() == 190 * 60) {
+			launchUnidirectionEncirclement(3);
+		}
+
+		if (model.getCurrentTick() == 220 * 60) {
+			launchTargetedEncirclement(2);
+		}
+
 	}
 
 	private void manageLevelZero() {

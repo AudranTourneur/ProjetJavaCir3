@@ -5,7 +5,7 @@ import project.game.controller.AudioController;
 public class Player extends Entity {
 
     public static final float RADIUS_HITBOX_SIZE = 0.07f;
-    Direction currentDirection = null;
+    public Direction currentDirection = null;
     public Direction desiredDirection = null;
 
     public WorldModel world;
@@ -21,7 +21,6 @@ public class Player extends Entity {
     public int stamina = MAX_STAMINA;
     public int score;
     public int invulnerabilityTicks = 0;
-    public int foodRecovered;
 
     public int getGridPositionX() {
         return gridPositionX;
