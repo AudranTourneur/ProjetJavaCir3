@@ -79,7 +79,6 @@ public class Ghost extends Entity {
         int speed = 1;
         if (isStuck()) {
             getNewDirection();
-            // System.out.println(desiredDirection);
         } else if (compteur % 100 == 0)
             getNewDirection();
 
@@ -124,9 +123,6 @@ public class Ghost extends Entity {
     }
 
     private boolean isStuck() {
-        if (currentPosition.equals(oldPosition)) {
-            System.out.println("we are stuck");
-        }
         return currentPosition.equals(oldPosition);
     }
 

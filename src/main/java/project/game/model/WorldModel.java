@@ -160,7 +160,6 @@ public class WorldModel {
 
             
         //}
-        System.out.println(this.getCurrentTick()%(10*60));
         if(this.getCurrentTick()%(10*60)==0){
             ghostHandler.addGhost();
             System.out.println("We should be adding a ghost");

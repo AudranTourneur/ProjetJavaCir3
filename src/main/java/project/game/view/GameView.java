@@ -4,6 +4,7 @@
 package project.game.view;
 
 import javafx.beans.value.ChangeListener;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -23,7 +25,6 @@ import project.game.model.Ghost;
 import project.game.model.GridMap;
 import project.game.model.GridTile;
 import project.game.model.IntPosition;
-import project.game.model.Player;
 import project.game.model.FloatPosition;
 import project.game.model.Projectile;
 import project.game.model.ProjectileSpawner;
@@ -33,7 +34,7 @@ import java.io.InputStream;
 import java.util.HashMap;
 
 public class GameView {
-    Stage stage;
+    public Stage stage;
     GraphicsContext ctx;
     WorldModel world;
 
@@ -60,8 +61,8 @@ public class GameView {
         canvas.setHeight(stage.getHeight());
         canvas.setWidth(stage.getWidth());
 
-        double desiredTileSizeX = getHightestEvenNumber((int) (canvas.getWidth() / (GridMap.TILES_WIDTH + 1)));
-        double desiredTileSizeY = getHightestEvenNumber((int) (canvas.getHeight() / (GridMap.TILES_HEIGHT + 1)));
+        double desiredTileSizeX = ((int) ((canvas.getWidth()*0.8) / (GridMap.TILES_WIDTH + 1)));
+        double desiredTileSizeY = ((int) (canvas.getHeight() / (GridMap.TILES_HEIGHT + 1)));
 
         System.out.println("Desired tile size: " + desiredTileSizeX + "x" + desiredTileSizeY);
 
@@ -79,11 +80,10 @@ public class GameView {
         System.out.println("desired : " + new FloatPosition(desiredX, desiredY));
         System.out.println("actual : " + new FloatPosition(actualX, actualY));
 
-        offsetX = Math.round(Math.max(0, (actualX - desiredX) / 2));
+        offsetX = Math.round(Math.max(0, (actualX - desiredX)));
         offsetY = Math.round(Math.max(0, (actualY - desiredY) / 2));
 
         System.out.println("Offset : " + offsetX + " " + offsetY);
-
     }
 
     public GameView(Stage stage, WorldModel world) {
@@ -107,11 +107,22 @@ public class GameView {
 
         // Création d'un Groupe
         Group group = new Group(canvas);
+        FXMLLoader loader = new FXMLLoader(Main.class.getResource("menu/menu-view.fxml"));
+
+
+        try {
+            StackPane obj = (StackPane) loader.load();
+            // System.out.println("class " + obj.getClass().getName());
+          //  group.getChildren().add(obj);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         // Création d'une scène
         Scene scene = new Scene(group, MenuConstants.windowWidth, MenuConstants.windowHeight);
 
         stage.show();
+
         load();
         // set the scene
         stage.setScene(scene);
@@ -124,7 +135,6 @@ public class GameView {
         stage.heightProperty().addListener(stageSizeListener);
 
         handleResize(canvas);
-
     }
 
     void drawEndScreenIfNeeded() {
@@ -153,21 +163,12 @@ public class GameView {
         drawSpawners();
         drawTmpTexts();
         drawEndScreenIfNeeded();
+        LeftBarHUD.drawLeftBar(this);
 
         isDrawing = false;
     }
 
-    void drawTmpTexts() { // Barre de Menu 
-        ctx.setFont(Font.font("System", 20));
-        ctx.setFill(Color.RED);
-        ctx.fillText("Deaths : " + this.world.player.deaths, 10, 20);
-        ctx.fillText("Stamina : " + (int) ((double) this.world.player.stamina / Player.MAX_STAMINA * 100.0) + "%", 210,
-                20);
-        ctx.fillText("Progress : " + this.world.getCompletionPercent() + "%", 410, 20);
-        ctx.fillText("Score : " + this.world.player.getScore(), 610, 20);
-        ctx.fillText("Est. time : " + this.world.getCurrentTick() / 60 + "s", 810, 20);
-        ctx.fillText("Food remaining : " + this.world.levelProgressionManager.getFoodRemaining(), 1010, 20);
-        ctx.fillText("Level : " + this.world.levelProgressionManager.currentLevel, 1210, 20);
+    void drawTmpTexts() {
     }
 
     void drawMap() { // Notre map 
@@ -190,22 +191,22 @@ public class GameView {
         if (img == null)
             return;
 
-        final DisplayData dispData = new DisplayData(this, x+0.5, y+0.5, 1);
+        final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
         ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
         /*
-        float gray = 0.35f;
-        ctx.setFill(new Color(gray, gray, gray, 1));
-
-        final DisplayData dispData = new DisplayData(this, x+0.5 , y+0.5 , 1);
-        ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
-        */
+         * float gray = 0.35f;
+         * ctx.setFill(new Color(gray, gray, gray, 1));
+         * 
+         * final DisplayData dispData = new DisplayData(this, x+0.5 , y+0.5 , 1);
+         * ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
+         */
     }
 
     void drawVoid(int x, int y) {
         float gray = 0.75f;
         ctx.setFill(new Color(gray, gray, gray, 1));
 
-        final DisplayData dispData = new DisplayData(this, x+0.5 , y+0.5 , 1);
+        final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
         ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
     }
 
@@ -313,7 +314,12 @@ public class GameView {
         spriteMap.put("player", img);
         spriteMap.put("ghost1", img2);
         spriteMap.put("warning", img3);
-        spriteMap.put("wall",img4);
+        spriteMap.put("wall", img4);
+
+        spriteMap.put("skull", new Image(Main.class.getResourceAsStream("images/skull.png")));
+        spriteMap.put("apple", new Image(Main.class.getResourceAsStream("images/apple.png")));
+        spriteMap.put("zap", new Image(Main.class.getResourceAsStream("images/zap.png")));
+        spriteMap.put("hourglass", new Image(Main.class.getResourceAsStream("images/hourglass.png")));
     }
 
     public void displayDebugInfo() {
