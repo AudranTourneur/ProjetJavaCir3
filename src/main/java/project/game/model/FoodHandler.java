@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+
+// gerer les evenements de nourriture (nombre, position, monde)
 public class FoodHandler {
 
     static void manageFoodGeneration(WorldModel world) {

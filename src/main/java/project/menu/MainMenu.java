@@ -26,6 +26,8 @@ public class MainMenu {
 
     GameMenu gamemenu;
 
+// Creation du menu principal (image de fond ainsi que du bouton)
+
     public Scene start(Stage stage) throws IOException {
 
         // image de fond

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.TextFlow?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <BorderPane prefHeight="200.0" prefWidth="200.0">
+         <top>
+            <HBox alignment="TOP_CENTER" prefHeight="42.0" prefWidth="750.0" spacing="15.0" style="-fx-background-color: #000000;">
+               <children>
+                  <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" style="-fx-background-color: #F4D3F0;" text="II">
+                     <HBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" style="-fx-background-color: #F4D3F0;" text="Music">
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button mnemonicParsing="false" opacity="0.85" prefHeight="34.0" prefWidth="320.0" style="-fx-background-color: #F#E3ECE55F5F5;" text="Score :" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <ToggleButton mnemonicParsing="false" prefHeight="34.0" prefWidth="110.0" style="-fx-background-color: #F5F5F5;" text="ToggleButton">
+                     <HBox.margin>
+                        <Insets left="15.0" right="20.0" top="5.0" />
+                     </HBox.margin>
+                  </ToggleButton>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+            </HBox>
+         </top>
+         <center>
+            <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" BorderPane.alignment="CENTER">
+               <children>
+                  <BorderPane prefHeight="42.0" prefWidth="750.0" style="-fx-background-color: #000000;" HBox.hgrow="ALWAYS">
+                     <top>
+                        <BorderPane prefHeight="112.0" prefWidth="750.0" style="-fx-background-color: #000000;" BorderPane.alignment="CENTER">
+                           <left>
+                              <ProgressBar prefHeight="34.0" prefWidth="262.0" progress="0.0" style="-fx-background-color: #F0FFF0;" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets left="15.0" />
+                                 </BorderPane.margin>
+                              </ProgressBar>
+                           </left>
+                           <center>
+                              <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" style="-fx-background-color: #D3F4D9;" text="\%" BorderPane.alignment="CENTER" />
+                           </center>
+                           <right>
+                              <ProgressBar prefHeight="34.0" prefWidth="260.0" progress="0.0" style="-fx-background-color: #F8F8FF;" BorderPane.alignment="CENTER">
+                                 <BorderPane.margin>
+                                    <Insets right="15.0" />
+                                 </BorderPane.margin>
+                              </ProgressBar>
+                           </right>
+                           <bottom>
+                              <BorderPane nodeOrientation="RIGHT_TO_LEFT" prefHeight="66.0" prefWidth="750.0" BorderPane.alignment="CENTER">
+                                 <center>
+                                    <TextFlow prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #FFFFFF;" textAlignment="JUSTIFY" BorderPane.alignment="CENTER" />
+                                 </center>
+                              </BorderPane>
+                           </bottom>
+                        </BorderPane>
+                     </top>
+                  </BorderPane>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </children>
+</StackPane>

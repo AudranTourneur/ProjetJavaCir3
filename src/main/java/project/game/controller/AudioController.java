@@ -1,3 +1,5 @@
+// Création d'un fichier permettant de jouer et de contrôler une musique préalablement téléchargé sur l'ordinateur.
+
 package project.game.controller;
 
 import javafx.scene.media.Media;
@@ -11,7 +13,7 @@ public class AudioController {
 	// élimine l'objet et stoppe la musique en cours
 	static MediaPlayer musicPlayer;
 
-	static void playMusic() {
+	static void playMusic() {	//jouer la musique
 		if (!Configuration.AUDIO_ENABLED) return;
 		try {
 			System.out.println("playing audio");
@@ -33,7 +35,7 @@ public class AudioController {
 
 	static MediaPlayer hitPlayer;
 
-	public static void playHitSound() {
+	public static void playHitSound() { //jouer le son "Hit"
 		try {
 			System.out.println("playing audio");
 			String path = Main.class.getResource("audio/hit.mp3").toURI().toString();

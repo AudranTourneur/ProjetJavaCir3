@@ -1,5 +1,6 @@
 package project.game.model;
 
+//donner des positions en fonction des formules mathematiques utilisées
 public class FloatPosition {
     public float x;
     public float y;

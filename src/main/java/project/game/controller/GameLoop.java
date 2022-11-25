@@ -9,10 +9,12 @@ import project.Main;
 import project.game.model.WorldModel;
 import project.game.view.GameView;
 
+
+//Controler la fenetre du jeu
 public class GameLoop {
 
 
-    public static void start(Stage stage) {
+    public static void start(Stage stage) { //information de la page lorsque le bouton play est lancé
         // set title for the stage
         stage.setTitle("The Adventures of Pac-Cat");
 
@@ -61,7 +63,7 @@ public class GameLoop {
 
         AudioController.playMusic();
     }
-
+    //partie affichage/temps 
     static long lastCall = System.nanoTime();
     static double sumMs = 0.0;
     static int frames = 1;

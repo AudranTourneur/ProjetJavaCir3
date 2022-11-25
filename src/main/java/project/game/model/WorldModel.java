@@ -1,3 +1,5 @@
+//Gestion des lieux d'apparition des objets.
+
 package project.game.model;
 
 import java.io.BufferedReader;

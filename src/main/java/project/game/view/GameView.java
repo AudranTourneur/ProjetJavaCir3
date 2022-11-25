@@ -1,3 +1,6 @@
+//Creation de l'interface graphique (utilisation de canvas)
+//affichage de tous les elements du jeu (joueur, projectiles...)
+
 package project.game.view;
 
 import javafx.beans.value.ChangeListener;
@@ -51,7 +54,7 @@ public class GameView {
             return n - 1;
     }
 
-    void handleResize(Canvas canvas) {
+    void handleResize(Canvas canvas) { 
         System.out
                 .println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
         canvas.setHeight(stage.getHeight());
@@ -87,7 +90,7 @@ public class GameView {
         this.stage = stage;
         this.world = world;
 
-        // create a canvas
+        // Creation du canvas
         Canvas canvas = new Canvas();
 
         Rectangle2D bounds = Screen.getPrimary().getBounds();
@@ -102,10 +105,10 @@ public class GameView {
 
         this.ctx = canvas.getGraphicsContext2D();
 
-        // create a Group
+        // Création d'un Groupe
         Group group = new Group(canvas);
 
-        // create a scene
+        // Création d'une scène
         Scene scene = new Scene(group, MenuConstants.windowWidth, MenuConstants.windowHeight);
 
         stage.show();
@@ -135,7 +138,7 @@ public class GameView {
 
     public volatile static boolean isDrawing = false;
 
-    public void display(boolean log) {
+    public void display(boolean log) { 
         isDrawing = true;
         if (log)
             System.out.println("display is  called");
@@ -154,7 +157,7 @@ public class GameView {
         isDrawing = false;
     }
 
-    void drawTmpTexts() {
+    void drawTmpTexts() { // Barre de Menu 
         ctx.setFont(Font.font("System", 20));
         ctx.setFill(Color.RED);
         ctx.fillText("Deaths : " + this.world.player.deaths, 10, 20);
@@ -167,7 +170,7 @@ public class GameView {
         ctx.fillText("Level : " + this.world.levelProgressionManager.currentLevel, 1210, 20);
     }
 
-    void drawMap() {
+    void drawMap() { // Notre map 
         for (int i = 0; i < GridMap.TILES_WIDTH; i++) {
             for (int j = 0; j < GridMap.TILES_HEIGHT; j++) {
                 if (world.map.map[i][j] == GridTile.WALL) {
@@ -181,7 +184,7 @@ public class GameView {
         }
     }
 
-    void drawWall(int x, int y) {
+    void drawWall(int x, int y) { // afficher les murs
         
         Image img = spriteMap.get("wall");
         if (img == null)
@@ -206,7 +209,7 @@ public class GameView {
         ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
     }
 
-    void drawGhost(float x, float y) {
+    void drawGhost(float x, float y) { // fantomes
         Image img = spriteMap.get("ghost1");
         if (img == null)
             return;
@@ -224,8 +227,8 @@ public class GameView {
             }
         }
     }
-
-    void drawFood(int x, int y) {
+// affichage de la nourriture (bleu)
+    void drawFood(int x, int y) { 
         ctx.setFill(Color.BLUE);
         final double radius = 0.35;
 
@@ -239,7 +242,7 @@ public class GameView {
         }
     }
 
-    void drawPlayer() {
+    void drawPlayer() { //affichage de notre joueur 
         Image img = spriteMap.get("player");
         if (img == null)
             return;
@@ -258,7 +261,8 @@ public class GameView {
         }
     }
 
-    void drawProjectile(float x, float y) {
+// affichage de nos projectiles (rouge) 
+    void drawProjectile(float x, float y) { 
         ctx.setFill(Color.RED);
 
         final DisplayData dispData = new DisplayData(this, x, y, Projectile.RADIUS_SIZE);
@@ -273,6 +277,7 @@ public class GameView {
         }
     }
 
+    // affichage des warnings prevenant l'arrivés de futurs projectiles
     void drawSpawner(ProjectileSpawner spawner) {
         Image img = spriteMap.get("warning");
         if (img == null)

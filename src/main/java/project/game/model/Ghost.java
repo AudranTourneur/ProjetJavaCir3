@@ -1,6 +1,9 @@
 package project.game.model;
 
-//Les variables position ne sont plus utilisées depuis qu'on utilise des données discrètes pur le déplacement
+/*Création des ghosts et gestion de leur position, 
+les variables position ne sont plus utilisées depuis qu'on utilise des données discrètes pour le déplacement*/
+
+
 public class Ghost extends Entity {
 
     public Direction currentDirection;
@@ -11,8 +14,7 @@ public class Ghost extends Entity {
 
     int compteur = 0;
 
-    // Permet de regarder si notre ghost est en mouvement ou pas => regarde si il
-    // est coincé quoi
+    /* Permet de regarder si notre ghost est en mouvement ou pas => regarder s'il est bloqué*/
     IntPosition currentPosition;
     IntPosition oldPosition;
 
@@ -102,7 +104,7 @@ public class Ghost extends Entity {
         this.position = getNormalizedPosition();
     }
 
-    private void getNewDirection() {
+    private void getNewDirection() {    //obtenir nouvelle direction du ghost.
         int rand = (int) (Math.random() * 40 % 4);
         System.out.println(rand);
         switch (rand) {

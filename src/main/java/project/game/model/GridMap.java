@@ -2,14 +2,16 @@ package project.game.model;
 
 import java.util.HashSet;
 
-public class GridMap {
+//Creation de la map
+
+public class GridMap { 
 	public static final int STEP = 10;
 	// public static final int NUMBER_OF_TILES = 15;
 	// Small map coords
 	// public static final int TILES_WIDTH = 20;
 	// public static final int TILES_HEIGHT = 15;
 	// Big map
-	public static final int TILES_WIDTH = 29;
+	public static final int TILES_WIDTH = 29; //dimension d'une unité
 	public static final int TILES_HEIGHT = 21;
 
 	// public à déprécié
@@ -29,7 +31,7 @@ public class GridMap {
 	public GridMap() {
 	}
 
-	public GridTile getAt(int x, int y) {
+	public GridTile getAt(int x, int y) { // conditions de bords de cartes
 		if (x < 0)
 			return GridTile.WALL;
 		if (x >= TILES_WIDTH)
@@ -57,7 +59,8 @@ public class GridMap {
 	}
 	// INVALID, OUTSIDE_TELEPORT, VALID
 
-	SquareValidityResponse isAbstractPositionAllowed(int x, int y) {
+	//condition de teleportation
+	SquareValidityResponse isAbstractPositionAllowed(int x, int y) { 
 		if (x < 0 || y < 0 || x >= MAX_ABSTRACT_WIDTH || y >= MAX_ABSTRACT_HEIGHT) {
 			System.out.println("OOB " + x + " " + y);
 			return SquareValidityResponse.INVALID;
@@ -81,7 +84,7 @@ public class GridMap {
 		return emptyPositions;
 	}
 
-	// speed 1 or 2
+	// acceleration x1 ou x2
 	IntPosition getNextTeleportPosition(Direction direction, IntPosition objectPosition, int speed) {
 		IntPosition pos = new IntPosition(objectPosition);
 		if (direction == Direction.LEFT) {

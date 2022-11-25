@@ -1,3 +1,4 @@
+//creation d'une entité
 package project.game.model;
 
 abstract public class Entity {

@@ -1,5 +1,6 @@
 package project.game.model;
 
+// Création d'un level avecplus de difficultés ; plus de projectiles/ plus de nourriture...)
 public class LevelProgressionManager {
 
     private WorldModel model;

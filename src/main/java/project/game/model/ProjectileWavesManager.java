@@ -1,3 +1,5 @@
+// gere la vague des projectiles (le nombre augmente en fonction du niveau)
+
 package project.game.model;
 
 import java.util.ArrayList;

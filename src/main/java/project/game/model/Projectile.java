@@ -1,3 +1,5 @@
+//fichier pour creer et gérer les projectiles (trajectoires, position, vitesse)
+
 package project.game.model;
 
 public class Projectile extends Entity {
