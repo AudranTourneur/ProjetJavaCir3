@@ -36,6 +36,7 @@ public class AudioController {
 	static MediaPlayer hitPlayer;
 
 	public static void playHitSound() { //jouer le son "Hit"
+		if (!Configuration.AUDIO_ENABLED) return;
 		try {
 			System.out.println("playing audio");
 			String path = Main.class.getResource("audio/hit.mp3").toURI().toString();

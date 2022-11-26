@@ -2,8 +2,6 @@
 
 package project.game.model;
 
-import javafx.geometry.Orientation;
-
 public enum Direction { //donner orientation
     UP(0, -1),
     RIGHT(1, 0),

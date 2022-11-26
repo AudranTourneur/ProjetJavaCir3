@@ -4,7 +4,6 @@
 package project.game.view;
 
 import javafx.beans.value.ChangeListener;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -13,7 +12,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Screen;
@@ -55,13 +53,13 @@ public class GameView {
             return n - 1;
     }
 
-    void handleResize(Canvas canvas) { 
+    void handleResize(Canvas canvas) {
         System.out
                 .println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
         canvas.setHeight(stage.getHeight());
         canvas.setWidth(stage.getWidth());
 
-        double desiredTileSizeX = ((int) ((canvas.getWidth()*0.8) / (GridMap.TILES_WIDTH + 1)));
+        double desiredTileSizeX = ((int) ((canvas.getWidth() * 0.8) / (GridMap.TILES_WIDTH + 1)));
         double desiredTileSizeY = ((int) (canvas.getHeight() / (GridMap.TILES_HEIGHT + 1)));
 
         System.out.println("Desired tile size: " + desiredTileSizeX + "x" + desiredTileSizeY);
@@ -107,16 +105,6 @@ public class GameView {
 
         // Création d'un Groupe
         Group group = new Group(canvas);
-        FXMLLoader loader = new FXMLLoader(Main.class.getResource("menu/menu-view.fxml"));
-
-
-        try {
-            StackPane obj = (StackPane) loader.load();
-            // System.out.println("class " + obj.getClass().getName());
-          //  group.getChildren().add(obj);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         // Création d'une scène
         Scene scene = new Scene(group, MenuConstants.windowWidth, MenuConstants.windowHeight);
@@ -148,7 +136,7 @@ public class GameView {
 
     public volatile static boolean isDrawing = false;
 
-    public void display(boolean log) { 
+    public void display(boolean log) {
         isDrawing = true;
         if (log)
             System.out.println("display is  called");
@@ -171,7 +159,7 @@ public class GameView {
     void drawTmpTexts() {
     }
 
-    void drawMap() { // Notre map 
+    void drawMap() { // Notre map
         for (int i = 0; i < GridMap.TILES_WIDTH; i++) {
             for (int j = 0; j < GridMap.TILES_HEIGHT; j++) {
                 if (world.map.map[i][j] == GridTile.WALL) {
@@ -186,32 +174,25 @@ public class GameView {
     }
 
     void drawWall(int x, int y) { // afficher les murs
-        
         Image img = spriteMap.get("wall");
         if (img == null)
             return;
 
         final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
         ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-        /*
-         * float gray = 0.35f;
-         * ctx.setFill(new Color(gray, gray, gray, 1));
-         * 
-         * final DisplayData dispData = new DisplayData(this, x+0.5 , y+0.5 , 1);
-         * ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
-         */
     }
 
     void drawVoid(int x, int y) {
-        float gray = 0.75f;
-        ctx.setFill(new Color(gray, gray, gray, 1));
+        Image img = spriteMap.get("path");
+        if (img == null)
+            return;
 
         final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
-        ctx.fillRect(dispData.x, dispData.y, dispData.width, dispData.height);
+        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
     }
 
     void drawGhost(float x, float y) { // fantomes
-        Image img = spriteMap.get("ghost1");
+        Image img = spriteMap.get("ghost");
         if (img == null)
             return;
 
@@ -228,8 +209,9 @@ public class GameView {
             }
         }
     }
-// affichage de la nourriture (bleu)
-    void drawFood(int x, int y) { 
+
+    // affichage de la nourriture (bleu)
+    void drawFood(int x, int y) {
         ctx.setFill(Color.BLUE);
         final double radius = 0.35;
 
@@ -243,7 +225,7 @@ public class GameView {
         }
     }
 
-    void drawPlayer() { //affichage de notre joueur 
+    void drawPlayer() { // affichage de notre joueur
         Image img = spriteMap.get("player");
         if (img == null)
             return;
@@ -262,8 +244,8 @@ public class GameView {
         }
     }
 
-// affichage de nos projectiles (rouge) 
-    void drawProjectile(float x, float y) { 
+    // affichage de nos projectiles (rouge)
+    void drawProjectile(float x, float y) {
         ctx.setFill(Color.RED);
 
         final DisplayData dispData = new DisplayData(this, x, y, Projectile.RADIUS_SIZE);
@@ -297,24 +279,12 @@ public class GameView {
 
     // Fonction va charger tout nos sprites dans le futur
     void load() {
-        InputStream pacchat = Main.class.getResourceAsStream("images/cat_image.png");
-        InputStream ghost = Main.class.getResourceAsStream("images/ghost.png");
-        InputStream warning = Main.class.getResourceAsStream("images/warning.png");
-        InputStream wall = Main.class.getResourceAsStream("images/wall.jpg");
+        spriteMap.put("player", new Image(Main.class.getResourceAsStream("images/cat_image.png")));
+        spriteMap.put("ghost", new Image(Main.class.getResourceAsStream("images/ghost.png")));
+        spriteMap.put("warning", new Image(Main.class.getResourceAsStream("images/warning.png")));
 
-        assert pacchat != null;
-        assert ghost != null;
-        assert warning != null;
-
-        Image img = new Image(pacchat);
-        Image img2 = new Image(ghost);
-        Image img3 = new Image(warning);
-        Image img4 = new Image(wall);
-
-        spriteMap.put("player", img);
-        spriteMap.put("ghost1", img2);
-        spriteMap.put("warning", img3);
-        spriteMap.put("wall", img4);
+        spriteMap.put("path", new Image(Main.class.getResourceAsStream("images/tile_path.png")));
+        spriteMap.put("wall", new Image(Main.class.getResourceAsStream("images/tile_brick.png")));
 
         spriteMap.put("skull", new Image(Main.class.getResourceAsStream("images/skull.png")));
         spriteMap.put("apple", new Image(Main.class.getResourceAsStream("images/apple.png")));
