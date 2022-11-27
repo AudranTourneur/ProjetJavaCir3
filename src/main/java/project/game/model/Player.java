@@ -70,7 +70,7 @@ public class Player extends Entity {
                     speed = 2;
             }
 
-            stamina += speedX2 ? -1 : 1;
+            stamina += speedX2 ? -2 : 1;
             stamina = Math.min(MAX_STAMINA, stamina);
             stamina = Math.max(0, stamina);
 
@@ -122,10 +122,14 @@ public class Player extends Entity {
     public void hit() {
         if (this.world.getCompletionPercent() >= 100) return;
         if (invulnerabilityTicks == 0) {
-            deaths++;
+            removeLife();
             invulnerabilityTicks += 90;
             AudioController.playHitSound();
         }
+    }
+
+    void removeLife() {
+        lives--;
     }
 
 }

@@ -40,5 +40,7 @@ public class InputController {
             System.out.println("Space pressed");
             state.model.player.speedX2 = !state.model.player.speedX2;
         }
+
+        System.out.println(event.getCode());
     }
 }
