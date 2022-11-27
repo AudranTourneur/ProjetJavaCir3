@@ -10,13 +10,7 @@ import javafx.stage.Stage;
 import project.Main;
 import project.game.model.WorldModel;
 import project.game.controller.GameWindowController;
-import project.game.model.Entity;
-import project.game.model.Ghost;
 import project.game.model.GridMap;
-import project.game.model.GridTile;
-import project.game.model.IntPosition;
-import project.game.model.Projectile;
-import project.game.model.ProjectileSpawner;
 import java.util.HashMap;
 
 /* 
@@ -42,7 +36,8 @@ public class GameView {
 
     private HUDControllerView hud;
 
-    // Gestion des redimensionnement du canvas lorsque la fenêtre est redimensionné par l'utilisateur
+    // Gestion des redimensionnement du canvas lorsque la fenêtre est redimensionné
+    // par l'utilisateur
     void handleResize(Canvas canvas) {
         Pane pane = this.window.pane;
 
@@ -94,126 +89,18 @@ public class GameView {
     public void display() {
         ctx.setFill(Color.BLACK);
         ctx.fillRect(0, 0, ctx.getCanvas().getWidth(), ctx.getCanvas().getHeight());
-        drawMap();
+        MapPainter.drawMap(this);
         PlayerPainter.drawPlayer(this);
-        drawFoods();
-        drawGhosts();
-        drawProjectiles();
-        drawSpawners();
+        FoodPainter.drawFoods(this);
+        GhostPainter.drawGhosts(this);
+        ProjectilePainter.drawProjectiles(this);
+        ProjectilePainter.drawSpawners(this);
         EndScreen.showEndScreenIfNeeded(this, this.world);
         // LeftBarHUD.drawLeftBar(this);
         hud.updateHUD(this.world);
 
         if (this.world.getCurrentTick() % 60 == 0)
             handleResize(this.window.canvas);
-    }
-
-    // Affichage de la carte
-    void drawMap() {
-        for (int i = 0; i < GridMap.TILES_WIDTH; i++) {
-            for (int j = 0; j < GridMap.TILES_HEIGHT; j++) {
-                if (world.map.map[i][j] == GridTile.WALL) {
-                    drawWall(i, j);
-                }
-                if (world.map.map[i][j] == GridTile.VOID || world.map.map[i][j] == GridTile.PLAYER_SPAWN
-                        || world.map.map[i][j] == GridTile.GHOST_SPAWN) {
-                    drawVoid(i, j);
-                }
-            }
-        }
-    }
-
-    // Affichage des murs
-    void drawWall(int x, int y) {
-        Image img = spriteMap.get("wall");
-        if (img == null)
-            return;
-
-        final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
-        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    // Affichage des chemins (cases non remplis)
-    void drawVoid(int x, int y) {
-        Image img = spriteMap.get("path");
-        if (img == null)
-            return;
-
-        final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
-        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    // Affichage d'un fantôme
-    void drawGhost(float x, float y) {
-        Image img = spriteMap.get("ghost");
-        if (img == null)
-            return;
-
-        final DisplayData dispData = new DisplayData(this, x, y, 1);
-
-        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    // Affichage des fantômes
-    void drawGhosts() {
-        for (Entity e : world.entities) {
-            if (e instanceof Ghost) {
-                Ghost tmp = (Ghost) e;
-                drawGhost(tmp.position.x, tmp.position.y);
-            }
-        }
-    }
-
-    // Affichage d'une unité de nourriture (poisson)
-    void drawFood(int x, int y) {
-        Image img = spriteMap.get("fish");
-        if (img == null)
-            return;
-        final DisplayData dispData = new DisplayData(this, x + .5, y + .5, 1.2);
-        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    // Affichage de la nourriture
-    void drawFoods() {
-        for (IntPosition food : world.foods) {
-            drawFood(food.x, food.y);
-        }
-    }
-
-    // Affichage d'un projectile (en rouge)
-    void drawProjectile(float x, float y) {
-        ctx.setFill(Color.RED);
-
-        final DisplayData dispData = new DisplayData(this, x, y, Projectile.RADIUS_SIZE);
-        ctx.fillOval(dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    // Affichage des projectiles
-    void drawProjectiles() {
-        for (Entity entity : world.entities) {
-            if (entity instanceof Projectile) {
-                drawProjectile(entity.position.x, entity.position.y);
-            }
-        }
-    }
-
-    // Affichage d'un avertissement prevenant l'arrivés de futurs projectiles
-    // (panneau de signalisation en jaune)
-    void drawSpawner(ProjectileSpawner spawner) {
-        Image img = spriteMap.get("warning");
-        if (img == null)
-            return;
-
-        final DisplayData dispData = new DisplayData(this, spawner.position, 1);
-        if (spawner.getTicksToLive() % 60 < 30)
-            ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    // Affichage des avertissements
-    void drawSpawners() {
-        for (Entity entity : world.entities)
-            if (entity instanceof ProjectileSpawner)
-                drawSpawner((ProjectileSpawner) entity);
     }
 
     // Méthode qui charge tous les sprites depuis le système de fichier vers la
