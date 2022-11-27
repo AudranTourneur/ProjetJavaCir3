@@ -10,7 +10,7 @@ public class LevelProgressionManager {
     }
 
     private static final int[] levelToFoodRequired = { 10, 20, 30, 40, 50 };
-    private static final int NUMBER_OF_LEVELS = levelToFoodRequired.length;
+    public static final int NUMBER_OF_LEVELS = levelToFoodRequired.length;
     private static final int TOTAL_FOOD = 10+20+30+40+50;
     public int currentLevel = 0;
     private int foodRemaining = levelToFoodRequired[0];
@@ -28,7 +28,7 @@ public class LevelProgressionManager {
     }
 
     public double getProgression(){
-        return progression;
+        return progression/100;
     }
 
     public void nextLevel() {

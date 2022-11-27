@@ -166,7 +166,7 @@ public class GameView {
         drawProjectiles();
         drawSpawners();
         drawTmpTexts();
-        drawEndScreenIfNeeded();
+        EndScreen.showEndScreenIfNeeded(this, this.world);
         //LeftBarHUD.drawLeftBar(this);
         hud.updateHUD(this.world);
 
@@ -310,6 +310,7 @@ public class GameView {
         spriteMap.put("apple", new Image(Main.class.getResourceAsStream("images/apple.png")));
         spriteMap.put("zap", new Image(Main.class.getResourceAsStream("images/zap.png")));
         spriteMap.put("hourglass", new Image(Main.class.getResourceAsStream("images/hourglass.png")));
+        spriteMap.put("party", new Image(Main.class.getResourceAsStream("images/party.png")));
     }
 
     public void displayDebugInfo() {
@@ -319,6 +320,10 @@ public class GameView {
         spriteMap.keySet().forEach(System.out::println);
         System.out.println("spriteMap (values)");
         spriteMap.values().forEach(System.out::println);
+    }
+
+    public void setModel(WorldModel model) {
+        this.world = model;
     }
 
 }

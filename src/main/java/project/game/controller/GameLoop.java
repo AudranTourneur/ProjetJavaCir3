@@ -61,7 +61,7 @@ public class GameLoop {
         thread.start();
 
         // runGraphicsOperations(view);
-        initGameLoop(model, view);
+        initGameLoop(state);
 
         AudioController.playMusic();
     }
@@ -71,10 +71,10 @@ public class GameLoop {
     static double sumMs = 0.0;
     static int frames = 1;
 
-    static void initGameLoop(WorldModel model, GameView view) {
+    static void initGameLoop(GameStateContainer state) {
         final Duration oneFrameAmt = Duration.millis(1000 / 60);
         final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, actionEvent -> {
-            model.update();
+            state.model.update();
 
             long now = System.nanoTime();
             double diffMs = (now - lastCall) / 1_000_000.0;
@@ -86,7 +86,8 @@ public class GameLoop {
                 System.out.println("FPS = " + (1000 / avgMs) + " | avg delta ms " + avgMs);
             lastCall = now;
 
-            view.display(false);
+            state.view.setModel(state.model);
+            state.view.display(false);
         });
 
         final Timeline gameLoop = new Timeline();
