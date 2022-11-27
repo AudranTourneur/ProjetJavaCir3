@@ -29,8 +29,8 @@ public class HUDControllerView {
 	// Mise à jour de la barre de progression dans le jeu
 	private void setProgress(double progress) {
 		final ProgressBar progressBarElem = (ProgressBar) scene.lookup("#progress_bar");
-		progressBarElem.setProgress(progress);
-		((Text) scene.lookup("#progress_text")).setText((int) (progress * 100) + "%");
+		progressBarElem.setProgress(progress/100);
+		((Text) scene.lookup("#progress_text")).setText((int) (progress) + "%");
 	}
 
 	// Mise à jour du compteur de vies
@@ -55,7 +55,7 @@ public class HUDControllerView {
 		setScore(model.player.score);
 		setText("Level : " + (model.levelProgressionManager.getCurrentLevel() + 1));
 		setStamina((double) model.player.stamina / Player.MAX_STAMINA);
-		setProgress(model.levelProgressionManager.getProgression());
+		setProgress(model.levelProgressionManager.getProgressionPercent());
 		setLives(model.player.getLives());
 	}
 }

@@ -18,7 +18,7 @@ public class Player extends Entity {
 
     public boolean speedX2 = false;
 
-    IntPosition gridPosition = new IntPosition(0, 0);
+    public IntPosition gridPosition = new IntPosition(0, 0);
 
     public int deaths;
     private int lives = 9;
@@ -138,10 +138,7 @@ public class Player extends Entity {
 
     /*Gestion du comportement du joueuer quand il se fait toucher */
     public void hit() {
-        if (this.world.getCompletionPercent() >= 100) return;
-        /*Je me rend invincible pour tester un peu le jeu en boijant ce commentaire*/
-        if (this.world.getCompletionPercent() >= 100)
-            return;
+        if (this.world.hasFinished()) return;
         if (invulnerabilityTicks == 0) {
             removeLife();
             invulnerabilityTicks += 90;

@@ -6,7 +6,6 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import project.Main;
 import project.game.model.WorldModel;
 import project.game.view.GameView;
 

@@ -12,7 +12,7 @@ import project.Main;
 public class AudioController {
 
 	static double VOLUME_MUSIC = 0.25;
-	static double VOLUME_HIT = 0.8;
+	static double VOLUME_EFFECTS = 0.8;
 
 	// L'intance est mise en static pour éviter que le Garbage Collector de la JVM
 	// élimine l'objet et stoppe la musique en cours
@@ -29,6 +29,13 @@ public class AudioController {
 
 			musicPlayer.setVolume(Configuration.audioEnabled ? VOLUME_MUSIC : 0);
 
+			// Répétition de la musique à la fin
+			musicPlayer.setOnEndOfMedia(new Runnable() {
+				public void run() {
+					musicPlayer.seek(Duration.ZERO);
+				}
+			});
+
 			musicPlayer.play();
 
 		} catch (Exception e) {
@@ -39,7 +46,7 @@ public class AudioController {
 	static MediaPlayer hitPlayer;
 
 	// Joue le son de dégât lorsqu'un le joueur entre en contact avec un fantôme
-	public static void playHitSound() { 
+	public static void playHitSound() {
 		if (!Configuration.audioEnabled)
 			return;
 
@@ -50,7 +57,7 @@ public class AudioController {
 
 			hitPlayer = new MediaPlayer(audio);
 
-			hitPlayer.setVolume(VOLUME_HIT);
+			hitPlayer.setVolume(VOLUME_EFFECTS);
 
 			hitPlayer.setStartTime(Duration.millis(700));
 			hitPlayer.play();
@@ -58,6 +65,26 @@ public class AudioController {
 			e.printStackTrace();
 		}
 
+	}
+
+	// Joue le son de changement de niveau
+	public static void playLevelUpSound() {
+		if (!Configuration.audioEnabled)
+			return;
+
+		try {
+			String path = Main.class.getResource("audio/levelup.mp3").toURI().toString();
+
+			final Media audio = new Media(path);
+
+			hitPlayer = new MediaPlayer(audio);
+
+			hitPlayer.setVolume(VOLUME_EFFECTS);
+
+			hitPlayer.play();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Gestion d'un clic sur le bouton "Music"

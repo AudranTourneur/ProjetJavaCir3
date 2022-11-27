@@ -37,6 +37,8 @@ public class GameWindowController {
 
 			manageMusicButtonPress();
 
+			this.stage.setMaximized(true);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

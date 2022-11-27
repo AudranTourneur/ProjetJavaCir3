@@ -3,7 +3,6 @@ package project.game.view;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import project.game.model.LevelProgressionManager;
 import project.game.model.WorldModel;
 
 /*
@@ -18,7 +17,7 @@ public class EndScreen {
         if (model.player.getLives() <= 0) {
             // Afficher l'écran de défaite si aucune vie restante
             showDefeatScreen(view, model);
-        } else if (model.levelProgressionManager.currentLevel == LevelProgressionManager.NUMBER_OF_LEVELS - 1) {
+        } else if (model.levelProgressionManager.isVictory()) {
             // Afficher l'écran de victoire si le dernier niveau est atteint
             showVictoryScreen(view, model);
         }
@@ -48,6 +47,8 @@ public class EndScreen {
 
         ctx.fillText("Final Score : " + model.player.finalScore, dd.x + dd.width, dd.y + dd.height * 1.5);
         ctx.fillText("Time : " + formatTimeFromTicks(model.getEndTick()), dd.x + dd.width, dd.y + dd.height * 2);
+
+        ctx.fillText("Press R to Restart", dd.x + dd.width, dd.y + dd.height * 2.5);
     }
 
     // Écran de victoire
@@ -67,6 +68,7 @@ public class EndScreen {
         ctx.fillText("Final Score : " + model.player.finalScore, dd.x + dd.width, dd.y + dd.height * 1.5);
         ctx.fillText("Time : " + formatTimeFromTicks(model.getEndTick()), dd.x + dd.width, dd.y + dd.height * 2);
         ctx.fillText("Lives left : " + model.player.getLives(), dd.x + dd.width, dd.y + dd.height * 2.5);
+        ctx.fillText("Press R to Restart", dd.x + dd.width, dd.y + dd.height * 2.5);
     }
 
 

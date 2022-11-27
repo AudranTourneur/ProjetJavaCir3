@@ -13,8 +13,7 @@ import java.util.Scanner;
 
 import project.Main;
 
-
-/* Modèle général*/ 
+/* Modèle général*/
 public class WorldModel {
     public Player player;
 
@@ -26,36 +25,36 @@ public class WorldModel {
         return endTick;
     }
 
-    /*Liste de nos entitées */
+    /* Liste de nos entitées */
     public List<Entity> entities = new ArrayList<>();
 
     // Obligé d'utiliser un buffer pour les ajouts d'entités en cours d'itération à
     // cause des java.lang.ConcurrentModificationException
     private final ArrayList<Entity> entityBuffer = new ArrayList<>();
 
-    //Carte
+    // Carte
     public GridMap map = new GridMap();
 
-    //Position de la nourriture
+    // Position de la nourriture
     public HashSet<IntPosition> foods = new HashSet<>();
 
-    //Notre gestionnaire de projectile
+    // Notre gestionnaire de projectile
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
 
-    //Gestionnaire de vagues de projectiles
+    // Gestionnaire de vagues de projectiles
     ProjectileWavesManager waveManager = new ProjectileWavesManager(this);
 
-    //Gestionnaire de fantômes
+    // Gestionnaire de fantômes
     public GhostHandler ghostHandler = new GhostHandler(this);
 
-    //Gestionnaire d'avancé de niveau
+    // Gestionnaire d'avancé de niveau
     public LevelProgressionManager levelProgressionManager = new LevelProgressionManager(this);
 
     public WorldModel() {
         init();
     }
 
-    //Lit notre ficheir map.txt et met a jour map avec les bonnes valeurs
+    // Lit notre ficheir map.txt et met a jour map avec les bonnes valeurs
     void init() {
 
         Scanner in = new Scanner(
@@ -134,9 +133,9 @@ public class WorldModel {
         entities.remove(e);
     }
 
-    //Met a jour notre modèle
+    // Met a jour notre modèle
     synchronized public void update() {
-        if (hasFinished() && endTick == 0)  {
+        if (hasFinished() && endTick == 0) {
             endTick = currentTick;
             player.finalScore = player.score;
         }
@@ -146,15 +145,10 @@ public class WorldModel {
         ArrayList<Entity> toDelete = new ArrayList<>();
 
         try {
-            
+
             for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext();) {
                 var e = iterator.next();
                 e.move(0);
-
-                if (e instanceof Projectile) {
-                    if (getCompletionPercent() >= 100)
-                        e.markedForDeletion = true;
-                }
 
                 if (e.markedForDeletion) {
                     toDelete.add(e);
@@ -164,23 +158,19 @@ public class WorldModel {
             e.printStackTrace();
         }
 
-            FoodHandler.manageFoodEating(this);
-            levelProgressionManager.manage();
-            waveManager.dispatchEvents();
-            ghostHandler.manage();
-            projectileHandler.manageProjectileCollisions();
+        FoodHandler.manageFoodEating(this);
+        levelProgressionManager.manage();
+        waveManager.dispatchEvents();
+        ghostHandler.manage();
+        projectileHandler.manageProjectileCollisions();
 
-        
-
-            for (Entity e : toDelete) {
-                entities.remove(e);
-            }
-
-            entities.addAll(entityBuffer);
-            entityBuffer.clear();
+        for (Entity e : toDelete) {
+            entities.remove(e);
         }
-        
-    
+
+        entities.addAll(entityBuffer);
+        entityBuffer.clear();
+    }
 
     GridTile getTileFromChar(char ch) {
         switch (ch) {
@@ -202,13 +192,7 @@ public class WorldModel {
         return currentTick;
     }
 
-    public static final int MAX_TICK = 4 * 60 * 60;
-
-    public int getCompletionPercent() {
-        return (int) (currentTick / (double) MAX_TICK * 100);
-    }
-
     public boolean hasFinished() {
-        return this.player.getLives() <= 0 || levelProgressionManager.getCurrentLevel() == 5;
+        return this.player.getLives() <= 0 || levelProgressionManager.isVictory();
     }
 }

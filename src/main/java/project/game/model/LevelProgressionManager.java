@@ -1,10 +1,14 @@
 package project.game.model;
 
-/*Gestion de la progression actuel sur le niveau et change de niveau */
+import java.util.stream.IntStream;
+
+import project.game.controller.AudioController;
+
+/*Gestion de la progression actuel sur le niveau et gère le changement de niveau */
 public class LevelProgressionManager {
 
-    private static final int[] LEVEL_TO_FOOD_REQUIRED = { 10, 20, 30, 40, 50 };
-    private static final int TOTAL_FOOD = 10 + 20 + 30 + 40 + 50;
+    private static final int[] LEVEL_TO_FOOD_REQUIRED = { 1, 2, 3, 4, 5 };
+    private static final int TOTAL_FOOD = IntStream.of(LEVEL_TO_FOOD_REQUIRED).sum();
 
     public static final int NUMBER_OF_LEVELS = LEVEL_TO_FOOD_REQUIRED.length;
 
@@ -17,8 +21,8 @@ public class LevelProgressionManager {
         this.model = model;
     }
 
-    // Toute la progression du jeu c'est un nombre entre 0 et 100
-    public double progression = 0;
+    // Progression globale du jeu entre 0 et TOTAL_FOOD inclusif
+    private int progression = 0;
 
     public int getFoodRemaining() {
         return foodRemaining;
@@ -26,11 +30,21 @@ public class LevelProgressionManager {
 
     public void eatOneFood() {
         foodRemaining--;
-        progression += TOTAL_FOOD / 100;
+        progression += 1;
     }
 
-    public double getProgression() {
-        return progression / 100;
+    // Entre 0 et TOTAL_FOOD inclusif
+    public int getTotalEatenFood() {
+        return progression;
+    }
+
+    // Entre 0 et 100%
+    public double getProgressionPercent() {
+        return (double) progression / (double) TOTAL_FOOD * 100.0;
+    }
+
+    public boolean isVictory() {
+        return progression >= TOTAL_FOOD; 
     }
 
     public void nextLevel() {
@@ -55,6 +69,7 @@ public class LevelProgressionManager {
             currentLevel++;
             this.foodRemaining = LEVEL_TO_FOOD_REQUIRED[currentLevel];
             FoodHandler.generateFood(model, LEVEL_TO_FOOD_REQUIRED[currentLevel]);
+            AudioController.playLevelUpSound();
         }
     }
 

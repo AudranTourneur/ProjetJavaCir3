@@ -38,12 +38,11 @@ public class InputController {
         }
 
         if (event.getCode() == KeyCode.SPACE) { // Espace : sprint
-            System.out.println("Space pressed");
             state.model.player.speedX2 = !state.model.player.speedX2;
         }
 
         if (event.getCode() == KeyCode.R) { // R : Ré-initialiser le jeu
-            System.out.println("Reset model");
+            System.out.println("Game reset!");
             state.model = new WorldModel();
         }
     }
