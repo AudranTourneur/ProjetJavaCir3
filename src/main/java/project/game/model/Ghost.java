@@ -105,7 +105,6 @@ public class Ghost extends Entity {
 
     private void getNewDirection() {    //obtenir nouvelle direction du ghost.
         int rand = (int) (Math.random() * 40 % 4);
-        System.out.println(rand);
         switch (rand) {
             case 0:
                 desiredDirection = Direction.DOWN;

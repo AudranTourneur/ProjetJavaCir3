@@ -16,6 +16,7 @@ public class Player extends Entity {
     int gridPositionX;
     int gridPositionY;
     public int deaths;
+    public int lives = 9;
 
     public final static int MAX_STAMINA = 10 * 60;
     public int stamina = MAX_STAMINA;

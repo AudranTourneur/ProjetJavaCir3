@@ -54,7 +54,6 @@ public class GridMap {
 
 	boolean isPositionAccessible(FloatPosition pos) {
 		boolean ok = getAt(pos) != null && getAt(pos) != GridTile.WALL;
-		// if (!ok) System.out.println("Failing " + pos);
 		return ok;
 	}
 	// INVALID, OUTSIDE_TELEPORT, VALID
@@ -62,12 +61,10 @@ public class GridMap {
 	//condition de teleportation
 	SquareValidityResponse isAbstractPositionAllowed(int x, int y) { 
 		if (x < 0 || y < 0 || x >= MAX_ABSTRACT_WIDTH || y >= MAX_ABSTRACT_HEIGHT) {
-			System.out.println("OOB " + x + " " + y);
 			return SquareValidityResponse.INVALID;
 		}
 
 		if (x <= STEP || y < STEP || x >= (MAX_ABSTRACT_WIDTH - STEP) || y >= (MAX_ABSTRACT_HEIGHT - STEP)) {
-			System.out.println("teleporting " + x + " " + y);
 			return SquareValidityResponse.TELEPORT;
 		}
 

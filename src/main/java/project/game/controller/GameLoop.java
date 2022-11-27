@@ -19,7 +19,8 @@ public class GameLoop {
         stage.setTitle("The Adventures of Pac-Cat");
 
         WorldModel model = new WorldModel();
-        GameView view = new GameView(stage, model);
+        GameWindowController windowController = new GameWindowController(stage);
+        GameView view = new GameView(windowController, model);
 
         GameStateContainer state = new GameStateContainer(model, view);
 
@@ -45,7 +46,6 @@ public class GameLoop {
 
                     try {
                         Thread.sleep(1000 / FPS_TARGET);
-                        //System.out.println("sleep for " + 1000 / FPS_TARGET);
                     } catch (InterruptedException exception) {
                         exception.printStackTrace();
                     }

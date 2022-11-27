@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.canvas.Canvas?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox fx:id="menuvbox" maxHeight="300.0">
+         <children>
+            <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-background-color: #000000;">
+               <children>
+                  <Button fx:id="pause" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" style="-fx-background-color: #F4D3F0;" text="Pause">
+                     <HBox.margin>
+                        <Insets left="20.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="music" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" style="-fx-background-color: #F4D3F0;" text="Music">
+                     <HBox.margin>
+                        <Insets top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="score" mnemonicParsing="false" opacity="0.85" prefHeight="34.0" prefWidth="320.0" style="-fx-background-color: #F#E3ECE55F5F5;" text="Score : 0" textAlignment="CENTER">
+                     <HBox.margin>
+                        <Insets left="15.0" top="5.0" />
+                     </HBox.margin>
+                  </Button>
+                  <ImageView fitHeight="66.0" fitWidth="45.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/heart.png" />
+                     </image>
+                  </ImageView>
+                  <Text fx:id="lives" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="x9" wrappingWidth="72.13000106811523">
+                     <font>
+                        <Font size="26.0" />
+                     </font>
+                  </Text>
+               </children>
+            </HBox>
+            <HBox alignment="TOP_CENTER" prefWidth="200.0" spacing="10.0">
+               <children>
+                  <BorderPane prefWidth="750.0" style="-fx-background-color: #000000;" HBox.hgrow="ALWAYS">
+                     <top>
+                        <BorderPane style="-fx-background-color: #000000;" BorderPane.alignment="CENTER">
+                           <center>
+                              <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #D3F4D9;" text="\%" BorderPane.alignment="CENTER" />
+                           </center>
+                           <left>
+                              <Pane BorderPane.alignment="CENTER">
+                                 <children>
+                                    <ImageView fitHeight="70.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/hourglass.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ProgressBar fx:id="progress_bar" layoutX="65.0" layoutY="9.0" prefHeight="34.0" prefWidth="176.0" progress="0.0" style="-fx-background-color: #F0FFF0;" />
+                                    <Text fx:id="progress_text" fill="WHITE" layoutX="253.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100%">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </Pane>
+                           </left>
+                           <right>
+                              <Pane BorderPane.alignment="CENTER">
+                                 <children>
+                                    <ImageView fitHeight="50.0" fitWidth="72.0" layoutX="-11.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../images/zap.png" />
+                                       </image>
+                                    </ImageView>
+                                    <ProgressBar fx:id="stamina_bar" layoutX="65.0" layoutY="9.0" prefHeight="34.0" prefWidth="161.0" progress="0.0" style="-fx-background-color: #F8F8FF;" />
+                                    <Text fx:id="stamina_text" fill="WHITE" layoutX="245.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="100%" wrappingWidth="45.0">
+                                       <font>
+                                          <Font size="16.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </Pane>
+                           </right>
+                        </BorderPane>
+                     </top>
+                     <center>
+                        <Text fx:id="text" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Level" BorderPane.alignment="CENTER">
+                           <font>
+                              <Font size="28.0" />
+                           </font>
+                        </Text>
+                     </center>
+                  </BorderPane>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <Pane id="canvas-pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #ff0000;" VBox.vgrow="ALWAYS">
+         <children>
+            <Canvas id="canvas" fx:id="canvas" />
+         </children>
+      </Pane>
+   </children>
+</VBox>

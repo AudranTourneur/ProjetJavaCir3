@@ -38,8 +38,6 @@ public class MainMenu {
 
         InputStream inputStreamBackground = new Main().getClass().getResourceAsStream("images/menu_background.jpg");
 
-        System.out.println("InputStream value = " + inputStreamBackground);
-
         Image img = new Image(inputStreamBackground);
         inputStreamBackground.close();
         ImageView imgV = new ImageView(img);

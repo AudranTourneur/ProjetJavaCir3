@@ -16,10 +16,8 @@ public class AudioController {
 	static void playMusic() {	//jouer la musique
 		if (!Configuration.AUDIO_ENABLED) return;
 		try {
-			System.out.println("playing audio");
 			String path = Main.class.getResource("audio/music.mp3").toURI().toString();
 
-			System.out.println("path = " + path);
 			final Media audio = new Media(path);
 
 			musicPlayer = new MediaPlayer(audio);
@@ -38,7 +36,6 @@ public class AudioController {
 	public static void playHitSound() { //jouer le son "Hit"
 		if (!Configuration.AUDIO_ENABLED) return;
 		try {
-			System.out.println("playing audio");
 			String path = Main.class.getResource("audio/hit.mp3").toURI().toString();
 
 			final Media audio = new Media(path);

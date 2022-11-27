@@ -4,20 +4,18 @@
 package project.game.view;
 
 import javafx.beans.value.ChangeListener;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import project.Main;
 import project.game.model.WorldModel;
+import project.game.controller.GameWindowController;
 import project.game.model.Entity;
 import project.game.model.Ghost;
 import project.game.model.GridMap;
@@ -26,9 +24,6 @@ import project.game.model.IntPosition;
 import project.game.model.FloatPosition;
 import project.game.model.Projectile;
 import project.game.model.ProjectileSpawner;
-import project.menu.MenuConstants;
-
-import java.io.InputStream;
 import java.util.HashMap;
 
 public class GameView {
@@ -45,6 +40,9 @@ public class GameView {
     double offsetY = 0;
 
     HashMap<String, Image> spriteMap = new HashMap<>();
+    private GameWindowController window;
+
+    private HUDControllerView hud;
 
     int getHightestEvenNumber(int n) {
         if (n % 2 == 0)
@@ -54,13 +52,20 @@ public class GameView {
     }
 
     void handleResize(Canvas canvas) {
-        System.out
-                .println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
-        canvas.setHeight(stage.getHeight());
-        canvas.setWidth(stage.getWidth());
+        //  System.out
+        //  .println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
+        //  canvas.setHeight(stage.getHeight());
+        //  canvas.setWidth(stage.getWidth());
 
-        double desiredTileSizeX = ((int) ((canvas.getWidth() * 0.8) / (GridMap.TILES_WIDTH + 1)));
-        double desiredTileSizeY = ((int) (canvas.getHeight() / (GridMap.TILES_HEIGHT + 1)));
+        Pane pane = this.window.pane;
+        System.out.println("Pane : " + new FloatPosition(pane.getWidth(), pane.getHeight()));
+
+        this.window.canvas.setWidth(this.window.stage.getWidth());
+        this.window.canvas.setHeight(this.window.stage.getHeight()-this.window.menuVBox.getHeight());
+        
+
+        double desiredTileSizeX = ((int) ((pane.getWidth()) / (GridMap.TILES_WIDTH + 1)));
+        double desiredTileSizeY = ((int) (pane.getHeight() / (GridMap.TILES_HEIGHT + 1)));
 
         System.out.println("Desired tile size: " + desiredTileSizeX + "x" + desiredTileSizeY);
 
@@ -78,42 +83,52 @@ public class GameView {
         System.out.println("desired : " + new FloatPosition(desiredX, desiredY));
         System.out.println("actual : " + new FloatPosition(actualX, actualY));
 
-        offsetX = Math.round(Math.max(0, (actualX - desiredX)));
+        //offsetX = Math.round(Math.max(0, (actualX - desiredX)));
+        offsetX = Math.round(Math.max(0, (actualX - desiredX) / 2));
         offsetY = Math.round(Math.max(0, (actualY - desiredY) / 2));
 
         System.out.println("Offset : " + offsetX + " " + offsetY);
     }
 
-    public GameView(Stage stage, WorldModel world) {
-        this.stage = stage;
+    public GameView(GameWindowController window, WorldModel world) {
+        this.window = window;
         this.world = world;
 
-        // Creation du canvas
-        Canvas canvas = new Canvas();
-
-        Rectangle2D bounds = Screen.getPrimary().getBounds();
-        stage.setWidth(bounds.getWidth());
-        stage.setHeight(bounds.getHeight());
-
-        // set height and width
-        canvas.setWidth(stage.getWidth());
-        canvas.setHeight(stage.getHeight());
-
-        System.out.println("offsets " + offsetX + " " + offsetY);
+        this.stage = window.stage;
+        Canvas canvas = window.canvas;
 
         this.ctx = canvas.getGraphicsContext2D();
 
-        // Création d'un Groupe
-        Group group = new Group(canvas);
+        System.out.println("canvas = " + canvas.getWidth() + " " + canvas.getHeight());
 
-        // Création d'une scène
-        Scene scene = new Scene(group, MenuConstants.windowWidth, MenuConstants.windowHeight);
-
-        stage.show();
 
         load();
-        // set the scene
-        stage.setScene(scene);
+
+        this.hud = new HUDControllerView(this.window);
+
+        // handleResize(canvas);
+
+        // Rectangle2D bounds = Screen.getPrimary().getBounds();
+        // stage.setWidth(bounds.getWidth());
+        // stage.setHeight(bounds.getHeight());
+
+        // // set height and width
+        // canvas.setWidth(stage.getWidth());
+        // canvas.setHeight(stage.getHeight());
+
+        // System.out.println("offsets " + offsetX + " " + offsetY);
+
+        // // Création d'un Groupe
+        // Group group = new Group(canvas);
+
+        // // Création d'une scène
+        // Scene scene = new Scene(group, MenuConstants.windowWidth,
+        // MenuConstants.windowHeight);
+
+        // stage.show();
+
+        // // set the scene
+        // stage.setScene(scene);
 
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             handleResize(canvas);
@@ -123,6 +138,7 @@ public class GameView {
         stage.heightProperty().addListener(stageSizeListener);
 
         handleResize(canvas);
+
     }
 
     void drawEndScreenIfNeeded() {
@@ -151,9 +167,13 @@ public class GameView {
         drawSpawners();
         drawTmpTexts();
         drawEndScreenIfNeeded();
-        LeftBarHUD.drawLeftBar(this);
+        //LeftBarHUD.drawLeftBar(this);
+        hud.updateHUD(this.world);
 
         isDrawing = false;
+
+        if (this.world.getCurrentTick() % 60 == 0)
+            handleResize(this.window.canvas);
     }
 
     void drawTmpTexts() {

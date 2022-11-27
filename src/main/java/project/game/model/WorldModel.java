@@ -17,7 +17,6 @@ import project.game.view.GameView;
 public class WorldModel {
     public Player player;
 
-    public int score;
     private int currentTick; // compteur des update
 
     public List<Entity> entities = new ArrayList<>();
@@ -173,9 +172,7 @@ public class WorldModel {
 
             entities.addAll(entityBuffer);
             entityBuffer.clear();
-        } else {
-            System.out.println("fail to acquire");
-        }
+        } 
 
         // projectileHandler.manageProjectileSpawn();
 

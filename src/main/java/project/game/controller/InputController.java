@@ -19,7 +19,6 @@ public class InputController {
 
     public void handle(KeyEvent event) {
         WorldModel world = state.model;
-        // System.out.println("Handle " + event);
         if (event.getCode() == KeyCode.RIGHT || event.getCode() == KeyCode.D) //fleche droite
             world.player.desiredDirection = Direction.RIGHT;
 
@@ -37,12 +36,8 @@ public class InputController {
             Main.alive = false;
         }
 
-        if (event.getCode() == KeyCode.D) { 
-            state.view.displayDebugInfo();
-            System.out.println("Debug info: " + state.model.player);
-        }
-
         if (event.getCode() == KeyCode.SPACE) { // espace : sprint
+            System.out.println("Space pressed");
             state.model.player.speedX2 = !state.model.player.speedX2;
         }
     }
