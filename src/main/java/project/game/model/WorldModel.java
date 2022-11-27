@@ -156,20 +156,15 @@ public class WorldModel {
             e.printStackTrace();
         }
 
-        //if (this.getCurrentTick() < 4 * 60 * 60) {
-           // FoodHandler.manageFoodGeneration(this);
             FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
             levelProgressionManager.manage();
+            waveManager.dispatchEvents();
+            ghostHandler.manage();
+            projectileHandler.manageProjectileCollisions();
 
             
-        //}
         
         
-
-        if(this.getCurrentTick()%(10*60)==0){
-            ghostHandler.addGhost();
-            System.out.println("We should be adding a ghost");
-        }
 
         if (!GameView.isDrawing) {
 
@@ -185,9 +180,7 @@ public class WorldModel {
 
         // projectileHandler.manageProjectileSpawn();
 
-        waveManager.dispatchEvents();
-
-        projectileHandler.manageProjectileCollisions();
+        
 
     }
 
@@ -206,6 +199,10 @@ public class WorldModel {
         }
         // throw new Exception("pas encore fait");
     }
+
+    
+
+    
 
     public int getCurrentTick() {
         return currentTick;

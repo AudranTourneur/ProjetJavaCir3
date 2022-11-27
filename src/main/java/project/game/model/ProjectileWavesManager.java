@@ -23,10 +23,17 @@ public class ProjectileWavesManager {
 		testlevel();
 		/*
 		if (model.levelProgressionManager.getCurrentLevel() == 0) {
-			manageLevelZero();
-		} else if (model.levelProgressionManager.getCurrentLevel() == 1) {
 			manageLevelOne();
-		}*/
+		} else if (model.levelProgressionManager.getCurrentLevel() == 1) {
+			manageLevelTwo();
+		} else if(model.levelProgressionManager.getCurrentLevel()==2){
+			manageLevelThree();
+		} else if(model.levelProgressionManager.getCurrentLevel()==3){
+			manageLevelFour();
+		} else if(model.levelProgressionManager.getCurrentLevel()==4){
+			manageLevelFive();
+		}
+		*/
 
 		if (model.getCurrentTick() >= 4 * 60 * 60)
 			return;
@@ -41,7 +48,7 @@ public class ProjectileWavesManager {
 	//TILES_WIDTH = 29 
 	// TILES_HEIGHT = 21
 	boolean startlevel1=false;
-	private void manageLevelZero() {
+	private void manageLevelOne() {
 		double speed = 0.02;
 		//boucle qui tire les spawners charge dans queuedSpawners
 		if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
@@ -86,13 +93,45 @@ public class ProjectileWavesManager {
 		
 	}
 
-	private void manageLevelOne() {
-		if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
-			shootqueuedSpawners(0);
+	private void manageLevelTwo() {
+		if(model.getCurrentTick()%60==0){
+			launchRandomTarget(0.05);
 		}
-		if(model.getCurrentTick()%(45*60)==5){
+		if(model.getCurrentTick()%(45*60)==(5*60)){
 			launchTargetedEncirclementAroundPlayer(1, 0.025, 2);
 		}
+
+		if(model.getCurrentTick()%(45*60)==(10*60)){
+			launchTargetedEncirclementAroundPlayer(1, 0.035, 3);
+		}
+
+		if(model.getCurrentTick()%(45*60)==(15*60)){
+			launchTargetedEncirclementAroundPlayer(1, 0.045, 4);
+		}
+		if(model.getCurrentTick()%(45*60)==(20*60)){
+			launchTargetedEncirclementAroundPlayer(1, 0.05, 5);
+		}
+		if(model.getCurrentTick()%(45*60)==(25*60)){
+			launchTargetedEncirclementAroundPlayer(1, 0.045, 4);
+		}
+		if(model.getCurrentTick()%(45*60)==(35*60)){
+			launchTargetedEncirclementAroundPlayer(1, 0.035, 3);
+		}
+		if(model.getCurrentTick()%(45*60)==(40*60)){
+			launchTargetedEncirclementAroundPlayer(1, 0.025, 2);
+		}
+	}
+	
+	private void manageLevelThree(){
+		
+	}
+	
+	private void manageLevelFour(){
+	
+	}
+
+	private void manageLevelFive(){
+
 	}
 
 	static IntPosition getRandomPosition() {
@@ -162,25 +201,24 @@ public class ProjectileWavesManager {
 			});
 		}
 	}
+
+	//Spawn un carre autour du joueuer
 	void launchTargetedEncirclementAroundPlayer(int spacing,double speed,int distanceToPlayers){
 		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
 		int playerX=model.player.getTilePosition().x;
 		int playerY=model.player.getTilePosition().y;
-		for(int i=Math.max(0,playerX-distanceToPlayers);i<=Math.min(GridMap.TILES_WIDTH,playerX+distanceToPlayers);i++){
+		for(int i=Math.max(0,playerX-distanceToPlayers);i<=Math.min(GridMap.TILES_WIDTH,playerX+distanceToPlayers);i+=spacing){
 			set.add(new IntPosition(i,(int)Math.max(0,playerY-distanceToPlayers)));
 			set.add(new IntPosition(i,(int)Math.min(GridMap.TILES_HEIGHT,playerY+distanceToPlayers)));
 		}
-		
-		
-
-
-		for (IntPosition pos : set) {
-			queuedSpawners.add((Consumer<Void>) x -> {
-				addTargetSpawner(pos,speed);
-			});
+		for(int i=playerY-distanceToPlayers+1;i<playerY+distanceToPlayers;i+=spacing){
+			set.add(new IntPosition(playerX-distanceToPlayers,i));
+			set.add(new IntPosition(playerX+distanceToPlayers,i));
 		}
-		System.out.println("queuedSpawner :"+queuedSpawners);
-		System.out.println("set :"+set);
+		for (IntPosition pos : set) {
+			addTargetSpawner(pos,speed);
+		}
+		
 	}
 	void launchTargetedEncirclement(int spacing,double speed) {
 		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();

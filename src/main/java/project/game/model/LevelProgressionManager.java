@@ -11,9 +11,12 @@ public class LevelProgressionManager {
 
     private static final int[] levelToFoodRequired = { 10, 20, 30, 40, 50 };
     private static final int NUMBER_OF_LEVELS = levelToFoodRequired.length;
-
+    private static final int TOTAL_FOOD = 10+20+30+40+50;
     public int currentLevel = 0;
     private int foodRemaining = levelToFoodRequired[0];
+    
+    //Toute la progression du jeu c'est un nombre entre 0 et 100
+    public double progression =0;
 
     public int getFoodRemaining() {
         return foodRemaining;
@@ -21,6 +24,11 @@ public class LevelProgressionManager {
 
     public void eatOneFood() {
         foodRemaining--;
+        progression+=TOTAL_FOOD/100;
+    }
+
+    public double getProgression(){
+        return progression;
     }
 
     public void nextLevel() {
@@ -48,7 +56,6 @@ public class LevelProgressionManager {
             currentLevel++;
             this.foodRemaining = levelToFoodRequired[currentLevel];
             FoodHandler.generateFood(model, levelToFoodRequired[currentLevel]);
-            model.ghostHandler.addGhost();
         }
 
     }
