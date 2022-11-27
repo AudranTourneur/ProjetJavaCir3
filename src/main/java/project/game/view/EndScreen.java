@@ -46,8 +46,8 @@ public class EndScreen {
 
         ctx.setFont(Font.font("System", Math.min(view.stage.getWidth(), view.stage.getHeight()) / 15));
 
-        ctx.fillText("Final Score : " + model.score, dd.x + dd.width, dd.y + dd.height * 1.5);
-        ctx.fillText("Time : " + formatTimeFromTicks(model.getCurrentTick()), dd.x + dd.width, dd.y + dd.height * 2);
+        ctx.fillText("Final Score : " + model.player.finalScore, dd.x + dd.width, dd.y + dd.height * 1.5);
+        ctx.fillText("Time : " + formatTimeFromTicks(model.getEndTick()), dd.x + dd.width, dd.y + dd.height * 2);
     }
 
     // Écran de victoire
@@ -64,8 +64,8 @@ public class EndScreen {
 
         ctx.setFont(Font.font("System", Math.min(view.stage.getWidth(), view.stage.getHeight()) / 15));
 
-        ctx.fillText("Final Score : " + model.score, dd.x + dd.width, dd.y + dd.height * 1.5);
-        ctx.fillText("Time : " + formatTimeFromTicks(model.getCurrentTick()), dd.x + dd.width, dd.y + dd.height * 2);
+        ctx.fillText("Final Score : " + model.player.finalScore, dd.x + dd.width, dd.y + dd.height * 1.5);
+        ctx.fillText("Time : " + formatTimeFromTicks(model.getEndTick()), dd.x + dd.width, dd.y + dd.height * 2);
         ctx.fillText("Lives left : " + model.player.getLives(), dd.x + dd.width, dd.y + dd.height * 2.5);
     }
 

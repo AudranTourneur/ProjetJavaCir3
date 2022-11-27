@@ -17,8 +17,13 @@ import project.game.view.GameView;
 public class WorldModel {
     public Player player;
 
-    public int score;
     private int currentTick; // compteur des update
+
+    public int endTick = 0;
+
+    public int getEndTick() {
+        return endTick;
+    }
 
     public List<Entity> entities = new ArrayList<>();
 
@@ -129,6 +134,11 @@ public class WorldModel {
     }
 
     synchronized public void update() {
+        if (hasFinished() && endTick == 0)  {
+            endTick = currentTick;
+            player.finalScore = player.score;
+        }
+
         currentTick++;
 
         ArrayList<Entity> toDelete = new ArrayList<>();
@@ -197,10 +207,6 @@ public class WorldModel {
         // throw new Exception("pas encore fait");
     }
 
-    
-
-    
-
     public int getCurrentTick() {
         return currentTick;
     }
@@ -212,6 +218,6 @@ public class WorldModel {
     }
 
     public boolean hasFinished() {
-        return this.player.getLives() <= 0;
+        return this.player.getLives() <= 0 || levelProgressionManager.getCurrentLevel() == 5;
     }
 }
