@@ -168,7 +168,7 @@ public class WorldModel {
         
         
 
-        if (!GameView.isDrawing) {
+        
 
             for (Entity e : toDelete) {
                 entities.remove(e);
@@ -176,9 +176,8 @@ public class WorldModel {
 
             entities.addAll(entityBuffer);
             entityBuffer.clear();
-        } else {
-            System.out.println("fail to acquire");
-        }
+         
+        
     }
 
     GridTile getTileFromChar(char ch) {

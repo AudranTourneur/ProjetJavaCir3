@@ -10,6 +10,7 @@ import project.game.model.WorldModel;
 
 /*
  * Menu en haut de l'écran lors du jeu
+ * HUD = Heads Up Display
  */
 
 public class HUDControllerView {

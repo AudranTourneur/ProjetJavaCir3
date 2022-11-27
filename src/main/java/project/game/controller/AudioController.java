@@ -1,4 +1,3 @@
-// Création d'un fichier permettant de jouer et de contrôler une musique préalablement téléchargé sur l'ordinateur.
 
 package project.game.controller;
 
@@ -7,6 +6,8 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import project.Main;
+
+// Gestion de la musique et du son durant la partie
 
 public class AudioController {
 
@@ -17,7 +18,8 @@ public class AudioController {
 	// élimine l'objet et stoppe la musique en cours
 	static MediaPlayer musicPlayer;
 
-	static void playMusic() { // jouer la musique
+	// Joue la musique principale
+	static void playMusic() {
 		try {
 			String path = Main.class.getResource("audio/music.mp3").toURI().toString();
 
@@ -36,7 +38,8 @@ public class AudioController {
 
 	static MediaPlayer hitPlayer;
 
-	public static void playHitSound() { // jouer le son "Hit"
+	// Joue le son de dégât lorsqu'un le joueur entre en contact avec un fantôme
+	public static void playHitSound() { 
 		if (!Configuration.audioEnabled)
 			return;
 
@@ -57,13 +60,14 @@ public class AudioController {
 
 	}
 
+	// Gestion d'un clic sur le bouton "Music"
 	public static void clickMusicButton(Button btn) {
 		Configuration.audioEnabled = !Configuration.audioEnabled;
 
 		if (Configuration.audioEnabled) {
 			musicPlayer.setVolume(VOLUME_MUSIC);
 			btn.setText("Music [ON]");
-			
+
 		} else {
 			musicPlayer.setVolume(0);
 			btn.setText("Music [OFF]");

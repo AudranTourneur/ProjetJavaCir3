@@ -1,7 +1,7 @@
 package project.game.controller;
 
+// Configuration globale du jeu
+
 public class Configuration {
-    static final boolean FPS_COUNTER = false;
-    
     static boolean audioEnabled = true;
 }

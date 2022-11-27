@@ -15,6 +15,7 @@ public class DisplayData {
 
     // Renvoie des coordonnées et tailles réelles sur l'écran en partant des
     // coordonnées abstraites du modèle
+    // Les coordonnées sont considérées centrées
     public DisplayData(GameView view, double x, double y, double width, double height) {
         this.width = width * view.tileSizeX;
         this.height = height * view.tileSizeY;

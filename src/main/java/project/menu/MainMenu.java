@@ -24,17 +24,13 @@ public class MainMenu {
         this.manager = manager;
     }
 
-    GameMenu gamemenu;
-
-// Creation du menu principal (image de fond ainsi que du bouton)
+    // Creation du menu principal (image de fond ainsi que du bouton)
 
     public Scene start(Stage stage) throws IOException {
 
         // image de fond
         Pane root = new Pane();
         root.setPrefSize(MenuConstants.windowWidth, MenuConstants.windowHeight);
-
-        gamemenu = new GameMenu();
 
         InputStream inputStreamBackground = new Main().getClass().getResourceAsStream("images/menu_background.jpg");
 
@@ -44,7 +40,7 @@ public class MainMenu {
         imgV.setFitHeight(MenuConstants.windowHeight); // taille image
         imgV.setFitWidth(MenuConstants.windowWidth);
 
-        root.getChildren().addAll(imgV, gamemenu);
+        root.getChildren().addAll(imgV);
 
         Scene scene = new Scene(root);
         stage.setScene(scene);
@@ -61,10 +57,9 @@ public class MainMenu {
         StartButton play = new StartButton("PLAY");
 
         play.setOnMouseClicked(event -> { // fenetre de transition quand on clique
-            FadeTransition ft = new FadeTransition(Duration.seconds(0.75), gamemenu); // duree transition
+            FadeTransition ft = new FadeTransition(Duration.seconds(0.75)); // duree transition
             ft.setFromValue(1);
             ft.setToValue(0);
-            ft.setOnFinished(evt -> gamemenu.setVisible(false));
             ft.play();
 
             manager.switchToGame();
@@ -84,7 +79,6 @@ public class MainMenu {
                 manager.switchToGame();
             }
         });
-
 
         return scene;
 
