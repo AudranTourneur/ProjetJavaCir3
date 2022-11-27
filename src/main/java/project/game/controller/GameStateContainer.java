@@ -1,6 +1,6 @@
 package project.game.controller;
 
-import project.game.model.WorldModel;
+import project.game.model.general.WorldModel;
 import project.game.view.GameView;
 
 // Contient le modèle et la vue du jeu

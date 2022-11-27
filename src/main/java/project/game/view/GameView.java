@@ -7,10 +7,17 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import project.Main;
-import project.game.model.WorldModel;
+import project.game.view.painter.EndScreenPainter;
+import project.game.view.painter.FoodPainter;
+import project.game.view.painter.GhostPainter;
+import project.game.view.painter.MapPainter;
+import project.game.view.painter.PlayerPainter;
+import project.game.view.painter.ProjectilePainter;
+import project.main.Main;
 import project.game.controller.GameWindowController;
-import project.game.model.GridMap;
+import project.game.model.general.GridMap;
+import project.game.model.general.WorldModel;
+
 import java.util.HashMap;
 
 /* 
@@ -20,8 +27,8 @@ import java.util.HashMap;
 
 public class GameView {
     public Stage stage;
-    GraphicsContext ctx;
-    WorldModel world;
+    public GraphicsContext ctx;
+    public WorldModel world;
 
     final int defaultTileSize = 80;
 
@@ -31,7 +38,7 @@ public class GameView {
     double offsetX = 0;
     double offsetY = 0;
 
-    HashMap<String, Image> spriteMap = new HashMap<>();
+    public HashMap<String, Image> spriteMap = new HashMap<>();
     private GameWindowController window;
 
     private HUDControllerView hud;
@@ -95,7 +102,7 @@ public class GameView {
         GhostPainter.drawGhosts(this);
         ProjectilePainter.drawProjectiles(this);
         ProjectilePainter.drawSpawners(this);
-        EndScreen.showEndScreenIfNeeded(this, this.world);
+        EndScreenPainter.showEndScreenIfNeeded(this, this.world);
         // LeftBarHUD.drawLeftBar(this);
         hud.updateHUD(this.world);
 

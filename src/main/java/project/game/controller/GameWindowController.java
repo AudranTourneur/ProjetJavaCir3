@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import project.Main;
+import project.main.Main;
 
 // Contrôle général de la fenêtre de jeu
 

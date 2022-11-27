@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
-import project.Main;
+import project.main.Main;
 
 // Gestion de la musique et du son durant la partie
 

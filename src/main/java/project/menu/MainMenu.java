@@ -11,8 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import project.Main;
-import project.SceneManager;
+import project.main.Main;
+import project.main.SceneManager;
 
 import java.io.IOException;
 import java.io.InputStream;

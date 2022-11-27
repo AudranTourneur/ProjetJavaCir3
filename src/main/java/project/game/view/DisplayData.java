@@ -1,6 +1,6 @@
 package project.game.view;
 
-import project.game.model.FloatPosition;
+import project.game.model.utils.FloatPosition;
 
 /*
  * Classe responsable de la conversion entre unités abstraites du modèle vers les coordonnées en pixels sur l'écran

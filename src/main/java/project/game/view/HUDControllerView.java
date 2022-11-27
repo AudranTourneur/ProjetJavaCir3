@@ -5,8 +5,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.text.Text;
 import project.game.controller.GameWindowController;
-import project.game.model.Player;
-import project.game.model.WorldModel;
+import project.game.model.general.Player;
+import project.game.model.general.WorldModel;
 
 /*
  * Menu en haut de l'écran lors du jeu

@@ -6,7 +6,7 @@ import javafx.animation.Timeline;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import project.game.model.WorldModel;
+import project.game.model.general.WorldModel;
 import project.game.view.GameView;
 
 // Boucle de jeu principale chargée de mettre à jour le modèle et la vue tous les 60eme de seconde
