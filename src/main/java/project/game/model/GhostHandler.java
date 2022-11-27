@@ -29,13 +29,13 @@ public class GhostHandler {
         if(world.levelProgressionManager.getCurrentLevel() == 0){
             if(nbGhosts==0)addGhost();
         }else if(world.levelProgressionManager.getCurrentLevel() == 1){
-            if(nbGhosts==1)addGhost();
+            if(nbGhosts<2)addGhost();
         }else if(world.levelProgressionManager.getCurrentLevel() == 2){
-            addGhost();
+            if(nbGhosts<4)addGhost();
         }else if(world.levelProgressionManager.getCurrentLevel() == 3){
-            addGhost();
+            if(nbGhosts<7)addGhost();
         }else if(world.levelProgressionManager.getCurrentLevel() == 4){
-            addGhost();
+            if(nbGhosts<10)addGhost();
         }
     }
 

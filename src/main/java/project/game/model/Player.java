@@ -122,11 +122,13 @@ public class Player extends Entity {
 
     public void hit() {
         if (this.world.getCompletionPercent() >= 100) return;
+        /*Je me rend invincible pour tester un peu le jeu en boijant ce commentaire*/
         if (invulnerabilityTicks == 0) {
             removeLife();
             invulnerabilityTicks += 90;
             AudioController.playHitSound();
         }
+        
     }
 
     void removeLife() {
