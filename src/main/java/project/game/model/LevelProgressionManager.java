@@ -28,7 +28,7 @@ public class LevelProgressionManager {
     }
 
     public double getProgression(){
-        return progression;
+        return progression/100;
     }
 
     public void nextLevel() {

@@ -54,7 +54,7 @@ public class HUDControllerView {
 		setScore(model.player.score);
 		setText("Level : " + model.levelProgressionManager.getCurrentLevel());
 		setStamina((double) model.player.stamina / Player.MAX_STAMINA);
-		setProgress(0.25);
+		setProgress(model.levelProgressionManager.getProgression());
 		setLives(model.player.getLives());
 	}
 
