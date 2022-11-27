@@ -16,7 +16,7 @@ public class Player extends Entity {
     int gridPositionX;
     int gridPositionY;
     public int deaths;
-    public int lives = 9;
+    private int lives = 9;
 
     public final static int MAX_STAMINA = 10 * 60;
     public int stamina = MAX_STAMINA;
@@ -35,7 +35,6 @@ public class Player extends Entity {
         this.world = world;
         this.map = world.map;
     }
-    
 
     FloatPosition getNormalizedPosition() {
         return new FloatPosition(
@@ -121,7 +120,8 @@ public class Player extends Entity {
     }
 
     public void hit() {
-        if (this.world.getCompletionPercent() >= 100) return;
+        if (this.world.getCompletionPercent() >= 100)
+            return;
         if (invulnerabilityTicks == 0) {
             removeLife();
             invulnerabilityTicks += 90;
@@ -129,8 +129,13 @@ public class Player extends Entity {
         }
     }
 
-    void removeLife() {
-        lives--;
+    public int getLives() {
+        return lives;
     }
 
+    void removeLife() {
+        lives--;
+        if (lives < 0)
+            lives = 0;
+    }
 }

@@ -21,7 +21,7 @@ public class WorldModel {
     private int currentTick; // compteur des update
 
     public List<Entity> entities = new ArrayList<>();
-    
+
     // Obligé d'utiliser un buffer pour les ajouts d'entités en cours d'itération à
     // cause des java.lang.ConcurrentModificationException
     private final ArrayList<Entity> entityBuffer = new ArrayList<>();
@@ -54,12 +54,10 @@ public class WorldModel {
 
         BufferedReader bufReader = new BufferedReader(new StringReader(text));
 
-        
-
         String line = null;
         int PlayerSpawnX = 0;
         int PlayerSpawnY = 0;
-        
+
         try {
             int y = 0;
             while ((line = bufReader.readLine()) != null) {
@@ -72,8 +70,8 @@ public class WorldModel {
                         PlayerSpawnX = x;
                         PlayerSpawnY = y;
                     } else if (map.getAt(x, y) == GridTile.GHOST_SPAWN) {
-                        ghostHandler.addSpawnPoint(x, y);    
-                    
+                        ghostHandler.addSpawnPoint(x, y);
+
                     }
 
                 }
@@ -114,20 +112,19 @@ public class WorldModel {
         player.setSpawn(PlayerSpawnX, PlayerSpawnY);
         entities.add(player);
         levelProgressionManager.firstSpawn();
-        //FoodHandler.generateFood(this, 50);
+        // FoodHandler.generateFood(this, 50);
     }
 
-    //prepare le model pour une autre partie
-    void reset(){
-        
-    }
+    // prepare le model pour une autre partie
+    void reset() {
 
+    }
 
     void addEntity(Entity e) {
         entityBuffer.add(e);
     }
 
-    void removeEntity(Entity e){
+    void removeEntity(Entity e) {
         entities.remove(e);
     }
 
@@ -212,5 +209,9 @@ public class WorldModel {
 
     public int getCompletionPercent() {
         return (int) (currentTick / (double) MAX_TICK * 100);
+    }
+
+    public boolean hasFinished() {
+        return this.player.getLives() <= 0;
     }
 }

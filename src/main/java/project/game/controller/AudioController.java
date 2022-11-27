@@ -22,7 +22,7 @@ public class AudioController {
 
 			musicPlayer = new MediaPlayer(audio);
 
-			musicPlayer.setVolume(0.9);
+			musicPlayer.setVolume(0.45);
 
 			musicPlayer.play();
 
