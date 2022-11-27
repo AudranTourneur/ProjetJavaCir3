@@ -19,7 +19,7 @@
          <children>
             <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-background-color: #000000;">
                <children>
-                  <Button fx:id="music" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" style="-fx-background-color: #F4D3F0;" text="Music">
+                  <Button fx:id="music" mnemonicParsing="false" prefHeight="34.0" prefWidth="111.0" style="-fx-background-color: #F4D3F0;" text="Music [ON]">
                      <HBox.margin>
                         <Insets top="5.0" />
                      </HBox.margin>
@@ -97,7 +97,7 @@
             </HBox>
          </children>
       </VBox>
-      <Pane id="canvas-pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #ff0000;" VBox.vgrow="ALWAYS">
+      <Pane id="canvas-pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #000000;" VBox.vgrow="ALWAYS">
          <children>
             <Canvas id="canvas" fx:id="canvas" />
          </children>

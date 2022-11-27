@@ -50,7 +50,7 @@ public class GameWindowController {
 		Button button = (Button) stage.getScene().lookup("#music");
 		button.setOnAction(event -> {
 			//System.out.println(event);
-			AudioController.clickMusicButton();
+			AudioController.clickMusicButton(button);
 		});
 		
 	}
