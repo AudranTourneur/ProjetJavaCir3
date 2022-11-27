@@ -1,6 +1,6 @@
 package project.game.model;
 
-//donner des positions en fonction des formules mathematiques utilisées
+//Des positions en float pour afficher à l'écran et calculer les positions
 public class FloatPosition {
     public float x;
     public float y;

@@ -1,5 +1,6 @@
 package project.game.model;
 
+//Crée un pattern de projectile en une position puis disparaît
 public class ProjectileSpawner extends Entity {
 
 	SpawnPatttern pattern;

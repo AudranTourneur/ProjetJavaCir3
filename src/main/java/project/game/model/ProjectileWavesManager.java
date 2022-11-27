@@ -1,5 +1,3 @@
-// gere la vague des projectiles (le nombre augmente en fonction du niveau)
-
 package project.game.model;
 
 import java.util.ArrayList;
@@ -8,9 +6,11 @@ import java.util.function.Consumer;
 
 import javafx.util.Pair;
 
+//Gestion des vagues de projectiles en fonction du niveu actuel
 public class ProjectileWavesManager {
 	WorldModel model;
 
+	//Listes des spawners qui attendent à spawn
 	ArrayList<Consumer<Void>> queuedSpawners = new ArrayList<>();
 
 
@@ -18,10 +18,8 @@ public class ProjectileWavesManager {
 		this.model = model;
 	}
 
-
+	//Appel la gestion du niveau actuel
 	void dispatchEvents() {
-		//testlevel();
-		/**/
 		if (model.levelProgressionManager.getCurrentLevel() == 0) {
 			manageLevelOne();
 		} else if (model.levelProgressionManager.getCurrentLevel() == 1) {
@@ -33,24 +31,17 @@ public class ProjectileWavesManager {
 		} else if(model.levelProgressionManager.getCurrentLevel()==4){
 			manageLevelFive();
 		}
-		//*/
-
-		if (model.getCurrentTick() >= 4 * 60 * 60)
-			return;
-		
-		
-		
 	}
 
-	void testlevel(){
-		manageLevelFive();
-	}
-	//TILES_WIDTH = 29 
-	// TILES_HEIGHT = 21
+	/*Gestion du niveau 3
+	 * dans notre jeu chaque pattern de projectile dure 45s et se répètent 
+	 * comme dans une seconde on a 60 ticks on multiplie par 60 pour réfléchir en
+	 * secondes
+	*/
 	boolean startlevel1=false;
 	private void manageLevelThree() {
 		double speed = 0.02;
-		//boucle qui tire les spawners charge dans queuedSpawners
+		//Fais apparatitre les spawners en attente
 		if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
 			shootqueuedSpawners(0);
 		}
@@ -214,6 +205,7 @@ public class ProjectileWavesManager {
 
 	}
 
+
 	static IntPosition getRandomPosition() {
 		return new IntPosition((int) (Math.random() *
 				GridMap.TILES_WIDTH),
@@ -300,6 +292,7 @@ public class ProjectileWavesManager {
 		}
 		
 	}
+	//Tire des spawners qui vise le joueuer sur les extrémités de la carte avec un espacement de spacing
 	void launchTargetedEncirclement(int spacing,double speed) {
 		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
 		for (int i = 0; i < GridMap.TILES_WIDTH; i += spacing)
@@ -321,11 +314,7 @@ public class ProjectileWavesManager {
 		}
 	}
 
-	
-
-
-	//TODO should look into moving these into the pattern section to organize the code in a better manner
-	//Shoots a wall of projectiles from left side with a 3 wide hole around holePosition
+	/*Tire un mur de projectiles avec un trou pour passer */
 	void shootWallLeft(int holePosition,double speed){
 		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
 		for(int i=0;i<GridMap.TILES_HEIGHT;i++){

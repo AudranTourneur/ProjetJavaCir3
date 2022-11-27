@@ -1,6 +1,6 @@
 package project.game.model;
 
-// Création d'un level avecplus de difficultés ; plus de projectiles/ plus de nourriture...)
+/*Gestion de la progression actuel sur le niveau et change de niveau */
 public class LevelProgressionManager {
 
     private static final int[] LEVEL_TO_FOOD_REQUIRED = { 10, 20, 30, 40, 50 };

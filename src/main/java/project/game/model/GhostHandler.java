@@ -2,21 +2,26 @@ package project.game.model;
 
 import java.util.ArrayList;
 
-//Class qui nous sert a manipuler les fantomes et les faire apparaitre et disparaitre
+//Class qui nous sert a manipuler les fantomes et les faire apparaitre
+//en fonction du niveau actuel
 public class GhostHandler {
     WorldModel world;
     ArrayList<IntPosition> spawnPoints= new ArrayList<>();
     int nbSpawnPoints = 0;
     int nbGhosts=0;
+
     GhostHandler(WorldModel world){
         this.world=world;
     }
 
-     void addSpawnPoint(int x,int y){
+    /*Ajoute les coordonnées d'un point d'apparaition des fantômes dans spawnPoints*/
+    void addSpawnPoint(int x,int y){
         spawnPoints.add(new IntPosition(x,y));
         nbSpawnPoints++;
     }
-     void addGhost(){
+
+    /*Ajoute un fantôme dans notre world */
+    void addGhost(){
         Ghost tmp=new Ghost(world);
         int ind=(int)(Math.random()*nbSpawnPoints*10 % nbSpawnPoints);
         tmp.setSpawn(spawnPoints.get(ind).x,spawnPoints.get(ind).y );
@@ -24,7 +29,7 @@ public class GhostHandler {
         nbGhosts+=1;
     }
     
-    
+    /*Gestion de lapparaition de fantômes en fonction du niveau actuel */
     public void manage(){
         if(world.levelProgressionManager.getCurrentLevel() == 0){
             if(nbGhosts==0)addGhost();
@@ -38,11 +43,4 @@ public class GhostHandler {
             if(nbGhosts<10)addGhost();
         }
     }
-
-    /*
-    void removeGhost(){
-        world.removeEntity(null);
-    }
-    */
-
 }

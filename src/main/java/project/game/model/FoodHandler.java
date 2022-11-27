@@ -5,24 +5,12 @@ import java.util.Collections;
 import java.util.List;
 
 
-// gerer les evenements de nourriture (nombre, position, monde)
+//Gère la création de la nourriture en fonction du niveau, ainsi que la consomation de la nourriture par le 
+//joueuer
 public class FoodHandler {
 
-    static void manageFoodGeneration(WorldModel world) {
-        if (world.getCompletionPercent() >= 99) return;
-
-        if (world.getCurrentTick() % 600 == 0) {
-            generateFood(world, 10);
-        }
-
-        if (world.getCurrentTick() % 3600 == 0) {
-            generateFood(world, 50);
-        }
-    }
-
+    //Génere a des positions random valid une quantité "number" de food
     static void generateFood(WorldModel world, int number) {
-        // world.foods;
-
         List<IntPosition> positions = new ArrayList<>(world.map.getEmptyPositions());
         Collections.shuffle(positions);
 
@@ -32,10 +20,8 @@ public class FoodHandler {
 
     }
 
-    static void manageFoodEating(WorldModel world, boolean log) {
-        log = false;
-        //IntPosition pos = new IntPosition(world.player.gridPositionX / 2 * step, world.player.gridPositionY / 2 * step);
-        //IntPosition pos = world.player.getTilePosition();
+    //Regarde si le joueuer à collisionner avec de la nourriture et met à jour le nécesaire
+    static void manageFoodEating(WorldModel world) {
         IntPosition pos = world.player.getCenteredTilePosition();
         if (world.foods.contains(pos)) {
             world.foods.remove(pos);

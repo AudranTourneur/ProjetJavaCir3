@@ -14,6 +14,7 @@ import java.util.Scanner;
 import project.Main;
 import project.game.view.GameView;
 
+/* Modèle général*/ 
 public class WorldModel {
     public Player player;
 
@@ -25,27 +26,36 @@ public class WorldModel {
         return endTick;
     }
 
+    /*Liste de nos entitées */
     public List<Entity> entities = new ArrayList<>();
 
     // Obligé d'utiliser un buffer pour les ajouts d'entités en cours d'itération à
     // cause des java.lang.ConcurrentModificationException
     private final ArrayList<Entity> entityBuffer = new ArrayList<>();
 
+    //Carte
     public GridMap map = new GridMap();
 
+    //Position de la nourriture
     public HashSet<IntPosition> foods = new HashSet<>();
 
+    //Notre gestionnaire de projectile
     ProjectileHandler projectileHandler = new ProjectileHandler(this);
 
+    //Gestionnaire de vagues de projectiles
     ProjectileWavesManager waveManager = new ProjectileWavesManager(this);
 
+    //Gestionnaire de fantômes
     public GhostHandler ghostHandler = new GhostHandler(this);
+
+    //Gestionnaire d'avancé de niveau
     public LevelProgressionManager levelProgressionManager = new LevelProgressionManager(this);
 
     public WorldModel() {
         init();
     }
 
+    //Lit notre ficheir map.txt et met a jour map avec les bonnes valeurs
     void init() {
 
         Scanner in = new Scanner(
@@ -117,7 +127,6 @@ public class WorldModel {
         player.setSpawn(PlayerSpawnX, PlayerSpawnY);
         entities.add(player);
         levelProgressionManager.firstSpawn();
-        // FoodHandler.generateFood(this, 50);
     }
 
     void addEntity(Entity e) {
@@ -128,6 +137,7 @@ public class WorldModel {
         entities.remove(e);
     }
 
+    //Met a jour notre modèle
     synchronized public void update() {
         if (hasFinished() && endTick == 0)  {
             endTick = currentTick;
@@ -138,9 +148,8 @@ public class WorldModel {
 
         ArrayList<Entity> toDelete = new ArrayList<>();
 
-        //
         try {
-            // for (Entity e : entities) {
+            
             for (Iterator<Entity> iterator = entities.iterator(); iterator.hasNext();) {
                 var e = iterator.next();
                 e.move(0);
@@ -158,15 +167,11 @@ public class WorldModel {
             e.printStackTrace();
         }
 
-            FoodHandler.manageFoodEating(this, (currentTick % 100 == 0));
+            FoodHandler.manageFoodEating(this);
             levelProgressionManager.manage();
             waveManager.dispatchEvents();
             ghostHandler.manage();
             projectileHandler.manageProjectileCollisions();
-
-            
-        
-        
 
         if (!GameView.isDrawing) {
 

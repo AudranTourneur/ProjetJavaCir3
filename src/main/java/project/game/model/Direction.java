@@ -2,7 +2,8 @@
 
 package project.game.model;
 
-public enum Direction { //donner orientation
+//Un enum de direction utiliser pour le deplacement des entitées
+public enum Direction { 
     UP(0, -1),
     RIGHT(1, 0),
     DOWN(0, 1),
@@ -29,7 +30,8 @@ public enum Direction { //donner orientation
         return this.name();
     }
 
-    public double toDeg() {//donner l'angle à choisir en fonction de la direction
+    //Donne un angle en fonction de la direction choisi en degre
+    public double toDeg() {
         if (this == Direction.DOWN) {
             return 0;
         } else if (this == Direction.LEFT) {

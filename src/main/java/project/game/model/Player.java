@@ -2,9 +2,14 @@ package project.game.model;
 
 import project.game.controller.AudioController;
 
+/*Le joueuer, on gère son déplacement,son score et son comportement quand il se fait toucher
+ * par un projectile ou un fantôme
+ */
 public class Player extends Entity {
 
+    //Taille de la hitbox du joueur
     public static final float RADIUS_HITBOX_SIZE = 0.07f;
+    
     public Direction currentDirection = null;
     public Direction desiredDirection = null;
 
@@ -14,14 +19,13 @@ public class Player extends Entity {
     public boolean speedX2 = false;
 
     IntPosition gridPosition = new IntPosition(0, 0);
-    //int gridPositionX;
-    //int gridPositionY;
 
     public int deaths;
     private int lives = 9;
 
     public final static int MAX_STAMINA = 10 * 60;
     public int stamina = MAX_STAMINA;
+    
     public int score;
 
     public int finalScore = 0;
@@ -44,16 +48,14 @@ public class Player extends Entity {
         this.map = world.map;
     }
 
+    //Convertit notre position de mode grid en mode float
     FloatPosition getNormalizedPosition() {
         return new FloatPosition(
                 (float) getGridPositionX() / (2 * GridMap.STEP),
                 (float) getGridPositionY() / (2 * GridMap.STEP));
-
-        // return new FloatPosition(
-        // (float) this.gridPositionX / 2 * GridMap.STEP + GridMap.STEP,
-        // (float) this.gridPositionY / 2 * GridMap.STEP + GridMap.STEP);
     }
 
+    //Convertit notre position de mode grid en mode tile
     public IntPosition getTilePosition() {
         return new IntPosition((getGridPositionX() - GridMap.STEP) / (2 * GridMap.STEP),
                 (getGridPositionY() - GridMap.STEP) / (2 * GridMap.STEP));
@@ -65,6 +67,7 @@ public class Player extends Entity {
 
     @Override
     public void move(double delta) {
+        //décompte les ticks d'invulnérabiltés
         this.invulnerabilityTicks = Math.max(0, this.invulnerabilityTicks - 1);
         if (desiredDirection != null) {
             int speed = 1;
@@ -78,16 +81,21 @@ public class Player extends Entity {
                     speed = 2;
             }
 
+            /*Gestion de stamina */
             stamina += speedX2 ? -2 : 1;
             stamina = Math.min(MAX_STAMINA, stamina);
             stamina = Math.max(0, stamina);
 
+            /*Si la position désirée du joueuer est valid alors
+             * on change de direction vers la direction souhaité
+             */
             int dtx = gridPosition.x + desiredDirection.getX() * speed;
             int dty = gridPosition.y + desiredDirection.getY() * speed;
             if (map.isAbstractPositionAllowed(dtx, dty) == SquareValidityResponse.VALID) {
                 this.currentDirection = desiredDirection;
             }
 
+            /*Bouge dans la direction indique */
             if (currentDirection != null) {
                 int ctx = gridPosition.x + currentDirection.getX() * speed;
                 int cty = gridPosition.y + currentDirection.getY() * speed;
@@ -96,9 +104,7 @@ public class Player extends Entity {
                     this.gridPosition.x += currentDirection.getX() * speed;
                     this.gridPosition.y += currentDirection.getY() * speed;
                 } else if (map.isAbstractPositionAllowed(ctx, cty) == SquareValidityResponse.TELEPORT) {
-                    IntPosition tpPos = world.map.getNextTeleportPosition(this.currentDirection,
-                            this.gridPosition, speed);
-
+                    IntPosition tpPos = world.map.getNextTeleportPosition(this.currentDirection,this.gridPosition, speed);
                     this.gridPosition.x = tpPos.x;
                     this.gridPosition.y = tpPos.y;
                 }
@@ -130,6 +136,7 @@ public class Player extends Entity {
         return score;
     }
 
+    /*Gestion du comportement du joueuer quand il se fait toucher */
     public void hit() {
         if (this.world.getCompletionPercent() >= 100) return;
         /*Je me rend invincible pour tester un peu le jeu en boijant ce commentaire*/

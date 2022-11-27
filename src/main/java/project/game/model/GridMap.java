@@ -5,12 +5,14 @@ import java.util.HashSet;
 //Creation de la map
 
 public class GridMap { 
+	/*Nombre de petit pas pour découper une demi tuile 
+	On l'utilise pour créer un système de coordonnées discret pour afficher
+	le Player, les Ghost pendant leur déplacement
+	*/
 	public static final int STEP = 10;
-	// public static final int NUMBER_OF_TILES = 15;
-	// Small map coords
-	// public static final int TILES_WIDTH = 20;
-	// public static final int TILES_HEIGHT = 15;
-	// Big map
+	
+	
+	/*Taille de notre carte présente dans le fichier map.txt */
 	public static final int TILES_WIDTH = 29; //dimension d'une unité
 	public static final int TILES_HEIGHT = 21;
 
@@ -22,8 +24,6 @@ public class GridMap {
 
 	public boolean[][] validPositions = new boolean[MAX_ABSTRACT_WIDTH][MAX_ABSTRACT_HEIGHT];
 
-	// validPositions[15][35]
-
 	public GridMap(GridTile[][] initialMapData) {
 		this.map = initialMapData;
 	}
@@ -31,7 +31,8 @@ public class GridMap {
 	public GridMap() {
 	}
 
-	public GridTile getAt(int x, int y) { // conditions de bords de cartes
+
+	public GridTile getAt(int x, int y) { 
 		if (x < 0)
 			return GridTile.WALL;
 		if (x >= TILES_WIDTH)
@@ -58,7 +59,7 @@ public class GridMap {
 	}
 	// INVALID, OUTSIDE_TELEPORT, VALID
 
-	//condition de teleportation
+	/*Vérification que la position x,y en paramètre est bien autorisée*/
 	SquareValidityResponse isAbstractPositionAllowed(int x, int y) { 
 		if (x < 0 || y < 0 || x >= MAX_ABSTRACT_WIDTH || y >= MAX_ABSTRACT_HEIGHT) {
 			return SquareValidityResponse.INVALID;
@@ -81,7 +82,9 @@ public class GridMap {
 		return emptyPositions;
 	}
 
-	// acceleration x1 ou x2
+	/*Calcule la nouvelle position d'apparaition en fonction de la direction dans laquelle
+	 * l'entité est partie
+	 */
 	IntPosition getNextTeleportPosition(Direction direction, IntPosition objectPosition, int speed) {
 		IntPosition pos = new IntPosition(objectPosition);
 		if (direction == Direction.LEFT) {

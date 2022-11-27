@@ -2,6 +2,7 @@
 
 package project.game.model;
 
+
 public class Projectile extends Entity {
 
     FloatPosition trajectory;
@@ -31,7 +32,6 @@ public class Projectile extends Entity {
     }
 
     static void spawnProjectile(WorldModel model, FloatPosition initialPos, FloatPosition trajectory,double speed) {
-        //model.entities.add(new Projectile(initialPos, trajectory));
         model.addEntity(new Projectile(initialPos, trajectory,speed));
     }
 

@@ -1,5 +1,6 @@
 package project.game.model;
 
+/*Projectile qui va seulement dans un sens */
 public class SpawnUnidirectionalPattern extends SpawnPatttern {
 
 	Direction direction;

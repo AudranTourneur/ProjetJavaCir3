@@ -1,7 +1,8 @@
-//fichier qui s'occupe des collisions entre les projectiles et le joueur
+
 
 package project.game.model;
 
+//Gesion de la collision des projectiles avec la joueuer
 public class ProjectileHandler {
     WorldModel model;
 
@@ -30,14 +31,6 @@ public class ProjectileHandler {
 
         return distance < (Projectile.RADIUS_SIZE + Player.RADIUS_HITBOX_SIZE);
     }
-    /*Code redondant je pense on peut le suprimer tout ce fait deja dans projectile wave manager
-    void addStarSpawner(IntPosition pos,double speed) {
-        model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnStarPattern(model,speed)));
-    }
-
-    void addTargetSpawner(IntPosition pos,double speed) {
-        model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnTargetPattern(model,speed)));
-    }
-    */
+    
 
 }

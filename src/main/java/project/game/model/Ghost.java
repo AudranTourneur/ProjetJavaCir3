@@ -2,8 +2,6 @@ package project.game.model;
 
 /*Création des ghosts et gestion de leur position, 
 les variables position ne sont plus utilisées depuis qu'on utilise des données discrètes pour le déplacement*/
-
-
 public class Ghost extends Entity {
 
     public Direction currentDirection;
@@ -12,6 +10,7 @@ public class Ghost extends Entity {
     int gridPositionX;
     int gridPositionY;
 
+    /*Variable qui sert à changer de direction de manière aléatoire*/
     int compteur = 0;
 
     /* Permet de regarder si notre ghost est en mouvement ou pas => regarder s'il est bloqué*/
@@ -46,6 +45,7 @@ public class Ghost extends Entity {
         return gridPositionY;
     }
 
+    /*Convertit les coordonnées de gridPosition en position float */
     FloatPosition getNormalizedPosition() {
         return new FloatPosition(
                 (float) this.gridPositionX / (2 * GridMap.STEP),
@@ -54,9 +54,6 @@ public class Ghost extends Entity {
 
     @Override
     public void move(double delta) {
-        // TODO En fonction de l'etat actuel de la game qu'on va lire dans le model on
-        // va prendre des trajectoires differentes
-        // movement de niveau 1 on va dire
         checkCollision();
         allRandomMove(delta);
     }
@@ -75,6 +72,7 @@ public class Ghost extends Entity {
 
     }
 
+    /*Mouvement complétement aléatoire du fantôme */
     private void allRandomMove(double delta) {
         int speed = 1;
         if (isStuck()) {
@@ -103,7 +101,8 @@ public class Ghost extends Entity {
         this.position = getNormalizedPosition();
     }
 
-    private void getNewDirection() {    //obtenir nouvelle direction du ghost.
+    //obtenir nouvelle direction du ghost.
+    private void getNewDirection() {    
         int rand = (int) (Math.random() * 40 % 4);
         switch (rand) {
             case 0:

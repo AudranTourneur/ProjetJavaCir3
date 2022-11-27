@@ -1,5 +1,5 @@
 package project.game.model;
-// 
+/*Un projectile qui est orienté vers le joueuer */
 public class SpawnTargetPattern extends SpawnPatttern {
 
 	SpawnTargetPattern(WorldModel model,double speed) {

@@ -1,5 +1,6 @@
 package project.game.model;
 
+/*Nous permet de créer des pattern de projectiles */
 public abstract class SpawnPatttern {
 
 	WorldModel model;
