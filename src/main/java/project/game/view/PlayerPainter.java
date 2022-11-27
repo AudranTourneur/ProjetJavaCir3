@@ -40,9 +40,13 @@ public class PlayerPainter {
     }
 
     static Image selectCorrectSprite(GameView view) {
-        System.out.println("moving " + view.world.player.isMoving);
-        int x = view.world.player.isMoving ? (view.world.getCurrentTick() % 16) / 4 : 0;
-        int y = view.world.player.isMoving ? directionEnumToY(view.world.player.currentDirection) : 0;
+        int x = 0;
+        int y = 0;
+
+        if (view.world.player.isMoving && view.world.player.currentDirection != null) {
+            x = (view.world.getCurrentTick() % 16) / 4;
+            y = directionEnumToY(view.world.player.currentDirection);
+        }
 
         return getSpriteFromGrid(view, x, y);
     }
@@ -52,7 +56,7 @@ public class PlayerPainter {
         if (spritesheet == null)
             return;
 
-        final DisplayData dispData = new DisplayData(view, view.world.player.position, 1.2);
+        final DisplayData dispData = new DisplayData(view, view.world.player.position, 1.3);
 
         if (view.world.player.invulnerabilityTicks == 0 || view.world.getCurrentTick() % 2 == 0)
             view.ctx.drawImage(selectCorrectSprite(view), dispData.x, dispData.y, dispData.width, dispData.height);

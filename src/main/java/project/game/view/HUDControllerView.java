@@ -52,10 +52,9 @@ public class HUDControllerView {
 	// Mise à jour générale de l'HUD
 	public void updateHUD(WorldModel model) {
 		setScore(model.player.score);
-		setText("Level : " + model.levelProgressionManager.getCurrentLevel());
+		setText("Level : " + (model.levelProgressionManager.getCurrentLevel() + 1));
 		setStamina((double) model.player.stamina / Player.MAX_STAMINA);
 		setProgress(model.levelProgressionManager.getProgression());
 		setLives(model.player.getLives());
 	}
-
 }

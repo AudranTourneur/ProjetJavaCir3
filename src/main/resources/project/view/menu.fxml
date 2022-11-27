@@ -19,11 +19,6 @@
          <children>
             <HBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="15.0" style="-fx-background-color: #000000;">
                <children>
-                  <Button fx:id="pause" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" style="-fx-background-color: #F4D3F0;" text="Pause">
-                     <HBox.margin>
-                        <Insets left="20.0" top="5.0" />
-                     </HBox.margin>
-                  </Button>
                   <Button fx:id="music" mnemonicParsing="false" prefHeight="34.0" prefWidth="70.0" style="-fx-background-color: #F4D3F0;" text="Music">
                      <HBox.margin>
                         <Insets top="5.0" />
