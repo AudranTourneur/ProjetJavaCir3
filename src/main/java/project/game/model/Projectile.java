@@ -4,15 +4,17 @@ public class Projectile extends Entity {
 
     FloatPosition trajectory;
     public final static float RADIUS_SIZE = 0.35f;
+    private final double speed;
 
-    Projectile(FloatPosition initialPos, FloatPosition trajectory) {
+    Projectile(FloatPosition initialPos, FloatPosition trajectory,double speed) {
         this.position = initialPos.copy();
         this.trajectory = trajectory.normalize();
+        this.speed=speed;
     }
 
     @Override
     public void move(double delta) {
-        final double speed = 0.025;
+        
 
         final double dx = speed * (double) trajectory.x;
         final double dy = speed * (double) trajectory.y;
@@ -27,9 +29,9 @@ public class Projectile extends Entity {
         }
     }
 
-    static void spawnProjectile(WorldModel model, FloatPosition initialPos, FloatPosition trajectory) {
+    static void spawnProjectile(WorldModel model, FloatPosition initialPos, FloatPosition trajectory,double speed) {
         //model.entities.add(new Projectile(initialPos, trajectory));
-        model.addEntity(new Projectile(initialPos, trajectory));
+        model.addEntity(new Projectile(initialPos, trajectory,speed));
     }
 
 }

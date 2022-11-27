@@ -4,8 +4,8 @@ public class SpawnUnidirectionalPattern extends SpawnPatttern {
 
 	Direction direction;
 
-	SpawnUnidirectionalPattern(WorldModel model, Direction direction) {
-		super(model);
+	SpawnUnidirectionalPattern(WorldModel model, Direction direction,double speed) {
+		super(model,speed);
 		this.direction = direction;
 	}
 
@@ -13,7 +13,7 @@ public class SpawnUnidirectionalPattern extends SpawnPatttern {
 	void spawn(ProjectileSpawner spawner) {
 		final FloatPosition pos = spawner.position;
 
-		Projectile.spawnProjectile(model, pos, new FloatPosition(direction.getX(), direction.getY()));
+		Projectile.spawnProjectile(model, pos, new FloatPosition(direction.getX(), direction.getY()),speed);
 	}
 
 }

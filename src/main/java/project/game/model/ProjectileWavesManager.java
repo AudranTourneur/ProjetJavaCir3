@@ -9,97 +9,87 @@ import javafx.util.Pair;
 public class ProjectileWavesManager {
 	WorldModel model;
 
+	ArrayList<Consumer<Void>> queuedSpawners = new ArrayList<>();
+
+
 	ProjectileWavesManager(WorldModel model) {
 		this.model = model;
 	}
 
-	void dispatchEvents() {
 
+	void dispatchEvents() {
+		testlevel();
+		/*
 		if (model.levelProgressionManager.getCurrentLevel() == 0) {
 			manageLevelZero();
 		} else if (model.levelProgressionManager.getCurrentLevel() == 1) {
 			manageLevelOne();
-		}
+		}*/
 
 		if (model.getCurrentTick() >= 4 * 60 * 60)
 			return;
-
-		if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
-			queuedSpawners.get(0).accept(null);
-			queuedSpawners.remove(0);
-		}
-
-		if (model.getCurrentTick() == 15 * 60) {
-			for (int i = 0; i < 5; i++)
-				launchRandomTarget();
-		}
-
-		if (model.getCurrentTick() % 300 == 150) {
-			launchRandomTarget();
-		}
-
-		if (model.getCurrentTick() > 40 * 60 && model.getCurrentTick() % 300 == 0) {
-			launchRandomStar();
-		}
-
-		if (model.getCurrentTick() == 100 * 60) {
-			for (int i = 0; i < 10; i++)
-				launchRandomTarget();
-		}
-
-		if (model.getCurrentTick() > 1.5 * 60 * 60 && model.getCurrentTick() % 200 == 0) {
-			launchRandomStar();
-		}
-
-		if (model.getCurrentTick() > 2 * 60 * 60 && model.getCurrentTick() % 500 == 0) {
-			launchRandomStar();
-		}
-
-		if (model.getCurrentTick() > 3 * 60 * 60 && model.getCurrentTick() % 350 == 0) {
-			launchRandomTarget();
-			launchRandomStar();
-		}
-
-		if (model.getCurrentTick() == (37 * 60)) {
-			launchUnidirectionEncirclement(5);
-			// launchTargetedEncirclement();
-			for (int i = 0; i < 10; i++)
-				launchRandomStar();
-		}
-
-		if (model.getCurrentTick() == ((116 - 5) * 60)) {
-			launchTargetedEncirclement(3);
-			for (int i = 0; i < 15; i++) {
-				launchRandomStar();
-			}
-		}
-
-		if (model.getCurrentTick() == 170 * 60) {
-			launchUnidirectionEncirclement(3);
-		}
-
-		if (model.getCurrentTick() == 190 * 60) {
-			launchUnidirectionEncirclement(3);
-		}
-
-		if (model.getCurrentTick() == 220 * 60) {
-			launchTargetedEncirclement(2);
-		}
-
+		
+		
+		
 	}
 
+	void testlevel(){
+		manageLevelOne();
+	}
+	//TILES_WIDTH = 29 
+	// TILES_HEIGHT = 21
+	boolean startlevel1=false;
 	private void manageLevelZero() {
-		if (model.getCurrentTick() % 300 == 150) {
-			launchRandomTarget();
+		double speed = 0.02;
+		//boucle qui tire les spawners charge dans queuedSpawners
+		if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
+			shootqueuedSpawners(0);
 		}
+		if(!startlevel1){
+		addStarSpawner(new IntPosition(5,5),speed);
+		addStarSpawner(new IntPosition(GridMap.TILES_WIDTH-5,5),speed);
+		addStarSpawner(new IntPosition(5,GridMap.TILES_HEIGHT-5),speed);
+		addStarSpawner(new IntPosition(GridMap.TILES_WIDTH-5,GridMap.TILES_HEIGHT-5),speed);
+		startlevel1=true;
+		}
+		//en une seconde on a 60 tick de jeu donc on multiplie par 60 pour recuperer une unité de temps en s
+		if(model.getCurrentTick()%(45*60)==(5*60)){
+			shootWallLeft(5,speed*2);
+		}
+		if(model.getCurrentTick()%(45*60)==(8*60)){
+			shootWallLeft(8,speed*2);
+		}
+		if(model.getCurrentTick()%(45*60)==(11*60)){
+			shootWallLeft(11,speed*2);
+		}
+		if(model.getCurrentTick()%(45*60)==(14*60)){
+			shootWallLeft(14,speed*2);
+		}
+		if(model.getCurrentTick()%(45*60)==(20*60)){
+			launchTargetedEncirclement(5,0.5);
+		}
+		if(model.getCurrentTick()%(45*60)==(31*60)){
+			shootWallTop(5,speed*2);
+		}
+		if(model.getCurrentTick()%(45*60)==(34*60)){
+			shootWallTop(8,speed*2);
+		}
+		if(model.getCurrentTick()%(45*60)==(37*60)){
+			shootWallTop(11,speed*2);
+		}
+		if(model.getCurrentTick()%(45*60)==(40*60)){
+			shootWallTop(14,speed*2);
+		}
+		if(model.getCurrentTick()%(45*60) == 0){startlevel1=false;}
+		
 	}
 
 	private void manageLevelOne() {
-		if (model.getCurrentTick() % 300 == 150) {
-			launchRandomTarget();
+		if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
+			shootqueuedSpawners(0);
 		}
-		if (model.getCurrentTick() % 300 == 0) {
-			launchRandomStar();
+		if(model.getCurrentTick()%(45*60)==5){
+			launchTargetedEncirclementAroundPlayer(1, 0.025, 2);
 		}
 	}
 
@@ -109,30 +99,48 @@ public class ProjectileWavesManager {
 				(int) (Math.random() * GridMap.TILES_HEIGHT));
 	}
 
-	void addStarSpawner(IntPosition pos) {
-		model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnStarPattern(model)));
+	void addStarSpawner(IntPosition pos,double speed) {
+		model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnStarPattern(model,speed)));
 	}
 
-	void addTargetSpawner(IntPosition pos) {
-		model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnTargetPattern(model)));
+	void addTargetSpawner(IntPosition pos,double speed) {
+		model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnTargetPattern(model,speed)));
 	}
 
-	void addUnidirectionSpawner(IntPosition pos, Direction dir) {
+	void addUnidirectionSpawner(IntPosition pos, Direction dir,double speed) {
 		model.addEntity(
-				new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnUnidirectionalPattern(model, dir)));
+				new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnUnidirectionalPattern(model, dir,speed)));
 	}
 
-	void launchRandomStar() {
-		addStarSpawner(getRandomPosition());
+	void launchRandomStar(double speed) {
+		addStarSpawner(getRandomPosition(),speed);
 	}
 
-	void launchRandomTarget() {
-		addTargetSpawner(getRandomPosition());
+	void launchRandomTarget(double speed) {
+		addTargetSpawner(getRandomPosition(),speed);
 	}
 
-	ArrayList<Consumer<Void>> queuedSpawners = new ArrayList<>();
+	//tire x nombre de spawners qui sont dans l'array queuedspawners
+	//si on met un x=0 on vide toute la queue 
+	//si on met un x negatif alors on fait rien
+	void shootqueuedSpawners(int x)	{
+		if(x==0){
+			while(queuedSpawners.size()>0){
+				queuedSpawners.get(0).accept(null);
+				queuedSpawners.remove(0);
+			}
+		}
+		else if(x>0){ 
+			for(int i =0;i<x;i++){
+				if(queuedSpawners.size()>0){
+				queuedSpawners.get(0).accept(null);
+				queuedSpawners.remove(0);
+			}
+		}
+		}else{System.out.println("on a mis un x negatif dans shootqueuedSpawners");} 
+	}
 
-	void launchUnidirectionEncirclement(int spacing) {
+	void launchUnidirectionEncirclement(int spacing,double speed) {
 		LinkedHashSet<Pair<Direction, IntPosition>> set = new LinkedHashSet<>();
 		for (int i = 0; i < GridMap.TILES_WIDTH; i += spacing)
 			set.add(new Pair<Direction, IntPosition>(Direction.DOWN, new IntPosition(i, 0)));
@@ -148,12 +156,31 @@ public class ProjectileWavesManager {
 
 		for (var dirAndPos : set) {
 			queuedSpawners.add((Consumer<Void>) x -> {
-				addUnidirectionSpawner(dirAndPos.getValue(), dirAndPos.getKey());
+				addUnidirectionSpawner(dirAndPos.getValue(), dirAndPos.getKey(),speed);
 			});
 		}
 	}
+	void launchTargetedEncirclementAroundPlayer(int spacing,double speed,int distanceToPlayers){
+		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
+		int playerX=model.player.getTilePosition().x;
+		int playerY=model.player.getTilePosition().y;
+		for(int i=Math.max(0,playerX-distanceToPlayers);i<=Math.min(GridMap.TILES_WIDTH,playerX+distanceToPlayers);i++){
+			set.add(new IntPosition(i,(int)Math.max(0,playerY-distanceToPlayers)));
+			set.add(new IntPosition(i,(int)Math.min(GridMap.TILES_HEIGHT,playerY+distanceToPlayers)));
+		}
+		
+		
 
-	void launchTargetedEncirclement(int spacing) {
+
+		for (IntPosition pos : set) {
+			queuedSpawners.add((Consumer<Void>) x -> {
+				addTargetSpawner(pos,speed);
+			});
+		}
+		System.out.println("queuedSpawner :"+queuedSpawners);
+		System.out.println("set :"+set);
+	}
+	void launchTargetedEncirclement(int spacing,double speed) {
 		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
 		for (int i = 0; i < GridMap.TILES_WIDTH; i += spacing)
 			set.add(new IntPosition(i, 0));
@@ -169,8 +196,70 @@ public class ProjectileWavesManager {
 
 		for (IntPosition pos : set) {
 			queuedSpawners.add((Consumer<Void>) x -> {
-				addTargetSpawner(pos);
+				addTargetSpawner(pos,speed);
 			});
 		}
 	}
+
+	
+
+
+	//TODO should look into moving these into the pattern section to organize the code in a better manner
+	//Shoots a wall of projectiles from left side with a 3 wide hole around holePosition
+	void shootWallLeft(int holePosition,double speed){
+		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
+		for(int i=0;i<GridMap.TILES_HEIGHT;i++){
+			if(	i==holePosition - 1 ||
+			i==holePosition + 1||
+			i==holePosition 
+			)continue;
+			set.add(new IntPosition(0,i));
+		}
+		for(IntPosition pos : set){
+			addUnidirectionSpawner(pos,Direction.RIGHT,speed);
+		}
+	}
+
+	void shootWallRight(int holePosition,double speed){
+		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
+		for(int i=0;i<GridMap.TILES_HEIGHT;i++){
+			if(	i==holePosition - 1 ||
+			i==holePosition + 1||
+			i==holePosition 
+			)continue;
+			set.add(new IntPosition(GridMap.TILES_WIDTH-1,i));
+		}
+		for(IntPosition pos : set){
+			addUnidirectionSpawner(pos,Direction.LEFT,speed);
+		}
+	}
+
+	void shootWallTop(int holePosition,double speed){
+		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
+		for(int i=0;i<GridMap.TILES_WIDTH;i++){
+			if(	i==holePosition - 1 ||
+			i==holePosition + 1||
+			i==holePosition 
+			)continue;
+			set.add(new IntPosition(i,0));
+		}
+		for(IntPosition pos : set){
+			addUnidirectionSpawner(pos,Direction.DOWN,speed);
+		}
+	}
+
+	void shootWallBottom(int holePosition,double speed){
+		LinkedHashSet<IntPosition> set = new LinkedHashSet<>();
+		for(int i=0;i<GridMap.TILES_WIDTH;i++){
+			if(	i==holePosition - 1 ||
+			i==holePosition + 1||
+			i==holePosition 
+			)continue;
+			set.add(new IntPosition(i,GridMap.TILES_HEIGHT-1));
+		}
+		for(IntPosition pos : set){
+			addUnidirectionSpawner(pos,Direction.UP,speed);
+		}
+	}
+	
 }

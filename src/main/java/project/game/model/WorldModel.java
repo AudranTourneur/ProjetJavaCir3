@@ -32,7 +32,7 @@ public class WorldModel {
 
     ProjectileWavesManager waveManager = new ProjectileWavesManager(this);
 
-    GhostHandler ghostHandler = new GhostHandler(this);
+    public GhostHandler ghostHandler = new GhostHandler(this);
     public LevelProgressionManager levelProgressionManager = new LevelProgressionManager(this);
 
     public WorldModel() {
@@ -115,7 +115,10 @@ public class WorldModel {
         //FoodHandler.generateFood(this, 50);
     }
 
-    
+    //prepare le model pour une autre partie
+    void reset(){
+
+    }
 
 
     void addEntity(Entity e) {
@@ -158,11 +161,8 @@ public class WorldModel {
 
             
         //}
-        System.out.println(this.getCurrentTick()%(10*60));
-        if(this.getCurrentTick()%(10*60)==0){
-            ghostHandler.addGhost();
-            System.out.println("We should be adding a ghost");
-        }
+        
+        
 
         if (!GameView.isDrawing) {
 

@@ -34,6 +34,7 @@ public class Player extends Entity {
         this.world = world;
         this.map = world.map;
     }
+    
 
     FloatPosition getNormalizedPosition() {
         return new FloatPosition(
@@ -57,7 +58,6 @@ public class Player extends Entity {
     @Override
     public void move(double delta) {
         this.invulnerabilityTicks = Math.max(0, this.invulnerabilityTicks - 1);
-        System.out.println("Desired " + desiredDirection + " | " + " current " + currentDirection);
         if (desiredDirection != null) {
             int speed = 1;
 

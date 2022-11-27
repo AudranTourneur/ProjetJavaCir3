@@ -47,6 +47,7 @@ public class LevelProgressionManager {
             currentLevel++;
             this.foodRemaining = levelToFoodRequired[currentLevel];
             FoodHandler.generateFood(model, levelToFoodRequired[currentLevel]);
+            model.ghostHandler.addGhost();
         }
 
     }

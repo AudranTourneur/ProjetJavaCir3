@@ -28,13 +28,14 @@ public class ProjectileHandler {
 
         return distance < (Projectile.RADIUS_SIZE + Player.RADIUS_HITBOX_SIZE);
     }
-
-    void addStarSpawner(IntPosition pos) {
-        model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnStarPattern(model)));
+    /*Code redondant je pense on peut le suprimer tout ce fait deja dans projectile wave manager
+    void addStarSpawner(IntPosition pos,double speed) {
+        model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnStarPattern(model,speed)));
     }
 
-    void addTargetSpawner(IntPosition pos) {
-        model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnTargetPattern(model)));
+    void addTargetSpawner(IntPosition pos,double speed) {
+        model.addEntity(new ProjectileSpawner(pos.toFloat().translate(0.5f), new SpawnTargetPattern(model,speed)));
     }
+    */
 
 }
