@@ -5,7 +5,7 @@ public class SpawnStarPattern extends SpawnPatttern {
         SpawnStarPattern(WorldModel model,double speed) {
                 super(model,speed);
         }
-
+// donne la futur position  des projectiles 
         @Override
         void spawn(ProjectileSpawner spawner) {
                 final FloatPosition pos = spawner.position;

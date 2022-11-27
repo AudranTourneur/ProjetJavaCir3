@@ -1,3 +1,5 @@
+//animation des sprites
+
 package project.game.view;
 
 import javafx.animation.Interpolator;

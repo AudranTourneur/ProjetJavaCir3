@@ -26,6 +26,8 @@ public class MainMenu {
 
     GameMenu gamemenu;
 
+// Creation du menu principal (image de fond ainsi que du bouton)
+
     public Scene start(Stage stage) throws IOException {
 
         // image de fond
@@ -35,8 +37,6 @@ public class MainMenu {
         gamemenu = new GameMenu();
 
         InputStream inputStreamBackground = new Main().getClass().getResourceAsStream("images/menu_background.jpg");
-
-        System.out.println("InputStream value = " + inputStreamBackground);
 
         Image img = new Image(inputStreamBackground);
         inputStreamBackground.close();

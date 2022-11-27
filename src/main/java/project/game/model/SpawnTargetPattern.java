@@ -1,5 +1,5 @@
 package project.game.model;
-
+// 
 public class SpawnTargetPattern extends SpawnPatttern {
 
 	SpawnTargetPattern(WorldModel model,double speed) {

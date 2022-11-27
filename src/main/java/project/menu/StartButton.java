@@ -6,6 +6,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+
+//Bouton pour commencer la partie
 public class StartButton extends StackPane {
 
     public final static int buttonWidth = 300;

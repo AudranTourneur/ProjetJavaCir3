@@ -1,3 +1,5 @@
+//Gestion des lieux d'apparition des objets.
+
 package project.game.model;
 
 import java.io.BufferedReader;
@@ -117,7 +119,7 @@ public class WorldModel {
 
     //prepare le model pour une autre partie
     void reset(){
-
+        
     }
 
 
@@ -163,6 +165,11 @@ public class WorldModel {
         //}
         
         
+
+        if(this.getCurrentTick()%(10*60)==0){
+            ghostHandler.addGhost();
+            System.out.println("We should be adding a ghost");
+        }
 
         if (!GameView.isDrawing) {
 

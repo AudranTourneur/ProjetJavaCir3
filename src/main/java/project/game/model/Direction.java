@@ -1,8 +1,8 @@
+// fichier decrivant l'orientation
+
 package project.game.model;
 
-import javafx.geometry.Orientation;
-
-public enum Direction {
+public enum Direction { //donner orientation
     UP(0, -1),
     RIGHT(1, 0),
     DOWN(0, 1),
@@ -29,7 +29,7 @@ public enum Direction {
         return this.name();
     }
 
-    public double toDeg() {
+    public double toDeg() {//donner l'angle à choisir en fonction de la direction
         if (this == Direction.DOWN) {
             return 0;
         } else if (this == Direction.LEFT) {

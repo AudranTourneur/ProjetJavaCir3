@@ -1,3 +1,5 @@
+//fichier qui s'occupe des collisions entre les projectiles et le joueur
+
 package project.game.model;
 
 public class ProjectileHandler {
@@ -20,7 +22,7 @@ public class ProjectileHandler {
         }
     }
 
-    static boolean checkPlayerProjectileCollision(Player player, Projectile projectile) {
+    static boolean checkPlayerProjectileCollision(Player player, Projectile projectile) { // verifie les positions du joueur et du projectile
         double xDiff = (player.position.x) - (projectile.position.x);
         double yDiff = (player.position.y) - (projectile.position.y);
 

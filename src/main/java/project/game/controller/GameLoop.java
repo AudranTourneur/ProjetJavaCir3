@@ -3,27 +3,32 @@ package project.game.controller;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import project.Main;
 import project.game.model.WorldModel;
 import project.game.view.GameView;
 
+//Controler la fenetre du jeu
 public class GameLoop {
 
-
-    public static void start(Stage stage) {
+    public static void start(Stage stage) { // information de la page lorsque le bouton play est lancé
         // set title for the stage
         stage.setTitle("The Adventures of Pac-Cat");
 
         WorldModel model = new WorldModel();
-        GameView view = new GameView(stage, model);
+        GameWindowController windowController = new GameWindowController(stage);
+        GameView view = new GameView(windowController, model);
 
         GameStateContainer state = new GameStateContainer(model, view);
 
         InputController controller = new InputController(state);
 
-        stage.getScene().setOnKeyPressed(controller::handle);
+        stage.getScene().addEventFilter(KeyEvent.KEY_PRESSED, (KeyEvent event) -> {
+            controller.handle(event);
+            event.consume();
+        });
 
         stage.show();
 
@@ -39,11 +44,10 @@ public class GameLoop {
                     if (counter % 100 == 0)
                         counter++;
 
-                    //model.update(delta_time);
+                    // model.update(delta_time);
 
                     try {
                         Thread.sleep(1000 / FPS_TARGET);
-                        //System.out.println("sleep for " + 1000 / FPS_TARGET);
                     } catch (InterruptedException exception) {
                         exception.printStackTrace();
                     }
@@ -62,6 +66,7 @@ public class GameLoop {
         AudioController.playMusic();
     }
 
+    // partie affichage/temps
     static long lastCall = System.nanoTime();
     static double sumMs = 0.0;
     static int frames = 1;
@@ -69,7 +74,7 @@ public class GameLoop {
     static void initGameLoop(WorldModel model, GameView view) {
         final Duration oneFrameAmt = Duration.millis(1000 / 60);
         final KeyFrame oneFrame = new KeyFrame(oneFrameAmt, actionEvent -> {
-            model.update(); 
+            model.update();
 
             long now = System.nanoTime();
             double diffMs = (now - lastCall) / 1_000_000.0;

@@ -1,5 +1,7 @@
 package project.game.model;
 
+
+//position
 public class IntPosition  {
     public int x;
     public int y;
