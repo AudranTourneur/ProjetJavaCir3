@@ -101,34 +101,9 @@ public class GameView {
 
         System.out.println("canvas = " + canvas.getWidth() + " " + canvas.getHeight());
 
-
         load();
 
         this.hud = new HUDControllerView(this.window);
-
-        // handleResize(canvas);
-
-        // Rectangle2D bounds = Screen.getPrimary().getBounds();
-        // stage.setWidth(bounds.getWidth());
-        // stage.setHeight(bounds.getHeight());
-
-        // // set height and width
-        // canvas.setWidth(stage.getWidth());
-        // canvas.setHeight(stage.getHeight());
-
-        // System.out.println("offsets " + offsetX + " " + offsetY);
-
-        // // Création d'un Groupe
-        // Group group = new Group(canvas);
-
-        // // Création d'une scène
-        // Scene scene = new Scene(group, MenuConstants.windowWidth,
-        // MenuConstants.windowHeight);
-
-        // stage.show();
-
-        // // set the scene
-        // stage.setScene(scene);
 
         ChangeListener<Number> stageSizeListener = (observable, oldValue, newValue) -> {
             handleResize(canvas);
@@ -160,7 +135,7 @@ public class GameView {
         ctx.setFill(Color.BLACK);
         ctx.fillRect(0, 0, ctx.getCanvas().getWidth(), ctx.getCanvas().getHeight());
         drawMap();
-        drawPlayer();
+        PlayerPainter.drawPlayer(this);
         drawFoods();
         drawGhosts();
         drawProjectiles();
@@ -245,25 +220,6 @@ public class GameView {
         }
     }
 
-    void drawPlayer() { // affichage de notre joueur
-        Image img = spriteMap.get("player");
-        if (img == null)
-            return;
-
-        final DisplayData dispData = new DisplayData(this, world.player.position, 1);
-
-        if (this.world.player.invulnerabilityTicks == 0 || this.world.getCurrentTick() % 2 == 0) {
-            ImageView iv = new ImageView(img);
-            if (this.world.player.currentDirection != null) {
-                iv.setRotate(this.world.player.currentDirection.toDeg());
-            }
-            SnapshotParameters params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-            Image rotatedImage = iv.snapshot(params, null);
-            ctx.drawImage(rotatedImage, dispData.x, dispData.y, dispData.width, dispData.height);
-        }
-    }
-
     // affichage de nos projectiles (rouge)
     void drawProjectile(float x, float y) {
         ctx.setFill(Color.RED);
@@ -311,6 +267,8 @@ public class GameView {
         spriteMap.put("zap", new Image(Main.class.getResourceAsStream("images/zap.png")));
         spriteMap.put("hourglass", new Image(Main.class.getResourceAsStream("images/hourglass.png")));
         spriteMap.put("party", new Image(Main.class.getResourceAsStream("images/party.png")));
+
+        spriteMap.put("player-spritesheet", new Image(Main.class.getResourceAsStream("images/cat_spritesheet.png")));
     }
 
     public void displayDebugInfo() {

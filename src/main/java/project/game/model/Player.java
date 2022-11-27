@@ -13,8 +13,10 @@ public class Player extends Entity {
 
     public boolean speedX2 = false;
 
-    int gridPositionX;
-    int gridPositionY;
+    IntPosition gridPosition = new IntPosition(0, 0);
+    //int gridPositionX;
+    //int gridPositionY;
+
     public int deaths;
     private int lives = 9;
 
@@ -23,12 +25,15 @@ public class Player extends Entity {
     public int score;
     public int invulnerabilityTicks = 0;
 
+    public boolean isMoving = false;
+    public IntPosition lastGridPosition = new IntPosition(getGridPositionX(), getGridPositionY());
+
     public int getGridPositionX() {
-        return gridPositionX;
+        return gridPosition.x;
     }
 
     public int getGridPositionY() {
-        return gridPositionY;
+        return gridPosition.y;
     }
 
     public Player(WorldModel world) {
@@ -38,8 +43,8 @@ public class Player extends Entity {
 
     FloatPosition getNormalizedPosition() {
         return new FloatPosition(
-                (float) this.gridPositionX / (2 * GridMap.STEP),
-                (float) this.gridPositionY / (2 * GridMap.STEP));
+                (float) getGridPositionX() / (2 * GridMap.STEP),
+                (float) getGridPositionY() / (2 * GridMap.STEP));
 
         // return new FloatPosition(
         // (float) this.gridPositionX / 2 * GridMap.STEP + GridMap.STEP,
@@ -47,12 +52,12 @@ public class Player extends Entity {
     }
 
     public IntPosition getTilePosition() {
-        return new IntPosition((gridPositionX - GridMap.STEP) / (2 * GridMap.STEP),
-                (gridPositionY - GridMap.STEP) / (2 * GridMap.STEP));
+        return new IntPosition((getGridPositionX() - GridMap.STEP) / (2 * GridMap.STEP),
+                (getGridPositionY() - GridMap.STEP) / (2 * GridMap.STEP));
     }
 
     public IntPosition getCenteredTilePosition() {
-        return new IntPosition((gridPositionX) / (2 * GridMap.STEP), (gridPositionY) / (2 * GridMap.STEP));
+        return new IntPosition((getGridPositionX()) / (2 * GridMap.STEP), (getGridPositionY()) / (2 * GridMap.STEP));
     }
 
     @Override
@@ -66,7 +71,7 @@ public class Player extends Entity {
             }
 
             if (speedX2) {
-                if (gridPositionX % 2 == 0 && gridPositionY % 2 == 0)
+                if (gridPosition.x % 2 == 0 && gridPosition.y % 2 == 0)
                     speed = 2;
             }
 
@@ -74,31 +79,34 @@ public class Player extends Entity {
             stamina = Math.min(MAX_STAMINA, stamina);
             stamina = Math.max(0, stamina);
 
-            int dtx = gridPositionX + desiredDirection.getX() * speed;
-            int dty = gridPositionY + desiredDirection.getY() * speed;
+            int dtx = gridPosition.x + desiredDirection.getX() * speed;
+            int dty = gridPosition.y + desiredDirection.getY() * speed;
             if (map.isAbstractPositionAllowed(dtx, dty) == SquareValidityResponse.VALID) {
                 this.currentDirection = desiredDirection;
             }
 
             if (currentDirection != null) {
-                int ctx = gridPositionX + currentDirection.getX() * speed;
-                int cty = gridPositionY + currentDirection.getY() * speed;
+                int ctx = gridPosition.x + currentDirection.getX() * speed;
+                int cty = gridPosition.y + currentDirection.getY() * speed;
 
                 if (map.isAbstractPositionAllowed(ctx, cty) == SquareValidityResponse.VALID) { // == VALID
-                    this.gridPositionX += currentDirection.getX() * speed;
-                    this.gridPositionY += currentDirection.getY() * speed;
+                    this.gridPosition.x += currentDirection.getX() * speed;
+                    this.gridPosition.y += currentDirection.getY() * speed;
                 } else if (map.isAbstractPositionAllowed(ctx, cty) == SquareValidityResponse.TELEPORT) {
                     IntPosition tpPos = world.map.getNextTeleportPosition(this.currentDirection,
-                            new IntPosition(this.gridPositionX, this.gridPositionY), speed);
+                            this.gridPosition, speed);
 
-                    this.gridPositionX = tpPos.x;
-                    this.gridPositionY = tpPos.y;
+                    this.gridPosition.x = tpPos.x;
+                    this.gridPosition.y = tpPos.y;
                 }
             }
 
         }
 
         this.position = getNormalizedPosition();
+
+        this.isMoving = !this.lastGridPosition.equals(this.gridPosition);
+        this.lastGridPosition = new IntPosition(this.gridPosition);
     }
 
     // A partir de coordonnes x,y on definit notre premier lieu d'apparation du
@@ -107,8 +115,8 @@ public class Player extends Entity {
         position.x = x;
         position.y = y;
 
-        gridPositionX = GridMap.STEP + x * 2 * GridMap.STEP;
-        gridPositionY = GridMap.STEP + y * 2 * GridMap.STEP;
+        gridPosition.x = GridMap.STEP + x * 2 * GridMap.STEP;
+        gridPosition.y = GridMap.STEP + y * 2 * GridMap.STEP;
     }
 
     public String toString() {

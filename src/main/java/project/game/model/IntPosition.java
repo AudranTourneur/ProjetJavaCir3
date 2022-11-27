@@ -43,6 +43,7 @@ public class IntPosition  {
     @Override
     public boolean equals(Object tmp){
         if (tmp instanceof IntPosition) {
+            //System.out.println("cmp " + tmp + " " + this);
             IntPosition posTmp = (IntPosition) tmp;
             return posTmp.x==this.x && posTmp.y==this.y;
         }
