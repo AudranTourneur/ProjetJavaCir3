@@ -207,11 +207,10 @@ public class GameView {
 
     // affichage de la nourriture (bleu)
     void drawFood(int x, int y) {
-        ctx.setFill(Color.BLUE);
-        final double radius = 0.35;
-
-        final DisplayData dispData = new DisplayData(this, x + .5, y + .5, radius);
-        ctx.fillOval(dispData.x, dispData.y, dispData.width, dispData.height);
+       Image img =spriteMap.get("fish");
+       if(img==null)return;
+        final DisplayData dispData = new DisplayData(this, x + .5, y + .5, 1.2);
+        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
     }
 
     void drawFoods() {
@@ -267,6 +266,8 @@ public class GameView {
         spriteMap.put("zap", new Image(Main.class.getResourceAsStream("images/zap.png")));
         spriteMap.put("hourglass", new Image(Main.class.getResourceAsStream("images/hourglass.png")));
         spriteMap.put("party", new Image(Main.class.getResourceAsStream("images/party.png")));
+
+        spriteMap.put("fish",new Image(Main.class.getResourceAsStream("images/fish.png")));
 
         spriteMap.put("player-spritesheet", new Image(Main.class.getResourceAsStream("images/cat_spritesheet.png")));
     }
