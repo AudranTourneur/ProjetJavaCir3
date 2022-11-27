@@ -57,5 +57,4 @@ public class HUDControllerView {
 		setProgress(model.levelProgressionManager.getProgression());
 		setLives(model.player.getLives());
 	}
-
 }

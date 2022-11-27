@@ -1,8 +1,11 @@
 package project.game.controller;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -36,12 +39,19 @@ public class GameWindowController {
 
 			this.menuVBox = (VBox) stage.getScene().lookup("#menuvbox");
 
+			manageMusicButtonPress();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
-	void handleResize() {
-
+	void manageMusicButtonPress() {
+		Button button = (Button) stage.getScene().lookup("#music");
+		button.setOnAction(event -> {
+			//System.out.println(event);
+			AudioController.clickMusicButton();
+		});
+		
 	}
 }

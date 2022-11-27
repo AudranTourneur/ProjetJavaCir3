@@ -14,7 +14,7 @@ public class AudioController {
 	static MediaPlayer musicPlayer;
 
 	static void playMusic() {	//jouer la musique
-		if (!Configuration.AUDIO_ENABLED) return;
+		if (!Configuration.audioEnabled) return;
 		try {
 			String path = Main.class.getResource("audio/music.mp3").toURI().toString();
 
@@ -34,7 +34,7 @@ public class AudioController {
 	static MediaPlayer hitPlayer;
 
 	public static void playHitSound() { //jouer le son "Hit"
-		if (!Configuration.AUDIO_ENABLED) return;
+		if (!Configuration.audioEnabled) return;
 		try {
 			String path = Main.class.getResource("audio/hit.mp3").toURI().toString();
 
@@ -50,6 +50,10 @@ public class AudioController {
 			e.printStackTrace();
 		}
 
+	}
+
+	public static void clickMusicButton() {
+		Configuration.audioEnabled = !Configuration.audioEnabled;
 	}
 
 }
