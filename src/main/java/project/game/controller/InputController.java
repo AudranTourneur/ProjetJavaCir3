@@ -6,7 +6,6 @@ import javafx.application.Platform;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import project.Main;
-import project.SceneManager;
 import project.game.model.Direction;
 import project.game.model.WorldModel;
 

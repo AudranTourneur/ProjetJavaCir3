@@ -52,13 +52,7 @@ public class GameView {
     }
 
     void handleResize(Canvas canvas) {
-        //  System.out
-        //  .println("Height: " + stage.getHeight() + " Width: " + stage.getWidth());
-        //  canvas.setHeight(stage.getHeight());
-        //  canvas.setWidth(stage.getWidth());
-
         Pane pane = this.window.pane;
-        System.out.println("Pane : " + new FloatPosition(pane.getWidth(), pane.getHeight()));
 
         this.window.canvas.setWidth(this.window.stage.getWidth());
         this.window.canvas.setHeight(this.window.stage.getHeight()-this.window.menuVBox.getHeight());
@@ -67,12 +61,8 @@ public class GameView {
         double desiredTileSizeX = ((int) ((pane.getWidth()) / (GridMap.TILES_WIDTH + 1)));
         double desiredTileSizeY = ((int) (pane.getHeight() / (GridMap.TILES_HEIGHT + 1)));
 
-        System.out.println("Desired tile size: " + desiredTileSizeX + "x" + desiredTileSizeY);
-
         tileSizeX = Math.min(desiredTileSizeX, desiredTileSizeY);
         tileSizeY = tileSizeX;
-
-        System.out.println("tile size: " + tileSizeX + "x" + tileSizeY);
 
         double desiredX = tileSizeX * (GridMap.TILES_WIDTH + 1);
         double desiredY = tileSizeY * (GridMap.TILES_HEIGHT + 1);
@@ -80,14 +70,8 @@ public class GameView {
         double actualX = canvas.getWidth();
         double actualY = canvas.getHeight();
 
-        System.out.println("desired : " + new FloatPosition(desiredX, desiredY));
-        System.out.println("actual : " + new FloatPosition(actualX, actualY));
-
-        //offsetX = Math.round(Math.max(0, (actualX - desiredX)));
         offsetX = Math.round(Math.max(0, (actualX - desiredX) / 2));
         offsetY = Math.round(Math.max(0, (actualY - desiredY) / 2));
-
-        System.out.println("Offset : " + offsetX + " " + offsetY);
     }
 
     public GameView(GameWindowController window, WorldModel world) {
@@ -98,8 +82,6 @@ public class GameView {
         Canvas canvas = window.canvas;
 
         this.ctx = canvas.getGraphicsContext2D();
-
-        System.out.println("canvas = " + canvas.getWidth() + " " + canvas.getHeight());
 
         load();
 
@@ -127,10 +109,8 @@ public class GameView {
 
     public volatile static boolean isDrawing = false;
 
-    public void display(boolean log) {
+    public void display() {
         isDrawing = true;
-        if (log)
-            System.out.println("display is  called");
 
         ctx.setFill(Color.BLACK);
         ctx.fillRect(0, 0, ctx.getCanvas().getWidth(), ctx.getCanvas().getHeight());

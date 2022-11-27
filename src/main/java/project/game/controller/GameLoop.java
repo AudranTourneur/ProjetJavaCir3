@@ -87,7 +87,7 @@ public class GameLoop {
             lastCall = now;
 
             state.view.setModel(state.model);
-            state.view.display(false);
+            state.view.display();
         });
 
         final Timeline gameLoop = new Timeline();
