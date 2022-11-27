@@ -20,8 +20,8 @@ public class ProjectileWavesManager {
 
 
 	void dispatchEvents() {
-		testlevel();
-		/*
+		//testlevel();
+		/**/
 		if (model.levelProgressionManager.getCurrentLevel() == 0) {
 			manageLevelOne();
 		} else if (model.levelProgressionManager.getCurrentLevel() == 1) {
@@ -33,7 +33,7 @@ public class ProjectileWavesManager {
 		} else if(model.levelProgressionManager.getCurrentLevel()==4){
 			manageLevelFive();
 		}
-		*/
+		//*/
 
 		if (model.getCurrentTick() >= 4 * 60 * 60)
 			return;
@@ -43,12 +43,12 @@ public class ProjectileWavesManager {
 	}
 
 	void testlevel(){
-		manageLevelOne();
+		manageLevelFive();
 	}
 	//TILES_WIDTH = 29 
 	// TILES_HEIGHT = 21
 	boolean startlevel1=false;
-	private void manageLevelOne() {
+	private void manageLevelThree() {
 		double speed = 0.02;
 		//boucle qui tire les spawners charge dans queuedSpawners
 		if (model.getCurrentTick() % 10 == 0 && queuedSpawners.size() > 0) {
@@ -75,7 +75,7 @@ public class ProjectileWavesManager {
 			shootWallLeft(14,speed*2);
 		}
 		if(model.getCurrentTick()%(45*60)==(20*60)){
-			launchTargetedEncirclement(5,0.5);
+			launchTargetedEncirclement(5,0.08);
 		}
 		if(model.getCurrentTick()%(45*60)==(31*60)){
 			shootWallTop(5,speed*2);
@@ -93,7 +93,7 @@ public class ProjectileWavesManager {
 		
 	}
 
-	private void manageLevelTwo() {
+	private void manageLevelFour() {
 		if(model.getCurrentTick()%60==0){
 			launchRandomTarget(0.05);
 		}
@@ -122,15 +122,95 @@ public class ProjectileWavesManager {
 		}
 	}
 	
-	private void manageLevelThree(){
+	private void manageLevelOne(){
+		if(model.getCurrentTick() % (45*60)==(3*60)){
+			launchRandomStar(0.01);
+		}
+		if(model.getCurrentTick() % (45*60) == (7*60)){
+			launchRandomStar(0.02);
+		}
+		if(model.getCurrentTick() % (45*60) == (11*60)){
+			launchRandomStar(0.03);
+		}
+		if(model.getCurrentTick() % (45*60) == (15*60)){
+			launchRandomStar(0.035);
+		}
+		if(model.getCurrentTick() % (45*60) == (19*60)){
+			launchRandomStar(0.038);
+		}
+		if(model.getCurrentTick() % (45*60) == (23*60)){
+			launchRandomStar(0.040);
+		}
+		if(model.getCurrentTick() % (45*60) == (27*60)){
+			launchRandomStar(0.042);
+		}
+		if(model.getCurrentTick() % (45*60) == (31*60)){
+			launchRandomStar(0.045);
+		}
+		if(model.getCurrentTick() % (45*60) == (35*60)){
+			launchRandomStar(0.050);
+		}
+		if(model.getCurrentTick() % (45*60) == (39*60)){
+			launchRandomStar(0.052);
+		}
 		
 	}
 	
-	private void manageLevelFour(){
-	
+	private void manageLevelTwo(){
+		if(model.getCurrentTick()%(2*60)==0){
+			launchRandomTarget(0.1);
+		}
 	}
 
 	private void manageLevelFive(){
+		if(model.getCurrentTick()%(45*60)==(3*60)){
+			shootWallLeft(GridMap.TILES_HEIGHT/2, 0.05);
+		}
+		if(model.getCurrentTick()%(45*60)==(5*60)){
+			launchTargetedEncirclementAroundPlayer(1, 0.055, 3);
+		}
+		if(model.getCurrentTick()%(45*60)==(8*60)){
+			launchUnidirectionEncirclement(1, 0.012);
+		}
+		if(model.getCurrentTick()%(45*60)==(10*60)){
+			for(int i =0;i<20;i++){
+				launchRandomTarget(0.08);
+			}
+		}
+		if(model.getCurrentTick()%(45*60)==(13*60)){
+			shootWallRight(GridMap.TILES_HEIGHT/2, 0.05);
+		}
+		if(model.getCurrentTick()%(45*60)==(15*60)){
+			launchTargetedEncirclementAroundPlayer(1, 0.055, 3);
+		}
+		if(model.getCurrentTick()%(45*60)==(18*60)){
+			launchUnidirectionEncirclement(1, 0.012);
+		}
+		if(model.getCurrentTick()%(45*60)==(20*60)){
+			shootWallTop(-10, 0.05);
+		}
+		if(model.getCurrentTick()%(45*60)==(22*60)){
+			shootWallTop(-10, 0.05);
+			for(int i=0;i<5;i++){
+				launchRandomStar(0.05);
+				launchRandomTarget(0.08);
+			}
+		}
+		if(model.getCurrentTick()%(45*60)==(24*60)){
+			shootWallTop(-10, 0.05);
+		}
+		if(model.getCurrentTick()%(45*60)==(27*60)){
+			launchTargetedEncirclementAroundPlayer(1, 0.01, 4);
+		}
+		if(model.getCurrentTick()%(45*60)==(30*60) || model.getCurrentTick()%(45*60)==(35*60) || model.getCurrentTick()%(45*60)==(40*60)){
+			shootWallBottom(GridMap.TILES_WIDTH/2, 0.03);
+			shootWallTop(GridMap.TILES_WIDTH/2, 0.03);
+			shootWallRight(GridMap.TILES_HEIGHT/2, 0.03);
+			shootWallLeft(GridMap.TILES_HEIGHT/2, 0.03);
+		}
+		if(model.getCurrentTick()%(45*60)==(41*60) || model.getCurrentTick()%(45*60)==(43*60) ||model.getCurrentTick()%(45*60)==(44*60) ){
+			launchUnidirectionEncirclement(4, 0.025);
+		}
 
 	}
 
