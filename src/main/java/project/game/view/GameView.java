@@ -1,30 +1,22 @@
-//Creation de l'interface graphique (utilisation de canvas)
-//affichage de tous les elements du jeu (joueur, projectiles...)
-
 package project.game.view;
 
 import javafx.beans.value.ChangeListener;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import project.Main;
 import project.game.model.WorldModel;
 import project.game.controller.GameWindowController;
-import project.game.model.Entity;
-import project.game.model.Ghost;
 import project.game.model.GridMap;
-import project.game.model.GridTile;
-import project.game.model.IntPosition;
-import project.game.model.FloatPosition;
-import project.game.model.Projectile;
-import project.game.model.ProjectileSpawner;
 import java.util.HashMap;
+
+/* 
+ *   Gestion de l'interface graphique en cours de partie
+ *   Responsable de l'ffichage de tous les éléments du jeu (joueur, fantômes, projectiles...)
+ */
 
 public class GameView {
     public Stage stage;
@@ -44,19 +36,13 @@ public class GameView {
 
     private HUDControllerView hud;
 
-    int getHightestEvenNumber(int n) {
-        if (n % 2 == 0)
-            return n;
-        else
-            return n - 1;
-    }
-
+    // Gestion des redimensionnement du canvas lorsque la fenêtre est redimensionné
+    // par l'utilisateur
     void handleResize(Canvas canvas) {
         Pane pane = this.window.pane;
 
         this.window.canvas.setWidth(this.window.stage.getWidth());
-        this.window.canvas.setHeight(this.window.stage.getHeight()-this.window.menuVBox.getHeight());
-        
+        this.window.canvas.setHeight(this.window.stage.getHeight() - this.window.menuVBox.getHeight());
 
         double desiredTileSizeX = ((int) ((pane.getWidth()) / (GridMap.TILES_WIDTH + 1)));
         double desiredTileSizeY = ((int) (pane.getHeight() / (GridMap.TILES_HEIGHT + 1)));
@@ -74,6 +60,7 @@ public class GameView {
         offsetY = Math.round(Math.max(0, (actualY - desiredY) / 2));
     }
 
+    // Intialisation de la vue
     public GameView(GameWindowController window, WorldModel world) {
         this.window = window;
         this.world = world;
@@ -98,141 +85,26 @@ public class GameView {
 
     }
 
-    void drawEndScreenIfNeeded() {
-        if (world.getCompletionPercent() < 100)
-            return;
-        ctx.setFill(Color.RED);
-        ctx.setFont(new Font("System", 70));
-        ctx.fillText("Final score : " + (this.world.player.score / (this.world.player.deaths + 1)), tileSizeX * 14,
-                tileSizeY * 10);
-    }
-
-    public volatile static boolean isDrawing = false;
-
+    // Affichage de l'entièreté du jeu
     public void display() {
-        isDrawing = true;
-
         ctx.setFill(Color.BLACK);
         ctx.fillRect(0, 0, ctx.getCanvas().getWidth(), ctx.getCanvas().getHeight());
-        drawMap();
+        MapPainter.drawMap(this);
         PlayerPainter.drawPlayer(this);
-        drawFoods();
-        drawGhosts();
-        drawProjectiles();
-        drawSpawners();
-        drawTmpTexts();
+        FoodPainter.drawFoods(this);
+        GhostPainter.drawGhosts(this);
+        ProjectilePainter.drawProjectiles(this);
+        ProjectilePainter.drawSpawners(this);
         EndScreen.showEndScreenIfNeeded(this, this.world);
-        //LeftBarHUD.drawLeftBar(this);
+        // LeftBarHUD.drawLeftBar(this);
         hud.updateHUD(this.world);
-
-        isDrawing = false;
 
         if (this.world.getCurrentTick() % 60 == 0)
             handleResize(this.window.canvas);
     }
 
-    void drawTmpTexts() {
-    }
-
-    void drawMap() { // Notre map
-        for (int i = 0; i < GridMap.TILES_WIDTH; i++) {
-            for (int j = 0; j < GridMap.TILES_HEIGHT; j++) {
-                if (world.map.map[i][j] == GridTile.WALL) {
-                    drawWall(i, j);
-                }
-                if (world.map.map[i][j] == GridTile.VOID || world.map.map[i][j] == GridTile.PLAYER_SPAWN
-                        || world.map.map[i][j] == GridTile.GHOST_SPAWN) {
-                    drawVoid(i, j);
-                }
-            }
-        }
-    }
-
-    void drawWall(int x, int y) { // afficher les murs
-        Image img = spriteMap.get("wall");
-        if (img == null)
-            return;
-
-        final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
-        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    void drawVoid(int x, int y) {
-        Image img = spriteMap.get("path");
-        if (img == null)
-            return;
-
-        final DisplayData dispData = new DisplayData(this, x + 0.5, y + 0.5, 1);
-        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    void drawGhost(float x, float y) { // fantomes
-        Image img = spriteMap.get("ghost");
-        if (img == null)
-            return;
-
-        final DisplayData dispData = new DisplayData(this, x, y, 1);
-
-        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    void drawGhosts() {
-        for (Entity e : world.entities) {
-            if (e instanceof Ghost) {
-                Ghost tmp = (Ghost) e;
-                drawGhost(tmp.position.x, tmp.position.y);
-            }
-        }
-    }
-
-    // affichage de la nourriture (bleu)
-    void drawFood(int x, int y) {
-       Image img =spriteMap.get("fish");
-       if(img==null)return;
-        final DisplayData dispData = new DisplayData(this, x + .5, y + .5, 1.2);
-        ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    void drawFoods() {
-        for (IntPosition food : world.foods) {
-            drawFood(food.x, food.y);
-        }
-    }
-
-    // affichage de nos projectiles (rouge)
-    void drawProjectile(float x, float y) {
-        ctx.setFill(Color.RED);
-
-        final DisplayData dispData = new DisplayData(this, x, y, Projectile.RADIUS_SIZE);
-        ctx.fillOval(dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    void drawProjectiles() {
-        for (Entity entity : world.entities) {
-            if (entity instanceof Projectile) {
-                drawProjectile(entity.position.x, entity.position.y);
-            }
-        }
-    }
-
-    // affichage des warnings prevenant l'arrivés de futurs projectiles
-    void drawSpawner(ProjectileSpawner spawner) {
-        Image img = spriteMap.get("warning");
-        if (img == null)
-            return;
-
-        final DisplayData dispData = new DisplayData(this, spawner.position, 1);
-        if (spawner.getTicksToLive() % 60 < 30)
-            ctx.drawImage(img, dispData.x, dispData.y, dispData.width, dispData.height);
-    }
-
-    void drawSpawners() {
-        for (Entity entity : world.entities)
-            if (entity instanceof ProjectileSpawner)
-                drawSpawner((ProjectileSpawner) entity);
-    }
-
-    // Fonction va charger tout nos sprites dans le futur
+    // Méthode qui charge tous les sprites depuis le système de fichier vers la
+    // mémoire
     void load() {
         spriteMap.put("player", new Image(Main.class.getResourceAsStream("images/cat_image.png")));
         spriteMap.put("ghost", new Image(Main.class.getResourceAsStream("images/ghost.png")));
@@ -247,22 +119,13 @@ public class GameView {
         spriteMap.put("hourglass", new Image(Main.class.getResourceAsStream("images/hourglass.png")));
         spriteMap.put("party", new Image(Main.class.getResourceAsStream("images/party.png")));
 
-        spriteMap.put("fish",new Image(Main.class.getResourceAsStream("images/fish.png")));
+        spriteMap.put("fish", new Image(Main.class.getResourceAsStream("images/fish.png")));
 
         spriteMap.put("player-spritesheet", new Image(Main.class.getResourceAsStream("images/cat_spritesheet.png")));
     }
 
-    public void displayDebugInfo() {
-        System.out.println("ctx = " + ctx);
-        System.out.println("spriteMap = " + spriteMap);
-        System.out.println("spriteMap (keys)");
-        spriteMap.keySet().forEach(System.out::println);
-        System.out.println("spriteMap (values)");
-        spriteMap.values().forEach(System.out::println);
-    }
-
+    // Utilisé pour ré-initialiser la vue avec un autre modèle
     public void setModel(WorldModel model) {
         this.world = model;
     }
-
 }

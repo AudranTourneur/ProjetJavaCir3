@@ -9,32 +9,30 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import project.Main;
 
+// Contrôle général de la fenêtre de jeu
+
 public class GameWindowController {
 	public Canvas canvas;
 	public Stage stage;
 	public Pane pane;
 	public VBox menuVBox;
 
+	// Intialise le stage
 	public GameWindowController(Stage stage) {
 		this.stage = stage;
 		try {
-			// Path to the FXML File
-			// Create the Pane and all Details
+			// Object racine de la scène chargée par FXMLLoader
 			final VBox root = (VBox) FXMLLoader.load(Main.class.getResource("view/menu.fxml"));
 
-			// Create the Scene
+			// Création de la scène
 			Scene scene = new Scene(root);
-			// Set the Scene to the Stage
 			stage.setScene(scene);
-			// Set the Title to the Stage
 			stage.setTitle("Pac-Cat");
-			// Display the Stage
 			stage.show();
 
+			// Récuparation par identifiant de certains éléments dans le fichier FXML
 			this.canvas = (Canvas) scene.lookup("#canvas");
-
 			this.pane = (Pane) stage.getScene().lookup("#canvas-pane");
-
 			this.menuVBox = (VBox) stage.getScene().lookup("#menuvbox");
 
 			manageMusicButtonPress();
@@ -44,10 +42,11 @@ public class GameWindowController {
 		}
 	}
 
+
+	// Gestion d'un clic sur le bouton "Music" dans le HUD
 	void manageMusicButtonPress() {
 		Button button = (Button) stage.getScene().lookup("#music");
 		button.setOnAction(event -> {
-			//System.out.println(event);
 			AudioController.clickMusicButton(button);
 		});
 		

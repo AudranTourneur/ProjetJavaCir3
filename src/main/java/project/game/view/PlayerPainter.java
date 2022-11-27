@@ -7,8 +7,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import project.game.model.Direction;
 
+/*
+ *  Classe permettant de dessiner un joueur
+ */
+
 public class PlayerPainter {
 
+    // Renvoie un sprite depuis la spritesheet en fonction d'une colonne et d'une
+    // ligne de 32x32
     static Image getSpriteFromGrid(GameView view, int col, int row) {
         Image spritesheet = view.spriteMap.get("player-spritesheet");
         if (spritesheet == null)
@@ -24,6 +30,8 @@ public class PlayerPainter {
         return iv.snapshot(params, null);
     }
 
+    // Associe chaque direction à sa ligne dans la spritesheet 
+    // (pour avoir le chat dans le bon sens quand il se déplace)
     static int directionEnumToY(Direction dir) {
         switch (dir) {
             case UP:
@@ -39,6 +47,7 @@ public class PlayerPainter {
         }
     }
 
+    // Choisit la bonne image à afficher en fonction de la direction et (0, 0) si le chat ne bouge pas
     static Image selectCorrectSprite(GameView view) {
         int x = 0;
         int y = 0;
@@ -51,6 +60,7 @@ public class PlayerPainter {
         return getSpriteFromGrid(view, x, y);
     }
 
+    // Affiche le joueur
     static void drawPlayer(GameView view) {
         Image spritesheet = view.spriteMap.get("player-spritesheet");
         if (spritesheet == null)

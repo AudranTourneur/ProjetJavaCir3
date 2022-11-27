@@ -6,23 +6,21 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-
 //Bouton pour commencer la partie
 public class StartButton extends StackPane {
 
     public final static int buttonWidth = 300;
 
-    // constructeur
+    // Intialisation du bouton pour commencer le jeu
     StartButton(String name) {
         Text text = new Text(name);
-        text.setFont(Font.font(20)); // taille
-        text.setFill(Color.WHITE);  // couleur
+        text.setFont(Font.font(20)); // taille du texte
+        text.setFill(Color.WHITE); // couleur du texte
 
-        //forme
-        Rectangle rct = new Rectangle(buttonWidth, 50);
+        Rectangle rct = new Rectangle(buttonWidth, 50); // forme
 
-        rct.setOpacity(0.8);  // opacité
-        rct.setFill(Color.PURPLE);
+        rct.setOpacity(0.8); // opacité
+        rct.setFill(Color.PURPLE); // couleur de l'arrière plan
         getChildren().addAll(rct, text);
 
     }

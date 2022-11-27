@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import project.Main;
-import project.game.view.GameView;
+
 
 /* Modèle général*/ 
 public class WorldModel {
@@ -65,8 +65,6 @@ public class WorldModel {
 
         in.close();
 
-        System.out.println("Test = " + text);
-
         BufferedReader bufReader = new BufferedReader(new StringReader(text));
 
         String line = null;
@@ -114,7 +112,6 @@ public class WorldModel {
                                     final int tx = cx + dir.getX() * i;
                                     final int ty = cy + dir.getY() * j;
                                     map.validPositions[tx][ty] = true;
-                                    // System.out.println("Set " + tx + " " + ty + " = TRUE");
                                 }
                             }
                         }
@@ -173,7 +170,7 @@ public class WorldModel {
             ghostHandler.manage();
             projectileHandler.manageProjectileCollisions();
 
-        if (!GameView.isDrawing) {
+        
 
             for (Entity e : toDelete) {
                 entities.remove(e);
@@ -181,10 +178,9 @@ public class WorldModel {
 
             entities.addAll(entityBuffer);
             entityBuffer.clear();
-        } else {
-            System.out.println("fail to acquire");
         }
-    }
+        
+    
 
     GridTile getTileFromChar(char ch) {
         switch (ch) {
