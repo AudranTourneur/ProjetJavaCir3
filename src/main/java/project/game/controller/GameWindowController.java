@@ -1,7 +1,5 @@
 package project.game.controller;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;

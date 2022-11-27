@@ -120,11 +120,6 @@ public class WorldModel {
         // FoodHandler.generateFood(this, 50);
     }
 
-    // prepare le model pour une autre partie
-    void reset() {
-
-    }
-
     void addEntity(Entity e) {
         entityBuffer.add(e);
     }
@@ -184,11 +179,6 @@ public class WorldModel {
         } else {
             System.out.println("fail to acquire");
         }
-
-        // projectileHandler.manageProjectileSpawn();
-
-        
-
     }
 
     GridTile getTileFromChar(char ch) {
