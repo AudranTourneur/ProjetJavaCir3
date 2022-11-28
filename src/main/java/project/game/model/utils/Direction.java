@@ -30,7 +30,7 @@ public enum Direction {
         return this.name();
     }
 
-    // Donne un angle en fonction de la direction choisi en degre
+    // Renvoie l'orientation en degrés de la direction actuelle
     public double toDeg() {
         if (this == Direction.DOWN) {
             return 0;

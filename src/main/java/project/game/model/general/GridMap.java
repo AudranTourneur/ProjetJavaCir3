@@ -13,7 +13,7 @@ import project.game.model.utils.SquareValidityResponse;
 public class GridMap { 
 	/*Nombre de petit pas pour découper une demi tuile 
 	On l'utilise pour créer un système de coordonnées discret pour afficher
-	le Player, les Ghost pendant leur déplacement
+	le Player et les Ghost pendant leur déplacement
 	*/
 	public static final int STEP = 10;
 	
@@ -63,7 +63,6 @@ public class GridMap {
 		boolean ok = getAt(pos) != null && getAt(pos) != GridTile.WALL;
 		return ok;
 	}
-	// INVALID, OUTSIDE_TELEPORT, VALID
 
 	/*Vérification que la position x,y en paramètre est bien autorisée*/
 	SquareValidityResponse isAbstractPositionAllowed(int x, int y) { 
@@ -78,6 +77,7 @@ public class GridMap {
 		return validPositions[x][y] ? SquareValidityResponse.VALID : SquareValidityResponse.INVALID;
 	}
 
+	// Renvoie les positions vides de la carte
 	HashSet<IntPosition> getEmptyPositions() {
 		HashSet<IntPosition> emptyPositions = new HashSet<IntPosition>();
 		for (int x = 0; x < TILES_WIDTH; x++)
@@ -88,7 +88,7 @@ public class GridMap {
 		return emptyPositions;
 	}
 
-	/*Calcule la nouvelle position d'apparaition en fonction de la direction dans laquelle
+	/*Calcule la nouvelle position d'appararition en fonction de la direction dans laquelle
 	 * l'entité est partie
 	 */
 	IntPosition getNextTeleportPosition(Direction direction, IntPosition objectPosition, int speed) {

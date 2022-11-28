@@ -16,13 +16,13 @@ public class GhostHandler {
         this.world=world;
     }
 
-    /*Ajoute les coordonnées d'un point d'apparaition des fantômes dans spawnPoints*/
+    /*Ajoute les coordonnées d'un point d'appararition des fantômes dans spawnPoints*/
     void addSpawnPoint(int x,int y){
         spawnPoints.add(new IntPosition(x,y));
         nbSpawnPoints++;
     }
 
-    /*Ajoute un fantôme dans notre world */
+    /*Ajoute un fantôme dans notre monde */
     void addGhost(){
         Ghost tmp=new Ghost(world);
         int ind=(int)(Math.random()*nbSpawnPoints*10 % nbSpawnPoints);
@@ -31,7 +31,7 @@ public class GhostHandler {
         nbGhosts+=1;
     }
     
-    /*Gestion de lapparaition de fantômes en fonction du niveau actuel */
+    /*Gestion de l'apparition de fantômes en fonction du niveau actuel */
     public void manage(){
         if(world.levelProgressionManager.getCurrentLevel() == 0){
             if(nbGhosts==0)addGhost();
