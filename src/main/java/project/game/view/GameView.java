@@ -103,7 +103,6 @@ public class GameView {
         ProjectilePainter.drawProjectiles(this);
         ProjectilePainter.drawSpawners(this);
         EndScreenPainter.showEndScreenIfNeeded(this, this.world);
-        // LeftBarHUD.drawLeftBar(this);
         hud.updateHUD(this.world);
 
         if (this.world.getCurrentTick() % 60 == 0)
