@@ -6,7 +6,6 @@ import javafx.scene.text.Font;
 import project.game.model.general.GridMap;
 import project.game.model.general.WorldModel;
 import project.game.model.utils.FloatPosition;
-import project.game.model.utils.IntPosition;
 import project.game.view.DisplayData;
 import project.game.view.GameView;
 
