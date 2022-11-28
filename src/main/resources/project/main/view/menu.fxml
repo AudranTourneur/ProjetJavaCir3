@@ -46,9 +46,6 @@
                   <BorderPane prefWidth="750.0" style="-fx-background-color: #000000;" HBox.hgrow="ALWAYS">
                      <top>
                         <BorderPane style="-fx-background-color: #000000;" BorderPane.alignment="CENTER">
-                           <center>
-                              <Button mnemonicParsing="false" prefHeight="34.0" prefWidth="120.0" style="-fx-background-color: #D3F4D9;" text="\%" BorderPane.alignment="CENTER" />
-                           </center>
                            <left>
                               <Pane BorderPane.alignment="CENTER">
                                  <children>
