@@ -22,7 +22,7 @@ public class EndScreenPainter {
             return;
 
         drawTransparentPanel(view);
-
+        
         if (model.player.getLives() <= 0) {
             // Afficher l'écran de défaite si aucune vie restante
             showDefeatScreen(view, model);
@@ -84,7 +84,7 @@ public class EndScreenPainter {
         ctx.fillText("Final Score : " + model.player.finalScore, dd.x + dd.width, dd.y + dd.height * 1.5);
         ctx.fillText("Time : " + formatTimeFromTicks(model.getEndTick()), dd.x + dd.width, dd.y + dd.height * 2);
         ctx.fillText("Lives left : " + model.player.getLives(), dd.x + dd.width, dd.y + dd.height * 2.5);
-        ctx.fillText("Press R to Restart", dd.x + dd.width, dd.y + dd.height * 2.5);
+        ctx.fillText("Press R to Restart", dd.x + dd.width, dd.y + dd.height * 3);
     }
 
 }
